@@ -39,6 +39,8 @@ android {
 }
 
 dependencies {
+    implementation project(":ad")
+
     implementation kotlin_libraries
     implementation android_libraries
     implementation arch_libraries
