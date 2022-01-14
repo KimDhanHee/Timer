@@ -32,6 +32,9 @@ versions.espresso = "3.4.0"
 ext.versions = versions
 
 
+// 3rd
+versions.epoxy = '4.6.3'
+
 // AD
 versions.admob = '20.5.0'
 
@@ -79,6 +82,14 @@ material.material = "com.google.android.material:material:${versions.material}"
 deps.material = material
 
 deps.material = material
+
+/**
+ * 3rd
+ */
+def epoxy = [:]
+epoxy.runtime = "com.airbnb.android:epoxy:${versions.epoxy}"
+epoxy.annotation = "com.airbnb.android:epoxy-processor:${versions.epoxy}"
+deps.epoxy = epoxy
 
 /**
  * AD

@@ -57,10 +57,18 @@ dependencies {
 
     api deps.material.material
 
+    api deps.epoxy.runtime
+
     annotationProcessor deps.room.compiler
+    annotationProcessor deps.epoxy.annotation
+
     kapt deps.room.compiler
 
     testImplementation deps.test.junit
     androidTestImplementation deps.test.espresso
     androidTestImplementation deps.test.android_junit
+}
+
+kapt {
+    correctErrorTypes = true // for epxoy
 }
