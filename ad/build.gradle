@@ -45,6 +45,7 @@ dependencies {
 
     implementation deps.material.material
 
+    implementation deps.admob.runtime
 
     testImplementation deps.test.junit
     androidTestImplementation deps.test.espresso
