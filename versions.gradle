@@ -32,6 +32,9 @@ versions.espresso = "3.4.0"
 ext.versions = versions
 
 
+// AD
+versions.admob = '20.5.0'
+
 def deps = [:]
 
 def gradle = [:]
@@ -76,6 +79,13 @@ material.material = "com.google.android.material:material:${versions.material}"
 deps.material = material
 
 deps.material = material
+
+/**
+ * AD
+ */
+def admob = [:]
+admob.runtime = "com.google.android.gms:play-services-ads:${versions.admob}"
+deps.admob = admob
 
 def test = [:]
 test.junit = "junit:junit:${versions.junit}"
