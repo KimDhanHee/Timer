@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -29,10 +32,35 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    dataBinding {
+        enabled true
+    }
 }
 
 dependencies {
-    implementation project(':damin')
+    api deps.kotlin.stdlib
 
-    implementation deps.admob.runtime
+    api deps.androidx.ktx
+    api deps.androidx.appcompat
+    api deps.androidx.constraintlayout
+    api deps.androidx.activity
+    api deps.androidx.fragment
+
+    api deps.lifecycle.runtime
+    api deps.lifecycle.viewmodel
+
+    api deps.navigation.runtime
+    api deps.navigation.fragment
+    api deps.navigation.ui
+
+    api deps.room.runtime
+
+    api deps.material.material
+
+    annotationProcessor deps.room.compiler
+    kapt deps.room.compiler
+
+    testImplementation deps.test.junit
+    androidTestImplementation deps.test.espresso
+    androidTestImplementation deps.test.android_junit
 }

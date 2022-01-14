@@ -6,7 +6,6 @@ plugins {
     id 'kotlin-parcelize'
 }
 
-
 android {
     compileSdk build_versions.target_sdk
 
@@ -40,30 +39,5 @@ android {
 
 dependencies {
     implementation project(":ad")
-
-    implementation deps.kotlin.stdlib
-
-    implementation deps.androidx.ktx
-    implementation deps.androidx.appcompat
-    implementation deps.androidx.constraintlayout
-    implementation deps.androidx.activity
-    implementation deps.androidx.fragment
-
-    implementation deps.lifecycle.runtime
-    implementation deps.lifecycle.viewmodel
-
-    implementation deps.navigation.runtime
-    implementation deps.navigation.fragment
-    implementation deps.navigation.ui
-
-    implementation deps.room.runtime
-
-    implementation deps.material.material
-
-    annotationProcessor deps.room.compiler
-    kapt deps.room.compiler
-
-    testImplementation deps.test.junit
-    androidTestImplementation deps.test.espresso
-    androidTestImplementation deps.test.android_junit
+    implementation project(':damin')
 }
