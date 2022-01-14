@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/타이머.iml" filepath="$PROJECT_DIR$/.idea/modules/타이머.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/타이머.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/타이머.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/timer.iml" filepath="$PROJECT_DIR$/.idea/modules/timer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/timer.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/timer.app.iml" />
     </modules>
   </component>
 </project>
