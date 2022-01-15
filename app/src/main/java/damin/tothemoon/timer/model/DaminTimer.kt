@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-data class Timer(
+data class DaminTimer(
   val id: Long,
   val title: String,
   val time: Long,
@@ -12,7 +12,7 @@ data class Timer(
   val timeStr: String
     get() {
       val calendar = Calendar.getInstance().apply {
-        timeInMillis = this@Timer.time
+        timeInMillis = this@DaminTimer.time
       }
       return timeFormat.format(calendar.time)
     }
