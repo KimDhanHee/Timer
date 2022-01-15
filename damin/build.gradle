@@ -58,6 +58,7 @@ dependencies {
     api deps.material.material
 
     api deps.epoxy.runtime
+    api deps.epoxy.databinding
 
     annotationProcessor deps.room.compiler
     annotationProcessor deps.epoxy.annotation
