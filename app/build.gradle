@@ -40,4 +40,11 @@ android {
 dependencies {
     implementation project(":ad")
     implementation project(':damin')
+
+    kapt deps.epoxy.annotation
+
+}
+
+kapt {
+    correctErrorTypes = true // for epxoy
 }

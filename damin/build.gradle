@@ -61,9 +61,9 @@ dependencies {
     api deps.epoxy.databinding
 
     annotationProcessor deps.room.compiler
-    annotationProcessor deps.epoxy.annotation
 
     kapt deps.room.compiler
+    kapt deps.epoxy.annotation
 
     testImplementation deps.test.junit
     androidTestImplementation deps.test.espresso
