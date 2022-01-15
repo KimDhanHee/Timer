@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/main"
+  app:startDestination="@id/timerListFragment">
+  
+  <fragment
+    android:id="@+id/timerListFragment"
+    android:name="damin.tothemoon.timer.view.TimerListFragment"
+    android:label="TimerListFragment" >
+    <action
+      android:id="@+id/action_timerListFragment_to_timerFragment"
+      app:destination="@id/timerFragment" />
+  </fragment>
+  <fragment
+    android:id="@+id/timerFragment"
+    android:name="damin.tothemoon.timer.view.TimerFragment"
+    android:label="TimerFragment" />
+</navigation>
