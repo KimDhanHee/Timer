@@ -1,9 +1,5 @@
 package damin.tothemoon.timer.model
 
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
-
 data class DaminTimer(
   val id: Long,
   val title: String,
@@ -11,13 +7,12 @@ data class DaminTimer(
 ) {
   val timeStr: String
     get() {
-      val calendar = Calendar.getInstance().apply {
-        timeInMillis = this@DaminTimer.time
-      }
-      return timeFormat.format(calendar.time)
+      val hourStr = (time / (60 * 60 * 1000)).toInt().format(2)
+      val minStr = ((time / (60 * 1000) % 60)).toInt().format(2)
+      val secStr = (time % 1000).toInt().format(2)
+
+      return "${hourStr}:${minStr}:${secStr}"
     }
 
-  companion object {
-    private val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.US)
-  }
+  private fun Int.format(digit: Int): String = "%0${digit}d".format(this)
 }
