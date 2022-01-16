@@ -88,6 +88,7 @@ deps.material = material
  */
 def epoxy = [:]
 epoxy.runtime = "com.airbnb.android:epoxy:${versions.epoxy}"
+epoxy.databinding = "com.airbnb.android:epoxy-databinding:${versions.epoxy}"
 epoxy.annotation = "com.airbnb.android:epoxy-processor:${versions.epoxy}"
 deps.epoxy = epoxy
 
