@@ -2,6 +2,8 @@ package damin.tothemoon.timer.view
 
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import damin.tothemoon.ad.AdManager
+import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerBinding
@@ -19,6 +21,18 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   private val timerViewModel by viewModels<TimerViewModel>()
 
   private val daminTimer by lazy { navArgs.timer }
+
+  override fun FragmentTimerBinding.initView() {
+    AdManager.loadBanner(
+      requireContext(),
+      this@TimerFragment,
+      AdPosition.TIMER_LIST_BANNER,
+      onLoad = { banner ->
+        viewAdContainer.removeAllViews()
+        viewAdContainer.addView(banner)
+      }
+    )
+  }
 
   override fun FragmentTimerBinding.setEventListener() {
     viewStartPauseBtn.setOnClickListener {
