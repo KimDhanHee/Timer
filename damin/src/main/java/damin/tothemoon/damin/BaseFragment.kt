@@ -23,7 +23,7 @@ open class BaseFragment<VDB : ViewDataBinding>(
     container,
     false
   ).run {
-    lifecycleOwner = this@BaseFragment
+    lifecycleOwner = this@BaseFragment.viewLifecycleOwner
 
     initView()
     bindingVM()

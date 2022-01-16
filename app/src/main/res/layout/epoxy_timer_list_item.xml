@@ -8,12 +8,17 @@
     <variable
       name="timer"
       type="damin.tothemoon.timer.model.DaminTimer" />
+    
+    <variable
+      name="onItemClick"
+      type="android.view.View.OnClickListener" />
   </data>
   
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
+    android:onClick="@{onItemClick}"
     android:padding="6dp">
     
     <TextView
