@@ -1,10 +1,14 @@
 package damin.tothemoon.timer.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class DaminTimer(
   val id: Long,
   val title: String,
   val time: Long,
-) {
+) : Parcelable {
   val timeStr: String
     get() {
       val hourStr = (time / (60 * 60 * 1000)).toInt().format(2)
