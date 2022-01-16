@@ -15,5 +15,9 @@
   <fragment
     android:id="@+id/timerFragment"
     android:name="damin.tothemoon.timer.view.TimerFragment"
-    android:label="TimerFragment" />
+    android:label="TimerFragment" >
+    <argument
+      android:name="timer"
+      app:argType="damin.tothemoon.timer.model.DaminTimer" />
+  </fragment>
 </navigation>
