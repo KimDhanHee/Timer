@@ -1,5 +1,6 @@
 package damin.tothemoon.timer.view
 
+import androidx.navigation.fragment.findNavController
 import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerListBinding
@@ -20,6 +21,10 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
         timerListItem {
           id(timer.id)
           timer(timer)
+          onItemClick { _ ->
+            findNavController()
+              .navigate(TimerListFragmentDirections.actionTimerListFragmentToTimerFragment(timer))
+          }
         }
       }
     }
