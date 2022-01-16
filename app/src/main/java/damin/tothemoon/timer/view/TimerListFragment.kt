@@ -1,6 +1,8 @@
 package damin.tothemoon.timer.view
 
 import androidx.navigation.fragment.findNavController
+import damin.tothemoon.ad.AdManager
+import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerListBinding
@@ -28,5 +30,15 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
         }
       }
     }
+
+    AdManager.loadBanner(
+      requireContext(),
+      this@TimerListFragment,
+      AdPosition.TIMER_BANNER,
+      onLoad = { banner ->
+        viewAdContainer.removeAllViews()
+        viewAdContainer.addView(banner)
+      }
+    )
   }
 }
