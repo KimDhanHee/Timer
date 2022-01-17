@@ -7,6 +7,7 @@ import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerListBinding
 import damin.tothemoon.timer.model.DaminTimer
+import damin.tothemoon.timer.timerListAddButton
 import damin.tothemoon.timer.timerListItem
 
 class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
@@ -27,6 +28,11 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
             findNavController()
               .navigate(TimerListFragmentDirections.actionTimerListFragmentToTimerFragment(timer))
           }
+        }
+      }
+      timerListAddButton {
+        id("add")
+        onAddClick { _ ->
         }
       }
     }
