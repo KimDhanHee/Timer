@@ -26,13 +26,15 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
           timer(timer)
           onItemClick { _ ->
             findNavController()
-              .navigate(TimerListFragmentDirections.actionTimerListFragmentToTimerFragment(timer))
+              .navigate(TimerListFragmentDirections.actionTimerListFragmentToTimerEditorFragment(timer))
           }
         }
       }
       timerListAddButton {
         id("add")
         onAddClick { _ ->
+          findNavController()
+            .navigate(TimerListFragmentDirections.actionTimerListFragmentToTimerEditorFragment())
         }
       }
     }
