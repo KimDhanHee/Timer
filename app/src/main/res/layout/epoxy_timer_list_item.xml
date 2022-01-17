@@ -25,13 +25,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:onClick="@{onItemClick}"
-      android:padding="16dp">
+      android:onClick="@{onItemClick}">
       
       <TextView
         android:id="@+id/viewTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:text="@{timer.title}"
         android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,12 +44,13 @@
         android:id="@+id/viewTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="14dp"
         android:text="@{timer.timeStr}"
         android:textSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/viewTitle"
         app:layout_constraintTop_toBottomOf="@id/viewTitle"
-        app:layout_goneMarginTop="10dp"
         tools:text="00:00:00" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </com.google.android.material.card.MaterialCardView>
