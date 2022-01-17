@@ -11,6 +11,9 @@
     <action
       android:id="@+id/action_timerListFragment_to_timerFragment"
       app:destination="@id/timerFragment" />
+    <action
+      android:id="@+id/action_timerListFragment_to_timerEditorFragment"
+      app:destination="@id/timerEditorFragment" />
   </fragment>
   <fragment
     android:id="@+id/timerFragment"
@@ -19,5 +22,15 @@
     <argument
       android:name="timer"
       app:argType="damin.tothemoon.timer.model.DaminTimer" />
+  </fragment>
+  <fragment
+    android:id="@+id/timerEditorFragment"
+    android:name="damin.tothemoon.timer.view.TimerEditorFragment"
+    android:label="TimerEditorFragment" >
+    <argument
+      android:name="timer"
+      app:argType="damin.tothemoon.timer.model.DaminTimer"
+      app:nullable="true"
+      android:defaultValue="@null" />
   </fragment>
 </navigation>
