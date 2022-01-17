@@ -117,7 +117,12 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="85dp"
       android:background="@drawable/save_button_background"
+      android:paddingStart="40dp"
+      android:paddingTop="10dp"
+      android:paddingEnd="40dp"
+      android:paddingBottom="10dp"
       android:text="@string/timer_start"
+      android:textSize="20dp"
       app:layout_constraintEnd_toEndOf="@id/viewMinutePicker"
       app:layout_constraintStart_toStartOf="@id/viewMinutePicker"
       app:layout_constraintTop_toBottomOf="@id/viewMinutePicker" />
