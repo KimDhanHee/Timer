@@ -7,4 +7,9 @@ import damin.tothemoon.timer.databinding.FragmentTimerEditorBinding
 class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
   R.layout.fragment_timer_editor
 ) {
+  override fun FragmentTimerEditorBinding.initView() {
+    arrayOf(viewHourPicker, viewMinutePicker, viewSecondsPicker).forEach { numberPicker ->
+      numberPicker.setFormatter { "%02d".format(it) }
+    }
+  }
 }
