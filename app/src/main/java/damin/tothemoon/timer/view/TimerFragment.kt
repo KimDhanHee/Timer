@@ -32,6 +32,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         viewAdContainer.addView(banner)
       }
     )
+
+    viewTitle.text = daminTimer.title
   }
 
   override fun FragmentTimerBinding.setEventListener() {
