@@ -13,4 +13,16 @@ data class DaminTimer(
 ) : Parcelable {
   @IgnoredOnParcel
   val timeStr: String = time.timeStr
+
+  @IgnoredOnParcel
+  var remainedTime: Long = time
+    private set
+
+  fun updateRemainedTime(time: Long) {
+    remainedTime = time
+  }
+
+  fun resetRemainedTime() {
+    remainedTime = this.time
+  }
 }
