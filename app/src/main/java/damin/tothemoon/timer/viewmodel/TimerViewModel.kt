@@ -2,7 +2,7 @@ package damin.tothemoon.timer.viewmodel
 
 import android.os.CountDownTimer
 import androidx.lifecycle.ViewModel
-import damin.tothemoon.timer.extension.timeStr
+import damin.tothemoon.timer.model.DaminTimer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -12,45 +12,51 @@ class TimerViewModel : ViewModel() {
     get() = _timerStateFlow
 
   private lateinit var timer: CountDownTimer
-  private var remainedTime: Long = 0
 
-  fun start(time: Long) {
-    timer = object : CountDownTimer(time, 1000L) {
-      override fun onTick(tick: Long) {
-        remainedTime = tick
-        _timerStateFlow.value = TimerState.CountDown(remainedTime)
+  private lateinit var daminTimer: DaminTimer
+
+  fun start(daminTimer: DaminTimer) {
+    this.daminTimer = daminTimer
+    timer = object : CountDownTimer(daminTimer.remainedTime, 100L) {
+      override fun onTick(reaminedTime: Long) {
+        daminTimer.updateRemainedTime(reaminedTime)
+        _timerStateFlow.value = TimerState.CountDown(daminTimer.time, daminTimer.remainedTime)
       }
 
       override fun onFinish() {
+        daminTimer.resetRemainedTime()
         _timerStateFlow.value = TimerState.Finished
       }
     }.start()
   }
 
   fun restart() {
-    start(remainedTime)
+    start(daminTimer)
   }
 
   fun pause() {
     timer.cancel()
-    _timerStateFlow.value = TimerState.Paused(remainedTime)
+    _timerStateFlow.value = TimerState.Paused(daminTimer.remainedTime)
   }
 
   fun cancel() {
     timer.cancel()
+    daminTimer.resetRemainedTime()
     _timerStateFlow.value = TimerState.Canceled
   }
 }
 
 sealed class TimerState {
   object Idle : TimerState()
-  data class CountDown(private val remainedTime: Long) : TimerState() {
-    val remainedTimeStr = remainedTime.timeStr
+  data class CountDown(
+    private val totalTime: Long,
+    val remainedTime: Long,
+  ) : TimerState() {
+    val remainedProgress: Int =
+      ((remainedTime / totalTime.toFloat()) * 1000).toInt()
   }
 
-  data class Paused(private val remainedTime: Long) : TimerState() {
-    val remainedTimeStr = remainedTime.timeStr
-  }
+  data class Paused(val remainedTime: Long) : TimerState()
 
   object Canceled : TimerState()
 
