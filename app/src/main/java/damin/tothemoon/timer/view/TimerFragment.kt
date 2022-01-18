@@ -7,6 +7,7 @@ import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerBinding
+import damin.tothemoon.timer.extension.timeStr
 import damin.tothemoon.timer.viewmodel.TimerState
 import damin.tothemoon.timer.viewmodel.TimerViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -32,6 +33,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         viewAdContainer.addView(banner)
       }
     )
+
+    viewTitle.text = daminTimer.title
   }
 
   override fun FragmentTimerBinding.setEventListener() {
@@ -39,7 +42,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
       when (timerViewModel.timerStateFlow.value) {
         is TimerState.CountDown -> timerViewModel.pause()
         is TimerState.Paused -> timerViewModel.restart()
-        else -> timerViewModel.start(daminTimer.time)
+        else -> timerViewModel.start(daminTimer)
       }
     }
 
@@ -56,15 +59,17 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         when (state) {
           is TimerState.CountDown -> {
             viewStartPauseBtn.text = getString(R.string.timer_pause)
-            viewTimer.text = state.remainedTimeStr
+            viewTimer.text = state.remainedTime.timeStr
+            viewProgressbar.progress = state.remainedProgress
           }
           is TimerState.Paused -> {
             viewStartPauseBtn.text = getString(R.string.timer_start)
-            viewTimer.text = state.remainedTimeStr
+            viewTimer.text = state.remainedTime.timeStr
           }
           else -> {
             viewStartPauseBtn.text = getString(R.string.timer_start)
             viewTimer.text = daminTimer.timeStr
+            viewProgressbar.progress = 1000
           }
         }
       }

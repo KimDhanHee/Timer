@@ -4,6 +4,9 @@
   <string name="timer_start">시작</string>
   <string name="timer_pause">일시정지</string>
   <string name="timer_cancel">취소</string>
+  <string name="timer_add_1min">+ 1분</string>
+  <string name="timer_add_5min">+ 5분</string>
+  <string name="timer_add_10min">+ 10분</string>
   
   <string name="timer_list_add">타이머 추가</string>
   
