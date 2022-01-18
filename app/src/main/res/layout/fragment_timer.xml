@@ -18,6 +18,41 @@
       app:layout_constraintTop_toTopOf="parent"
       tools:text="Title" />
     
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/viewPlus1MinBtn"
+      style="@style/PlusMinuteButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@drawable/add_minute_button_background"
+      android:text="@string/timer_add_1min"
+      app:layout_constraintBottom_toBottomOf="@id/viewPlus5MinBtn"
+      app:layout_constraintEnd_toStartOf="@id/viewPlus5MinBtn"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewTitle"
+      app:layout_constraintTop_toTopOf="@id/viewPlus5MinBtn" />
+    
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/viewPlus5MinBtn"
+      style="@style/PlusMinuteButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="60dp"
+      android:text="@string/timer_add_5min"
+      app:layout_constraintEnd_toStartOf="@id/viewPlus10MinBtn"
+      app:layout_constraintStart_toEndOf="@id/viewPlus1MinBtn"
+      app:layout_constraintTop_toBottomOf="@id/viewTitle" />
+    
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/viewPlus10MinBtn"
+      style="@style/PlusMinuteButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/timer_add_10min"
+      app:layout_constraintBottom_toBottomOf="@id/viewPlus5MinBtn"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewPlus5MinBtn"
+      app:layout_constraintTop_toTopOf="@id/viewPlus5MinBtn" />
+    
     <ProgressBar
       android:id="@+id/viewProgressbar"
       style="@style/Widget.AppCompat.ProgressBar.Horizontal"
