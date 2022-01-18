@@ -7,15 +7,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     
-    <TextView
-      android:id="@+id/viewTimer"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textSize="56dp"
+    <ProgressBar
+      android:id="@+id/viewProgressbar"
+      style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+      android:layout_width="320dp"
+      android:layout_height="320dp"
+      android:indeterminateOnly="false"
+      android:max="100"
+      android:progressBackgroundTint="@color/gray"
+      android:progressDrawable="@drawable/circular_progressbar"
+      android:progressTint="@color/purple_700"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
+      tools:progress="30" />
+    
+    <TextView
+      android:id="@+id/viewTimer"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textSize="48dp"
+      app:layout_constraintBottom_toBottomOf="@id/viewProgressbar"
+      app:layout_constraintEnd_toEndOf="@id/viewProgressbar"
+      app:layout_constraintStart_toStartOf="@id/viewProgressbar"
+      app:layout_constraintTop_toTopOf="@id/viewProgressbar"
       tools:text="00:00:00" />
     
     <Button
