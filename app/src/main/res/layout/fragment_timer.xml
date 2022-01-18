@@ -24,15 +24,15 @@
       android:layout_width="320dp"
       android:layout_height="320dp"
       android:indeterminateOnly="false"
-      android:max="100"
+      android:max="1000"
+      android:progress="1000"
       android:progressBackgroundTint="@color/gray"
       android:progressDrawable="@drawable/circular_progressbar"
       android:progressTint="@color/purple_700"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:progress="30" />
+      app:layout_constraintTop_toTopOf="parent" />
     
     <TextView
       android:id="@+id/viewTimer"

@@ -15,10 +15,10 @@ class TimerViewModel : ViewModel() {
   private var remainedTime: Long = 0
 
   fun start(time: Long) {
-    timer = object : CountDownTimer(time, 1000L) {
+    timer = object : CountDownTimer(time, 100L) {
       override fun onTick(tick: Long) {
         remainedTime = tick
-        _timerStateFlow.value = TimerState.CountDown(remainedTime)
+        _timerStateFlow.value = TimerState.CountDown(time, remainedTime)
       }
 
       override fun onFinish() {
@@ -44,8 +44,13 @@ class TimerViewModel : ViewModel() {
 
 sealed class TimerState {
   object Idle : TimerState()
-  data class CountDown(private val remainedTime: Long) : TimerState() {
+  data class CountDown(
+    private val totalTime: Long,
+    private val remainedTime: Long,
+  ) : TimerState() {
     val remainedTimeStr = remainedTime.timeStr
+    val remainedProgress: Int
+      get() = ((remainedTime / totalTime.toFloat()) * 1000).toInt()
   }
 
   data class Paused(private val remainedTime: Long) : TimerState() {

@@ -59,6 +59,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
           is TimerState.CountDown -> {
             viewStartPauseBtn.text = getString(R.string.timer_pause)
             viewTimer.text = state.remainedTimeStr
+            viewProgressbar.progress = state.remainedProgress
           }
           is TimerState.Paused -> {
             viewStartPauseBtn.text = getString(R.string.timer_start)
