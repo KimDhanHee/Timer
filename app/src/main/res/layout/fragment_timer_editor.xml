@@ -117,6 +117,7 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="85dp"
       android:background="@drawable/save_button_background"
+      android:enabled="false"
       android:paddingStart="40dp"
       android:paddingTop="10dp"
       android:paddingEnd="40dp"
