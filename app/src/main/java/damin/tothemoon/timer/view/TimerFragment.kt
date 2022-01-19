@@ -7,7 +7,7 @@ import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerBinding
-import damin.tothemoon.timer.extension.timeStr
+import damin.tothemoon.timer.model.timeStr
 import damin.tothemoon.timer.viewmodel.TimerState
 import damin.tothemoon.timer.viewmodel.TimerViewModel
 import kotlinx.coroutines.CoroutineScope
