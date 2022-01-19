@@ -6,39 +6,49 @@ import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerListBinding
-import damin.tothemoon.timer.model.TimerInfo
+import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.timerListAddButton
 import damin.tothemoon.timer.timerListItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
   R.layout.fragment_timer_list
 ) {
   override fun FragmentTimerListBinding.initView() {
-    viewTimerList.withModels {
-      val tmpTimerInfoList = arrayOf(
-        TimerInfo(0, "다니", 10 * 60 * 1000L),
-        TimerInfo(0, "민", 20 * 60 * 1000L),
-        TimerInfo(0, "투 더 문", 30 * 60 * 1000L)
-      )
-      tmpTimerInfoList.forEach { timerInfo ->
-        timerListItem {
-          id(timerInfo.id)
-          timerInfo(timerInfo)
-          onItemClick { _ ->
-            findNavController()
-              .navigate(TimerListFragmentDirections.actionListToEditor(timerInfo))
+    drawTimerList()
+    loadAd()
+  }
+
+  private fun FragmentTimerListBinding.drawTimerList() {
+    CoroutineScope(Dispatchers.Main).launch {
+      TimerDatabase.timerDao(requireContext()).getTimerInfos().collect { timerInfoList ->
+        viewTimerList.withModels {
+          timerInfoList.forEach { timerInfo ->
+            timerListItem {
+              id(timerInfo.id)
+              timerInfo(timerInfo)
+              onItemClick { _ ->
+                findNavController()
+                  .navigate(TimerListFragmentDirections.actionListToEditor(timerInfo))
+              }
+            }
+          }
+          timerListAddButton {
+            id("add")
+            onAddClick { _ ->
+              findNavController()
+                .navigate(TimerListFragmentDirections.actionListToEditor())
+            }
           }
         }
       }
-      timerListAddButton {
-        id("add")
-        onAddClick { _ ->
-          findNavController()
-            .navigate(TimerListFragmentDirections.actionListToEditor())
-        }
-      }
     }
+  }
 
+  private fun FragmentTimerListBinding.loadAd() {
     AdManager.loadBanner(
       requireContext(),
       this@TimerListFragment,
