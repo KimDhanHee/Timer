@@ -6,7 +6,7 @@ import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerListBinding
-import damin.tothemoon.timer.model.DaminTimer
+import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.timerListAddButton
 import damin.tothemoon.timer.timerListItem
 
@@ -15,18 +15,18 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
 ) {
   override fun FragmentTimerListBinding.initView() {
     viewTimerList.withModels {
-      val tmpTimerList = arrayOf(
-        DaminTimer(0, "다니", 10 * 60 * 1000L),
-        DaminTimer(0, "민", 20 * 60 * 1000L),
-        DaminTimer(0, "투 더 문", 30 * 60 * 1000L)
+      val tmpTimerInfoList = arrayOf(
+        TimerInfo(0, "다니", 10 * 60 * 1000L),
+        TimerInfo(0, "민", 20 * 60 * 1000L),
+        TimerInfo(0, "투 더 문", 30 * 60 * 1000L)
       )
-      tmpTimerList.forEach { timer ->
+      tmpTimerInfoList.forEach { timerInfo ->
         timerListItem {
-          id(timer.id)
-          timer(timer)
+          id(timerInfo.id)
+          timerInfo(timerInfo)
           onItemClick { _ ->
             findNavController()
-              .navigate(TimerListFragmentDirections.actionListToEditor(timer))
+              .navigate(TimerListFragmentDirections.actionListToEditor(timerInfo))
           }
         }
       }

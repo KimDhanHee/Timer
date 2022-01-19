@@ -20,17 +20,17 @@
     android:name="damin.tothemoon.timer.view.TimerFragment"
     android:label="TimerFragment">
     <argument
-      android:name="timer"
-      app:argType="damin.tothemoon.timer.model.DaminTimer" />
+      android:name="timerInfo"
+      app:argType="damin.tothemoon.timer.model.TimerInfo" />
   </fragment>
   <fragment
     android:id="@+id/timerEditorFragment"
     android:name="damin.tothemoon.timer.view.TimerEditorFragment"
     android:label="TimerEditorFragment">
     <argument
-      android:name="timer"
+      android:name="timerInfo"
       android:defaultValue="@null"
-      app:argType="damin.tothemoon.timer.model.DaminTimer"
+      app:argType="damin.tothemoon.timer.model.TimerInfo"
       app:nullable="true" />
     <action
       android:id="@+id/action_editor_to_timer"

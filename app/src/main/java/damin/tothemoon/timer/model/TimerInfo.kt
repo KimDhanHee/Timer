@@ -6,10 +6,10 @@ import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class DaminTimer(
-  val id: Long,
-  val title: String,
-  val time: Long,
+data class TimerInfo(
+  val id: Long = -1,
+  var title: String = "",
+  var time: Long = 0,
 ) : Parcelable {
   @IgnoredOnParcel
   val timeStr: String = time.timeStr

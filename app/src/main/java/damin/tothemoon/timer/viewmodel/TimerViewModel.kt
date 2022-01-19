@@ -2,7 +2,7 @@ package damin.tothemoon.timer.viewmodel
 
 import android.os.CountDownTimer
 import androidx.lifecycle.ViewModel
-import damin.tothemoon.timer.model.DaminTimer
+import damin.tothemoon.timer.model.TimerInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -13,35 +13,35 @@ class TimerViewModel : ViewModel() {
 
   private lateinit var timer: CountDownTimer
 
-  private lateinit var daminTimer: DaminTimer
+  private lateinit var timerInfo: TimerInfo
 
-  fun start(daminTimer: DaminTimer) {
-    this.daminTimer = daminTimer
-    timer = object : CountDownTimer(daminTimer.remainedTime, 100L) {
+  fun start(timerInfo: TimerInfo) {
+    this.timerInfo = timerInfo
+    timer = object : CountDownTimer(timerInfo.remainedTime, 100L) {
       override fun onTick(reaminedTime: Long) {
-        daminTimer.updateRemainedTime(reaminedTime)
-        _timerStateFlow.value = TimerState.CountDown(daminTimer.time, daminTimer.remainedTime)
+        timerInfo.updateRemainedTime(reaminedTime)
+        _timerStateFlow.value = TimerState.CountDown(timerInfo.time, timerInfo.remainedTime)
       }
 
       override fun onFinish() {
-        daminTimer.resetRemainedTime()
+        timerInfo.resetRemainedTime()
         _timerStateFlow.value = TimerState.Finished
       }
     }.start()
   }
 
   fun restart() {
-    start(daminTimer)
+    start(timerInfo)
   }
 
   fun pause() {
     timer.cancel()
-    _timerStateFlow.value = TimerState.Paused(daminTimer.remainedTime)
+    _timerStateFlow.value = TimerState.Paused(timerInfo.remainedTime)
   }
 
   fun cancel() {
     timer.cancel()
-    daminTimer.resetRemainedTime()
+    timerInfo.resetRemainedTime()
     _timerStateFlow.value = TimerState.Canceled
   }
 }
