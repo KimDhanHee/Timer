@@ -7,6 +7,7 @@ import androidx.navigation.fragment.navArgs
 import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerEditorBinding
+import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.viewmodel.TimerEditorViewModel
 import damin.tothemoon.timer.viewmodel.TimerEditorViewModelFactory
@@ -19,10 +20,14 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
   R.layout.fragment_timer_editor
 ) {
   private val editorViewModel by viewModels<TimerEditorViewModel> {
-    TimerEditorViewModelFactory(navArgs.timerInfo ?: TimerInfo())
+    TimerEditorViewModelFactory(
+      TimerDatabase.timerDao(requireContext()),
+      navArgs.timerInfo ?: TimerInfo()
+    )
   }
 
   private val navArgs by navArgs<TimerEditorFragmentArgs>()
+  private val isNew by lazy { navArgs.timerInfo == null }
 
   override fun FragmentTimerEditorBinding.initView() {
     initTimerInfo()
