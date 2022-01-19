@@ -34,6 +34,8 @@
       app:nullable="true" />
     <action
       android:id="@+id/action_editor_to_timer"
-      app:destination="@id/timerFragment" />
+      app:destination="@id/timerFragment"
+      app:popUpTo="@id/timerListFragment"
+      app:popUpToInclusive="false" />
   </fragment>
 </navigation>
