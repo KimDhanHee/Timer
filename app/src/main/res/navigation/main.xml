@@ -7,17 +7,35 @@
   <fragment
     android:id="@+id/timerListFragment"
     android:name="damin.tothemoon.timer.view.TimerListFragment"
-    android:label="TimerListFragment" >
+    android:label="TimerListFragment">
     <action
-      android:id="@+id/action_timerListFragment_to_timerFragment"
+      android:id="@+id/action_list_to_timer"
       app:destination="@id/timerFragment" />
+    <action
+      android:id="@+id/action_list_to_editor"
+      app:destination="@id/timerEditorFragment" />
   </fragment>
   <fragment
     android:id="@+id/timerFragment"
     android:name="damin.tothemoon.timer.view.TimerFragment"
-    android:label="TimerFragment" >
+    android:label="TimerFragment">
     <argument
-      android:name="timer"
-      app:argType="damin.tothemoon.timer.model.DaminTimer" />
+      android:name="timerInfo"
+      app:argType="damin.tothemoon.timer.model.TimerInfo" />
+  </fragment>
+  <fragment
+    android:id="@+id/timerEditorFragment"
+    android:name="damin.tothemoon.timer.view.TimerEditorFragment"
+    android:label="TimerEditorFragment">
+    <argument
+      android:name="timerInfo"
+      android:defaultValue="@null"
+      app:argType="damin.tothemoon.timer.model.TimerInfo"
+      app:nullable="true" />
+    <action
+      android:id="@+id/action_editor_to_timer"
+      app:destination="@id/timerFragment"
+      app:popUpTo="@id/timerListFragment"
+      app:popUpToInclusive="false" />
   </fragment>
 </navigation>

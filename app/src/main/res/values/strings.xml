@@ -9,4 +9,10 @@
   <string name="timer_add_10min">+ 10분</string>
   
   <string name="timer_list_add">타이머 추가</string>
+  
+  <string name="timer_editor_title_hint">타이머 제목</string>
+  
+  <string name="timer_editor_hour_label">시간</string>
+  <string name="timer_editor_minute_label">분</string>
+  <string name="timer_editor_seconds_label">초</string>
 </resources>

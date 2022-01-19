@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+  
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <EditText
+      android:id="@+id/viewTitleInput"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="130dp"
+      android:hint="@string/timer_editor_title_hint"
+      android:textSize="30dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+    
+    <TextView
+      android:id="@+id/viewHourLabel"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:text="@string/timer_editor_hour_label"
+      android:textSize="16dp"
+      app:layout_constraintBottom_toBottomOf="@id/viewMinuteLabel"
+      app:layout_constraintEnd_toEndOf="@id/viewHourPicker"
+      app:layout_constraintStart_toStartOf="@id/viewHourPicker"
+      app:layout_constraintTop_toTopOf="@id/viewMinuteLabel" />
+    
+    <TextView
+      android:id="@+id/viewMinuteLabel"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="24dp"
+      android:gravity="center"
+      android:text="@string/timer_editor_minute_label"
+      android:textSize="16dp"
+      app:layout_constraintBottom_toTopOf="@id/viewMinutePicker"
+      app:layout_constraintEnd_toEndOf="@id/viewMinutePicker"
+      app:layout_constraintStart_toStartOf="@id/viewMinutePicker" />
+    
+    <TextView
+      android:id="@+id/viewSecondsLabel"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:text="@string/timer_editor_seconds_label"
+      android:textSize="16dp"
+      app:layout_constraintBottom_toBottomOf="@id/viewMinuteLabel"
+      app:layout_constraintEnd_toEndOf="@id/viewSecondsPicker"
+      app:layout_constraintStart_toStartOf="@id/viewSecondsPicker"
+      app:layout_constraintTop_toTopOf="@id/viewMinuteLabel" />
+    
+    <NumberPicker
+      android:id="@+id/viewHourPicker"
+      android:layout_width="wrap_content"
+      android:layout_height="200dp"
+      android:theme="@style/DaminNumberPicker"
+      app:layout_constraintBottom_toBottomOf="@id/viewMinutePicker"
+      app:layout_constraintEnd_toStartOf="@id/viewMinutePicker"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewMinuteLabel"
+      app:layout_constraintTop_toTopOf="@id/viewMinutePicker"
+      app:maxValue="@{99}"
+      app:minValue="@{0}" />
+    
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text=":"
+      android:textSize="48dp"
+      app:layout_constraintBottom_toBottomOf="@id/viewMinutePicker"
+      app:layout_constraintEnd_toStartOf="@id/viewMinutePicker"
+      app:layout_constraintStart_toEndOf="@id/viewHourPicker"
+      app:layout_constraintTop_toTopOf="@id/viewMinutePicker" />
+    
+    <NumberPicker
+      android:id="@+id/viewMinutePicker"
+      android:layout_width="wrap_content"
+      android:layout_height="200dp"
+      android:theme="@style/DaminNumberPicker"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/viewSecondsPicker"
+      app:layout_constraintStart_toEndOf="@id/viewHourPicker"
+      app:layout_constraintTop_toTopOf="parent"
+      app:maxValue="@{59}"
+      app:minValue="@{0}" />
+    
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text=":"
+      android:textSize="48dp"
+      app:layout_constraintBottom_toBottomOf="@id/viewMinutePicker"
+      app:layout_constraintEnd_toStartOf="@id/viewSecondsPicker"
+      app:layout_constraintStart_toEndOf="@id/viewMinutePicker"
+      app:layout_constraintTop_toTopOf="@id/viewMinutePicker" />
+    
+    <NumberPicker
+      android:id="@+id/viewSecondsPicker"
+      android:layout_width="wrap_content"
+      android:layout_height="200dp"
+      android:theme="@style/DaminNumberPicker"
+      app:layout_constraintBottom_toBottomOf="@id/viewMinutePicker"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewMinutePicker"
+      app:layout_constraintTop_toBottomOf="@id/viewMinuteLabel"
+      app:layout_constraintTop_toTopOf="@id/viewMinutePicker"
+      app:maxValue="@{59}"
+      app:minValue="@{0}" />
+    
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/viewStartBtn"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="85dp"
+      android:background="@drawable/save_button_background"
+      android:enabled="false"
+      android:paddingStart="40dp"
+      android:paddingTop="10dp"
+      android:paddingEnd="40dp"
+      android:paddingBottom="10dp"
+      android:text="@string/timer_start"
+      android:textSize="20dp"
+      app:layout_constraintEnd_toEndOf="@id/viewMinutePicker"
+      app:layout_constraintStart_toStartOf="@id/viewMinutePicker"
+      app:layout_constraintTop_toBottomOf="@id/viewMinutePicker" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
