@@ -1,65 +1,80 @@
 package damin.tothemoon.timer.view
 
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerEditorBinding
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.viewmodel.TimerEditorViewModel
+import damin.tothemoon.timer.viewmodel.TimerEditorViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
   R.layout.fragment_timer_editor
 ) {
-  private val navArgs by navArgs<TimerEditorFragmentArgs>()
-
-  private val timerInfo by lazy { navArgs.timerInfo ?: TimerInfo() }
-  private val needToCreateNew by lazy { navArgs.timerInfo == null }
-
-  override fun FragmentTimerEditorBinding.initView() {
-    if (timerInfo.title.isNotEmpty()) {
-      viewTitleInput.setText(timerInfo.title)
-    }
-    initTimePicker()
-    updateStartBtnEnabled()
+  private val editorViewModel by viewModels<TimerEditorViewModel> {
+    TimerEditorViewModelFactory(navArgs.timerInfo ?: TimerInfo())
   }
 
-  override fun FragmentTimerEditorBinding.setEventListener() {
-    viewTitleInput.addTextChangedListener { title ->
-      timerInfo.title = title?.toString() ?: ""
+  private val navArgs by navArgs<TimerEditorFragmentArgs>()
 
-      viewStartBtn.isEnabled = !title.isNullOrEmpty()
+  override fun FragmentTimerEditorBinding.initView() {
+    initTimerInfo()
+    initTimePickerFormat()
+  }
+
+  private fun FragmentTimerEditorBinding.initTimerInfo() {
+    navArgs.timerInfo?.let { timerInfo ->
+      viewTitleInput.setText(timerInfo.title)
+      viewHourPicker.value = timerInfo.hour
+      viewMinutePicker.value = timerInfo.minute
+      viewSecondsPicker.value = timerInfo.seconds
     }
+  }
 
-    viewHourPicker.setOnValueChangedListener { _, _, hour ->
-      updateStartBtnEnabled()
-    }
-
-    viewMinutePicker.setOnValueChangedListener { _, _, minute ->
-      updateStartBtnEnabled()
-    }
-
-    viewSecondsPicker.setOnValueChangedListener { _, _, seconds ->
-      updateStartBtnEnabled()
-    }
-
-    viewStartBtn.setOnClickListener {
-      findNavController().navigate(TimerEditorFragmentDirections.actionEditorToTimer(timerInfo))
+  private fun FragmentTimerEditorBinding.initTimePickerFormat() {
+    arrayOf(viewHourPicker, viewMinutePicker, viewSecondsPicker).forEach { numberPicker ->
+      numberPicker.setFormatter { "%02d".format(it) }
     }
   }
 
   override fun FragmentTimerEditorBinding.bindingVM() {
+    CoroutineScope(Dispatchers.Main).launch {
+      editorViewModel.timerInfoFlow.collect { timerInfo ->
+        viewStartBtn.isEnabled = timerInfo.title.isNotEmpty() && timerInfo.time != 0L
+      }
+    }
   }
 
-  private fun FragmentTimerEditorBinding.updateStartBtnEnabled() {
-    viewStartBtn.isEnabled = timerInfo.title.isNotEmpty() && timerInfo.time != 0L
-  }
+  override fun FragmentTimerEditorBinding.setEventListener() {
+    viewTitleInput.addTextChangedListener { title ->
+      if (title == null) return@addTextChangedListener
 
-  private fun FragmentTimerEditorBinding.initTimePicker() {
-    arrayOf(viewHourPicker, viewMinutePicker, viewSecondsPicker).forEach { numberPicker ->
-      numberPicker.setFormatter { "%02d".format(it) }
+      editorViewModel.updateTitle(title.toString())
+    }
+
+    viewHourPicker.setOnValueChangedListener { _, _, hour ->
+      editorViewModel.updateHour(hour)
+    }
+
+    viewMinutePicker.setOnValueChangedListener { _, _, minute ->
+      editorViewModel.updateMinute(minute)
+    }
+
+    viewSecondsPicker.setOnValueChangedListener { _, _, seconds ->
+      editorViewModel.updateSeconds(seconds)
+    }
+
+    viewStartBtn.setOnClickListener {
+      findNavController().navigate(
+        TimerEditorFragmentDirections.actionEditorToTimer(editorViewModel.timerInfoFlow.value)
+      )
     }
   }
 }
