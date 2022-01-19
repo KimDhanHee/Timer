@@ -25,7 +25,9 @@ open class BaseFragment<VDB : ViewDataBinding>(
   ).run {
     lifecycleOwner = this@BaseFragment.viewLifecycleOwner
 
-    initView()
+    root.post {
+      initView()
+    }
     bindingVM()
     bindingViewData()
     setEventListener()
