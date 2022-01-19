@@ -77,6 +77,11 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
     }
 
     viewStartBtn.setOnClickListener {
+      when {
+        isNew -> editorViewModel.addTimerInfo()
+        else -> editorViewModel.updateTimerInfo()
+      }
+
       findNavController().navigate(
         TimerEditorFragmentDirections.actionEditorToTimer(editorViewModel.timerInfoFlow.value)
       )
