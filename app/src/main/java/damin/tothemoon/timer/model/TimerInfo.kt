@@ -1,21 +1,26 @@
 package damin.tothemoon.timer.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
+@Entity(tableName = "timer")
 data class TimerInfo(
-  val id: Long = -1,
+  @PrimaryKey(autoGenerate = true)
+  var id: Long = 0,
   var title: String = "",
   var time: Long = 0,
 ) : Parcelable {
   @IgnoredOnParcel
-  val timeStr: String = time.timeStr
+  val timeStr: String
+    get() = time.timeStr
 
   @IgnoredOnParcel
   var remainedTime: Long = time
-    private set
 
   fun updateRemainedTime(time: Long) {
     remainedTime = time
@@ -29,21 +34,21 @@ data class TimerInfo(
     get() = ((time / HOUR_UNIT)).toInt()
     set(value) {
       time = value * HOUR_UNIT + minute * MINUTE_UNIT + seconds * SECONDS_UNIT
-      updateRemainedTime(time)
+      resetRemainedTime()
     }
 
   var minute: Int
     get() = (time / MINUTE_UNIT % 60).toInt()
     set(value) {
       time = hour * HOUR_UNIT + value * MINUTE_UNIT + seconds * SECONDS_UNIT
-      updateRemainedTime(time)
+      resetRemainedTime()
     }
 
   var seconds: Int
     get() = ((time / SECONDS_UNIT) % 60).toInt()
     set(value) {
       time = hour * HOUR_UNIT + minute * MINUTE_UNIT + value * SECONDS_UNIT
-      updateRemainedTime(time)
+      resetRemainedTime()
     }
 
   companion object {

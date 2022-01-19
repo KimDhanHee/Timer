@@ -42,7 +42,7 @@ dependencies {
     implementation project(':damin')
 
     kapt deps.epoxy.annotation
-
+    kapt deps.room.compiler
 }
 
 kapt {
