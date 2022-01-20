@@ -5,6 +5,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import damin.tothemoon.damin.BaseFragment
+import damin.tothemoon.damin.utils.AndroidUtils
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerEditorBinding
 import damin.tothemoon.timer.model.TimerDatabase
@@ -52,6 +53,7 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
   override fun FragmentTimerEditorBinding.bindingVM() {
     CoroutineScope(Dispatchers.Main).launch {
       editorViewModel.timerInfoFlow.collect { timerInfo ->
+        root.setBackgroundColor(timerInfo.color)
         viewStartBtn.isEnabled = timerInfo.title.isNotEmpty() && timerInfo.time != 0L
       }
     }

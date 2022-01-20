@@ -3,6 +3,8 @@
   
   <style name="DaminNumberPicker" parent="@style/Theme.Timer">
     <item name="android:textSize">48dp</item>
+    <item name="android:textColorPrimary">@color/white</item>
+    <item name="android:textColorHighlight">@color/white</item>
     <item name="colorControlNormal">@color/transparent</item>
   </style>
   
