@@ -24,17 +24,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   private val timerInfo by lazy { navArgs.timerInfo }
 
   override fun FragmentTimerBinding.initView() {
-    AdManager.loadBanner(
-      requireContext(),
-      this@TimerFragment,
-      AdPosition.TIMER_LIST_BANNER,
-      onLoad = { banner ->
-        viewAdContainer.removeAllViews()
-        viewAdContainer.addView(banner)
-      }
-    )
-
     viewTitle.text = timerInfo.title
+    timerViewModel.start(timerInfo)
+    loadAd()
   }
 
   override fun FragmentTimerBinding.setEventListener() {
@@ -74,5 +66,17 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         }
       }
     }
+  }
+
+  private fun FragmentTimerBinding.loadAd() {
+    AdManager.loadBanner(
+      requireContext(),
+      this@TimerFragment,
+      AdPosition.TIMER_LIST_BANNER,
+      onLoad = { banner ->
+        viewAdContainer.removeAllViews()
+        viewAdContainer.addView(banner)
+      }
+    )
   }
 }
