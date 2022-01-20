@@ -24,6 +24,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   private val timerInfo by lazy { navArgs.timerInfo }
 
   override fun FragmentTimerBinding.initView() {
+    activity?.window?.statusBarColor = timerInfo.color
+    root.setBackgroundColor(timerInfo.color)
     viewTitle.text = timerInfo.title
     timerViewModel.start(timerInfo)
     loadAd()
