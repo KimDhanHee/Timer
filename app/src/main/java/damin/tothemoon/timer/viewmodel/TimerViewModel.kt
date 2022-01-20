@@ -11,7 +11,7 @@ class TimerViewModel : ViewModel() {
   val timerStateFlow: StateFlow<TimerState>
     get() = _timerStateFlow
 
-  private lateinit var timer: CountDownTimer
+  private var timer: CountDownTimer? = null
 
   private lateinit var timerInfo: TimerInfo
 
@@ -35,12 +35,16 @@ class TimerViewModel : ViewModel() {
   }
 
   fun pause() {
-    timer.cancel()
+    if (timer == null) return
+
+    timer!!.cancel()
     _timerStateFlow.value = TimerState.Paused(timerInfo.remainedTime)
   }
 
   fun cancel() {
-    timer.cancel()
+    if (timer == null) return
+
+    timer!!.cancel()
     timerInfo.resetRemainedTime()
     _timerStateFlow.value = TimerState.Canceled
   }
