@@ -2,8 +2,9 @@ package damin.tothemoon.timer.model
 
 import android.os.Parcelable
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import damin.tothemoon.damin.utils.AndroidUtils
+import damin.tothemoon.timer.R
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -14,6 +15,7 @@ data class TimerInfo(
   var id: Long = 0,
   var title: String = "",
   var time: Long = 0,
+  var color: Int = AndroidUtils.color(R.color.purple_500),
 ) : Parcelable {
   @IgnoredOnParcel
   val timeStr: String
