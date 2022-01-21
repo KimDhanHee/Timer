@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
+  
+  <data>
+    
+    <variable
+      name="color"
+      type="int" />
+    
+    <variable
+      name="onItemClick"
+      type="android.view.View.OnClickListener" />
+  </data>
+  
+  <View
+    android:layout_width="24dp"
+    android:layout_height="24dp"
+    android:background="@drawable/palette_item_background"
+    android:backgroundTint="@{color}"
+    android:onClick="@{onItemClick}"
+    tools:backgroundTint="@color/purple_500" />
+</layout>
