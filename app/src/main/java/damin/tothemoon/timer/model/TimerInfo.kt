@@ -68,3 +68,14 @@ val Long.timeStr: String
 
     return "%02d:%02d:%02d".format(hour, minute, seconds)
   }
+
+enum class TimerColor(val src: Int) {
+  Purple(AndroidUtils.color(R.color.purple_500)),
+  Green(AndroidUtils.color(R.color.green)),
+  Black(AndroidUtils.color(R.color.black_20)),
+  Brown(AndroidUtils.color(R.color.brown)),
+  Red(AndroidUtils.color(R.color.red)),
+  Blue(AndroidUtils.color(R.color.blue)),
+  Lavender(AndroidUtils.color(R.color.lavender)),
+  ;
+}
