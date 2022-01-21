@@ -61,6 +61,10 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
   }
 
   override fun FragmentTimerEditorBinding.setEventListener() {
+    viewBackBtn.setOnClickListener {
+      findNavController().navigateUp()
+    }
+    
     viewTitleInput.addTextChangedListener { title ->
       if (title == null) return@addTextChangedListener
 
