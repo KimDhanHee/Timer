@@ -15,7 +15,7 @@ data class TimerInfo(
   var id: Long = 0,
   var title: String = "",
   var time: Long = 0,
-  var color: Int = AndroidUtils.color(R.color.purple_500),
+  var color: TimerColor = TimerColor.Purple,
 ) : Parcelable {
   @IgnoredOnParcel
   val timeStr: String
