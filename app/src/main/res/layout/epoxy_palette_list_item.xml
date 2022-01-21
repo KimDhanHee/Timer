@@ -4,20 +4,39 @@
   
   <data>
     
+    <import type="android.view.View" />
+    
     <variable
       name="color"
       type="int" />
+    
+    <variable
+      name="selected"
+      type="boolean" />
     
     <variable
       name="onItemClick"
       type="android.view.View.OnClickListener" />
   </data>
   
-  <View
+  <FrameLayout
     android:layout_width="24dp"
     android:layout_height="24dp"
-    android:background="@drawable/palette_item_background"
-    android:backgroundTint="@{color}"
-    android:onClick="@{onItemClick}"
-    tools:backgroundTint="@color/purple_500" />
+    android:onClick="@{onItemClick}">
+    
+    <View
+      android:layout_width="24dp"
+      android:layout_height="24dp"
+      android:background="@drawable/palette_item_background"
+      android:backgroundTint="@{color}"
+      tools:backgroundTint="@color/purple_500" />
+    
+    <View
+      android:layout_width="24dp"
+      android:layout_height="24dp"
+      android:background="@drawable/palette_selected_item_foreground"
+      android:visibility="@{selected ? View.VISIBLE : View.GONE}" />
+  </FrameLayout>
+
+
 </layout>

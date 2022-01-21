@@ -50,10 +50,16 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
 
   private fun FragmentTimerEditorBinding.drawPaletteList() {
     viewPaletteList.withModels {
-      TimerColor.values().forEach { timerColor ->
+      val selectedColor = editorViewModel.timerInfoFlow.value.color
+
+      TimerColor.values().forEach { color ->
         paletteListItem {
-          id(timerColor.name)
-          color(timerColor.src)
+          id(color.name)
+          color(color.src)
+          selected(color == selectedColor)
+          onItemClick { _ ->
+            editorViewModel.updateColor(color)
+          }
         }
       }
     }
@@ -72,6 +78,7 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
         activity?.window?.statusBarColor = timerInfo.color.src
         viewTitleCounter.text = "${timerInfo.title.length}/20"
         viewStartBtn.isEnabled = timerInfo.title.isNotEmpty() && timerInfo.time != 0L
+        viewPaletteList.requestModelBuild()
       }
     }
 
