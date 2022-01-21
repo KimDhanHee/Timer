@@ -20,7 +20,7 @@
       app:layout_constraintTop_toTopOf="parent" />
     
     <ImageView
-      android:id="@+id/viewDeleteBtn"
+      android:id="@+id/viewAddBtn"
       android:layout_width="48dp"
       android:layout_height="48dp"
       android:layout_marginTop="16dp"
@@ -28,17 +28,18 @@
       android:padding="6dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:srcCompat="@drawable/ic_delete_24" />
+      app:srcCompat="@drawable/ic_add_24" />
     
     <ImageView
-      android:id="@+id/viewAddBtn"
+      android:id="@+id/viewDeleteBtn"
       android:layout_width="48dp"
       android:layout_height="48dp"
       android:layout_marginEnd="4dp"
       android:padding="6dp"
-      app:layout_constraintEnd_toStartOf="@id/viewDeleteBtn"
-      app:layout_constraintTop_toTopOf="@id/viewDeleteBtn"
-      app:srcCompat="@drawable/ic_add_24" />
+      app:layout_constraintEnd_toStartOf="@id/viewAddBtn"
+      app:layout_constraintTop_toTopOf="@id/viewAddBtn"
+      app:layout_constraintBottom_toBottomOf="@id/viewAddBtn"
+      app:srcCompat="@drawable/ic_delete_24" />
     
     <com.airbnb.epoxy.EpoxyRecyclerView
       android:id="@+id/viewTimerList"
