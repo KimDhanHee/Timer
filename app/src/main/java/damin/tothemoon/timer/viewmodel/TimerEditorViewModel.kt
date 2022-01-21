@@ -52,7 +52,10 @@ class TimerEditorViewModel(private val timerDAO: TimerDAO, timerInfo: TimerInfo)
   }
 }
 
-class TimerEditorViewModelFactory(private val timerDAO: TimerDAO, private val timerInfo: TimerInfo) : ViewModelProvider.Factory {
+class TimerEditorViewModelFactory(
+  private val timerDAO: TimerDAO,
+  private val timerInfo: TimerInfo,
+) : ViewModelProvider.Factory {
   override fun <T : ViewModel> create(modelClass: Class<T>): T {
     if (modelClass.isAssignableFrom(TimerEditorViewModel::class.java)) {
       return TimerEditorViewModel(timerDAO, timerInfo) as T
