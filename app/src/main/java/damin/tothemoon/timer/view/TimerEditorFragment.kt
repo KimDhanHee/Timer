@@ -40,11 +40,13 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
   }
 
   private fun FragmentTimerEditorBinding.initTimerInfo() {
-    navArgs.timerInfo?.let { timerInfo ->
-      viewTitleInput.setText(timerInfo.title)
-      viewHourPicker.value = timerInfo.hour
-      viewMinutePicker.value = timerInfo.minute
-      viewSecondsPicker.value = timerInfo.seconds
+    viewHourPicker.post {
+      navArgs.timerInfo?.let { timerInfo ->
+        viewTitleInput.setText(timerInfo.title)
+        viewHourPicker.value = timerInfo.hour
+        viewMinutePicker.value = timerInfo.minute
+        viewSecondsPicker.value = timerInfo.seconds
+      }
     }
   }
 
