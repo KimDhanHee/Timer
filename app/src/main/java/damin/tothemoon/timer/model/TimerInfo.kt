@@ -24,8 +24,8 @@ data class TimerInfo(
   @IgnoredOnParcel
   var remainedTime: Long = time
 
-  fun updateRemainedTime(time: Long) {
-    remainedTime = time
+  fun countdown() {
+    remainedTime -= TIME_TICK
   }
 
   fun resetRemainedTime() {
