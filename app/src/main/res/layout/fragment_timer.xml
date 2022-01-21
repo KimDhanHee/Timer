@@ -5,13 +5,15 @@
   
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:background="@color/purple_500">
     
     <TextView
       android:id="@+id/viewTitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="24dp"
+      android:textColor="@color/white"
       android:textSize="30dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
@@ -61,13 +63,13 @@
       style="@style/Widget.AppCompat.ProgressBar.Horizontal"
       android:layout_width="320dp"
       android:layout_height="320dp"
-      android:scaleX="-1"
       android:indeterminateOnly="false"
       android:max="1000"
       android:progress="1000"
-      android:progressBackgroundTint="@color/gray"
+      android:progressBackgroundTint="@color/white_20"
       android:progressDrawable="@drawable/circular_progressbar"
-      android:progressTint="@color/purple_700"
+      android:progressTint="@color/white"
+      android:scaleX="-1"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
@@ -77,6 +79,7 @@
       android:id="@+id/viewTimer"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:textColor="@color/white"
       android:textSize="48dp"
       app:layout_constraintBottom_toTopOf="@id/viewStartPauseBtn"
       app:layout_constraintEnd_toEndOf="@id/viewProgressbar"

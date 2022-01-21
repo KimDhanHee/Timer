@@ -1,9 +1,11 @@
 package damin.tothemoon.timer.view
 
+import android.graphics.Color
 import androidx.navigation.fragment.findNavController
 import damin.tothemoon.ad.AdManager
 import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
+import damin.tothemoon.damin.utils.AndroidUtils
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerListBinding
 import damin.tothemoon.timer.model.TimerDatabase
@@ -18,6 +20,7 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
   R.layout.fragment_timer_list
 ) {
   override fun FragmentTimerListBinding.initView() {
+    activity?.window?.statusBarColor = Color.WHITE
     drawTimerList()
     loadAd()
   }

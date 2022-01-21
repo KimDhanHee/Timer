@@ -52,6 +52,8 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
   override fun FragmentTimerEditorBinding.bindingVM() {
     CoroutineScope(Dispatchers.Main).launch {
       editorViewModel.timerInfoFlow.collect { timerInfo ->
+        root.setBackgroundColor(timerInfo.color)
+        activity?.window?.statusBarColor = timerInfo.color
         viewStartBtn.isEnabled = timerInfo.title.isNotEmpty() && timerInfo.time != 0L
       }
     }
