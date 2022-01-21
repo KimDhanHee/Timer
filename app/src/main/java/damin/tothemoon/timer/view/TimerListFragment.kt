@@ -5,11 +5,9 @@ import androidx.navigation.fragment.findNavController
 import damin.tothemoon.ad.AdManager
 import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
-import damin.tothemoon.damin.utils.AndroidUtils
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerListBinding
 import damin.tothemoon.timer.model.TimerDatabase
-import damin.tothemoon.timer.timerListAddButton
 import damin.tothemoon.timer.timerListItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,13 +37,6 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
               }
             }
           }
-          timerListAddButton {
-            id("add")
-            onAddClick { _ ->
-              findNavController()
-                .navigate(TimerListFragmentDirections.actionListToEditor())
-            }
-          }
         }
       }
     }
@@ -61,5 +52,13 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
         viewAdContainer.addView(banner)
       }
     )
+  }
+
+  override fun FragmentTimerListBinding.setEventListener() {
+    viewAddBtn.setOnClickListener {
+      findNavController().navigate(TimerListFragmentDirections.actionListToEditor())
+    }
+
+    viewDeleteBtn.setOnClickListener {  }
   }
 }
