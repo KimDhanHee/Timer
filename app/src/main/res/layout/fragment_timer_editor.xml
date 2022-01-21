@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
   
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:background="@color/purple_500">
     
-    <EditText
-      android:id="@+id/viewTitleInput"
-      android:layout_width="wrap_content"
+    <FrameLayout
+      android:id="@+id/viewTitleInputContainer"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="20dp"
-      android:layout_marginTop="130dp"
+      android:layout_marginTop="106dp"
       android:layout_marginEnd="20dp"
       android:backgroundTint="@color/white"
       android:hint="@string/timer_editor_title_hint"
@@ -20,7 +22,33 @@
       android:textSize="30dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toTopOf="parent">
+      
+      <EditText
+        android:id="@+id/viewTitleInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/white"
+        android:hint="@string/timer_editor_title_hint"
+        android:maxLength="20"
+        android:minWidth="140dp"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    </FrameLayout>
+    
+    <TextView
+      android:id="@+id/viewTitleCounter"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="@color/white"
+      app:layout_constraintEnd_toEndOf="@id/viewTitleInputContainer"
+      app:layout_constraintStart_toStartOf="@id/viewTitleInputContainer"
+      app:layout_constraintTop_toBottomOf="@id/viewTitleInputContainer"
+      tools:text="0/20" />
     
     <TextView
       android:id="@+id/viewHourLabel"
