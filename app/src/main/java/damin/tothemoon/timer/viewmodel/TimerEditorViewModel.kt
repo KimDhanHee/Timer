@@ -12,6 +12,18 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class TimerEditorViewModel(private val timerDAO: TimerDAO, timerInfo: TimerInfo) : ViewModel() {
+  private val _paletteVisibilityFlow = MutableStateFlow(false)
+  val paletteVisibilityFlow: StateFlow<Boolean>
+    get() = _paletteVisibilityFlow
+
+  fun openPalette() {
+    _paletteVisibilityFlow.value = true
+  }
+
+  fun closePalette() {
+    _paletteVisibilityFlow.value = false
+  }
+
   private val _timerInfoFlow = MutableStateFlow(timerInfo)
   val timerInfoFlow: StateFlow<TimerInfo>
     get() = _timerInfoFlow
