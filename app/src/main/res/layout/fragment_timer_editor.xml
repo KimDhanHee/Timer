@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
   
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:background="@color/purple_500">
     
     <FrameLayout
+      android:id="@+id/viewTitleInputContainer"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="20dp"
@@ -36,6 +39,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     </FrameLayout>
+    
+    <TextView
+      android:id="@+id/viewTitleCounter"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="@color/white"
+      app:layout_constraintEnd_toEndOf="@id/viewTitleInputContainer"
+      app:layout_constraintStart_toStartOf="@id/viewTitleInputContainer"
+      app:layout_constraintTop_toBottomOf="@id/viewTitleInputContainer"
+      tools:text="0/20" />
     
     <TextView
       android:id="@+id/viewHourLabel"
