@@ -3,6 +3,11 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
   
+  <data>
+    
+    <import type="androidx.recyclerview.widget.LinearLayoutManager" />
+  </data>
+  
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,6 +34,20 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:srcCompat="@drawable/ic_palette_24" />
+    
+    <com.airbnb.epoxy.EpoxyRecyclerView
+      android:id="@+id/viewPaletteList"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="13dp"
+      android:background="@drawable/palette_container_background"
+      android:padding="12dp"
+      android:visibility="gone"
+      app:itemSpacing="12dp"
+      app:layout_constraintEnd_toEndOf="@id/viewPaletteBtn"
+      app:layout_constraintTop_toBottomOf="@id/viewPaletteBtn"
+      app:orientation="@{LinearLayoutManager.VERTICAL}"
+      tools:listitem="@layout/epoxy_palette_list_item" />
     
     <FrameLayout
       android:id="@+id/viewTitleInputContainer"
