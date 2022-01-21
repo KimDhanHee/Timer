@@ -2,6 +2,7 @@ package damin.tothemoon.timer.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import damin.tothemoon.timer.model.TimerColor
 import damin.tothemoon.timer.model.TimerDAO
 import damin.tothemoon.timer.model.TimerInfo
 import kotlinx.coroutines.CoroutineScope
@@ -12,6 +13,18 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class TimerEditorViewModel(private val timerDAO: TimerDAO, timerInfo: TimerInfo) : ViewModel() {
+  private val _paletteVisibilityFlow = MutableStateFlow(false)
+  val paletteVisibilityFlow: StateFlow<Boolean>
+    get() = _paletteVisibilityFlow
+
+  fun openPalette() {
+    _paletteVisibilityFlow.value = true
+  }
+
+  fun closePalette() {
+    _paletteVisibilityFlow.value = false
+  }
+
   private val _timerInfoFlow = MutableStateFlow(timerInfo)
   val timerInfoFlow: StateFlow<TimerInfo>
     get() = _timerInfoFlow
@@ -38,6 +51,12 @@ class TimerEditorViewModel(private val timerDAO: TimerDAO, timerInfo: TimerInfo)
     }
   }
 
+  fun updateColor(color: TimerColor) {
+    _timerInfoFlow.update {
+      it.copy(color = color)
+    }
+  }
+
   private val ioScope = CoroutineScope(Dispatchers.IO)
   fun addTimerInfo() {
     ioScope.launch {
@@ -52,7 +71,10 @@ class TimerEditorViewModel(private val timerDAO: TimerDAO, timerInfo: TimerInfo)
   }
 }
 
-class TimerEditorViewModelFactory(private val timerDAO: TimerDAO, private val timerInfo: TimerInfo) : ViewModelProvider.Factory {
+class TimerEditorViewModelFactory(
+  private val timerDAO: TimerDAO,
+  private val timerInfo: TimerInfo,
+) : ViewModelProvider.Factory {
   override fun <T : ViewModel> create(modelClass: Class<T>): T {
     if (modelClass.isAssignableFrom(TimerEditorViewModel::class.java)) {
       return TimerEditorViewModel(timerDAO, timerInfo) as T

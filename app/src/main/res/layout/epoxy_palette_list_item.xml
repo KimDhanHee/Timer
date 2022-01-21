@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
+  
+  <data>
+    
+    <import type="android.view.View" />
+    
+    <variable
+      name="color"
+      type="int" />
+    
+    <variable
+      name="selected"
+      type="boolean" />
+    
+    <variable
+      name="onItemClick"
+      type="android.view.View.OnClickListener" />
+  </data>
+  
+  <FrameLayout
+    android:layout_width="24dp"
+    android:layout_height="24dp"
+    android:onClick="@{onItemClick}">
+    
+    <View
+      android:layout_width="24dp"
+      android:layout_height="24dp"
+      android:background="@drawable/palette_item_background"
+      android:backgroundTint="@{color}"
+      tools:backgroundTint="@color/purple_500" />
+    
+    <View
+      android:layout_width="24dp"
+      android:layout_height="24dp"
+      android:background="@drawable/palette_selected_item_foreground"
+      android:visibility="@{selected ? View.VISIBLE : View.GONE}" />
+  </FrameLayout>
+
+
+</layout>
