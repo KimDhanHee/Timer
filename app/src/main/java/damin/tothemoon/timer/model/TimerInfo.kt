@@ -7,6 +7,7 @@ import damin.tothemoon.damin.utils.AndroidUtils
 import damin.tothemoon.timer.R
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import kotlin.math.abs
 
 @Parcelize
 @Entity(tableName = "timer")
@@ -24,8 +25,8 @@ data class TimerInfo(
   @IgnoredOnParcel
   var remainedTime: Long = time
 
-  fun updateRemainedTime(time: Long) {
-    remainedTime = time
+  fun countdown() {
+    remainedTime -= TIME_TICK
   }
 
   fun resetRemainedTime() {
@@ -57,16 +58,23 @@ data class TimerInfo(
     const val HOUR_UNIT = 60 * 60 * 1000L
     const val MINUTE_UNIT = 60 * 1000L
     const val SECONDS_UNIT = 1000L
+
+    const val TIME_TICK = 100L
   }
 }
 
 val Long.timeStr: String
   get() {
-    val hour = (this / TimerInfo.HOUR_UNIT).toInt()
-    val minute = ((this / TimerInfo.MINUTE_UNIT % 60)).toInt()
-    val seconds = ((this / TimerInfo.SECONDS_UNIT) % 60).toInt()
+    val hour = ((abs(this )/ TimerInfo.HOUR_UNIT).toInt())
+    val minute = ((abs((this )/ TimerInfo.MINUTE_UNIT % 60)).toInt())
+    val seconds = ((abs((this) / TimerInfo.SECONDS_UNIT) % 60).toInt())
 
-    return "%02d:%02d:%02d".format(hour, minute, seconds)
+    val plusMinusSign = when {
+      this < 0 -> "-"
+      else -> ""
+    }
+
+    return "${plusMinusSign}%02d:%02d:%02d".format(hour, minute, seconds)
   }
 
 enum class TimerColor(val src: Int) {
