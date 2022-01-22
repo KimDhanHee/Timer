@@ -1,6 +1,7 @@
 package damin.tothemoon.timer.view
 
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import damin.tothemoon.ad.AdManager
 import damin.tothemoon.ad.AdPosition
@@ -33,6 +34,14 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   }
 
   override fun FragmentTimerBinding.setEventListener() {
+    viewBackBtn.setOnClickListener {
+      findNavController().navigateUp()
+    }
+
+    viewPlus1MinBtn.setOnClickListener { timerViewModel.add1Minute() }
+    viewPlus5MinBtn.setOnClickListener { timerViewModel.add5Minute() }
+    viewPlus10MinBtn.setOnClickListener { timerViewModel.add10Minute() }
+
     viewStartPauseBtn.setOnClickListener {
       when (timerViewModel.timerStateFlow.value) {
         is TimerState.CountDown -> timerViewModel.pause()
@@ -42,7 +51,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
     }
 
     viewCancelBtn.setOnClickListener {
-      timerViewModel.cancel()
+      timerViewModel.dismiss()
     }
 
     viewDismissBtn.setOnClickListener {
@@ -56,6 +65,11 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         if (!isAdded) return@collect
 
         when (state) {
+          is TimerState.Idle -> {
+            viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)
+            viewTimer.text = timerInfo.timeStr
+            viewProgressbar.progress = 1000
+          }
           is TimerState.CountDown -> {
             val isFinish = state.remainedTime < 0
 
@@ -71,9 +85,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
             viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)
             viewTimer.text = state.remainedTime.timeStr
           }
-          else -> {
+          is TimerState.Initialized -> {
             viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)
-            viewTimer.text = timerInfo.timeStr
+            viewTimer.text = state.remainedTime.timeStr
             viewProgressbar.progress = 1000
           }
         }
