@@ -43,6 +43,14 @@ class TimerViewModel : ViewModel() {
     timerInfo.resetRemainedTime()
     _timerStateFlow.value = TimerState.Canceled
   }
+
+  fun dismiss() {
+    if (timer == null) return
+
+    timer!!.cancel()
+    timerInfo.resetRemainedTime()
+    _timerStateFlow.value = TimerState.Dismissed
+  }
 }
 
 sealed class TimerState {
@@ -58,4 +66,6 @@ sealed class TimerState {
   data class Paused(val remainedTime: Long) : TimerState()
 
   object Canceled : TimerState()
+
+  object Dismissed: TimerState()
 }
