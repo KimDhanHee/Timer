@@ -88,23 +88,25 @@
       app:layout_constraintVertical_chainStyle="packed"
       tools:text="00:00:00" />
     
-    <Button
+    <androidx.appcompat.widget.AppCompatImageView
       android:id="@+id/viewStartPauseBtn"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      android:layout_width="52dp"
+      android:layout_height="52dp"
       android:layout_marginTop="36dp"
-      android:text="@string/timer_start"
       app:layout_constraintBottom_toBottomOf="@id/viewProgressbar"
       app:layout_constraintEnd_toEndOf="@id/viewTimer"
       app:layout_constraintStart_toStartOf="@id/viewTimer"
-      app:layout_constraintTop_toBottomOf="@id/viewTimer" />
+      app:layout_constraintTop_toBottomOf="@id/viewTimer"
+      app:srcCompat="@drawable/ic_play_24" />
     
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
       android:id="@+id/viewCancelBtn"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginBottom="40dp"
+      android:background="@drawable/cancel_button_background"
       android:text="@string/timer_cancel"
+      android:textColor="@color/white"
       app:layout_constraintBottom_toTopOf="@id/viewAdContainer"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent" />
