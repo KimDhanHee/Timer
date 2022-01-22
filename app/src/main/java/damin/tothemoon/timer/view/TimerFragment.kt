@@ -5,6 +5,9 @@ import androidx.navigation.fragment.navArgs
 import damin.tothemoon.ad.AdManager
 import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
+import damin.tothemoon.damin.extensions.gone
+import damin.tothemoon.damin.extensions.visible
+import damin.tothemoon.damin.extensions.visibleOrGone
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerBinding
 import damin.tothemoon.timer.model.timeStr
@@ -43,6 +46,10 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
     viewCancelBtn.setOnClickListener {
       timerViewModel.cancel()
     }
+
+    viewDismissBtn.setOnClickListener {
+      timerViewModel.dismiss()
+    }
   }
 
   override fun FragmentTimerBinding.bindingVM() {
@@ -52,6 +59,12 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
 
         when (state) {
           is TimerState.CountDown -> {
+            val isFinish = state.remainedTime < 0
+
+            viewStartPauseBtn.visibleOrGone(!isFinish)
+            viewDismissBtn.visibleOrGone(isFinish)
+            viewDismissLabel.visibleOrGone(isFinish)
+
             viewStartPauseBtn.setImageResource(R.drawable.ic_pause_24)
             viewTimer.text = state.remainedTime.timeStr
             viewProgressbar.progress = state.remainedProgress
