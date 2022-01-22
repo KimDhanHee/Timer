@@ -36,24 +36,37 @@ class TimerViewModel : ViewModel() {
     _timerStateFlow.value = TimerState.Paused(timerInfo.remainedTime)
   }
 
-  fun cancel() {
-    if (timer == null) return
-
-    timer!!.cancel()
-    timerInfo.resetRemainedTime()
-    _timerStateFlow.value = TimerState.Canceled
-  }
-
   fun dismiss() {
     if (timer == null) return
 
     timer!!.cancel()
     timerInfo.resetRemainedTime()
-    _timerStateFlow.value = TimerState.Dismissed
+    _timerStateFlow.value = TimerState.Initialized(timerInfo.remainedTime)
+  }
+
+  fun add1Minute() {
+    addMinute(1)
+  }
+
+  fun add5Minute() {
+    addMinute(5)
+  }
+
+  fun add10Minute() {
+    addMinute(10)
+  }
+
+  private fun addMinute(minute: Int) {
+    this.timerInfo.minute += minute
+
+    if (_timerStateFlow.value !is TimerState.CountDown) {
+      _timerStateFlow.value = TimerState.Initialized(timerInfo.remainedTime)
+    }
   }
 }
 
 sealed class TimerState {
+  data class Initialized(val remainedTime: Long) : TimerState()
   object Idle : TimerState()
   data class CountDown(
     private val totalTime: Long,
@@ -64,8 +77,4 @@ sealed class TimerState {
   }
 
   data class Paused(val remainedTime: Long) : TimerState()
-
-  object Canceled : TimerState()
-
-  object Dismissed: TimerState()
 }
