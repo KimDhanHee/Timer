@@ -1,6 +1,7 @@
 package damin.tothemoon.timer.view
 
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import damin.tothemoon.ad.AdManager
 import damin.tothemoon.ad.AdPosition
@@ -33,6 +34,10 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   }
 
   override fun FragmentTimerBinding.setEventListener() {
+    viewBackBtn.setOnClickListener {
+      findNavController().navigateUp()
+    }
+
     viewStartPauseBtn.setOnClickListener {
       when (timerViewModel.timerStateFlow.value) {
         is TimerState.CountDown -> timerViewModel.pause()

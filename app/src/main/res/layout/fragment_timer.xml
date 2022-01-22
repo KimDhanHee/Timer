@@ -8,16 +8,27 @@
     android:layout_height="match_parent"
     tools:background="@color/purple_500">
     
+    <androidx.appcompat.widget.AppCompatImageView
+      android:id="@+id/viewBackBtn"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="16dp"
+      android:padding="8dp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_arrow_back_24" />
+    
     <TextView
       android:id="@+id/viewTitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="24dp"
       android:textColor="@color/white"
       android:textSize="30dp"
+      app:layout_constraintBottom_toBottomOf="@id/viewBackBtn"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintTop_toTopOf="@id/viewBackBtn"
       tools:text="Title" />
     
     <androidx.appcompat.widget.AppCompatButton
