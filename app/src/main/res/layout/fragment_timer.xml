@@ -102,6 +102,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="100dp"
+      android:fontFamily="@font/rajdhani_semi_bold"
       android:textColor="@color/white"
       android:textSize="48dp"
       app:layout_constraintEnd_toEndOf="@id/viewProgressbar"
