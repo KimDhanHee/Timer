@@ -12,6 +12,7 @@
       android:layout_height="wrap_content"
       android:layout_marginStart="20dp"
       android:layout_marginTop="24dp"
+      android:fontFamily="sans-serif"
       android:text="@string/app_name"
       android:textColor="@color/black"
       android:textSize="24dp"
@@ -36,9 +37,9 @@
       android:layout_height="48dp"
       android:layout_marginEnd="4dp"
       android:padding="6dp"
+      app:layout_constraintBottom_toBottomOf="@id/viewAddBtn"
       app:layout_constraintEnd_toStartOf="@id/viewAddBtn"
       app:layout_constraintTop_toTopOf="@id/viewAddBtn"
-      app:layout_constraintBottom_toBottomOf="@id/viewAddBtn"
       app:srcCompat="@drawable/ic_delete_24" />
     
     <com.airbnb.epoxy.EpoxyRecyclerView
