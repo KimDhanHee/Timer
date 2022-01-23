@@ -2,20 +2,32 @@
 <font-family xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto">
   <font
+    android:font="@font/rajdhani_bold"
     android:fontStyle="normal"
     android:fontWeight="700"
-    android:font="@font/rajdhani_bold"
-    app:font="@font/rajdhani_bold"/>
+    app:font="@font/rajdhani_bold" />
   
   <font
+    android:font="@font/rajdhani_semi_bold"
     android:fontStyle="normal"
     android:fontWeight="600"
-    android:font="@font/rajdhani_semi_bold"
-    app:font="@font/rajdhani_semi_bold"/>
+    app:font="@font/rajdhani_semi_bold" />
   
   <font
+    android:font="@font/rajdhani_medium"
     android:fontStyle="normal"
     android:fontWeight="500"
-    android:font="@font/rajdhani_medium"
-    app:font="@font/rajdhani_medium"/>
+    app:font="@font/rajdhani_medium" />
+  
+  <font
+    android:font="@font/rajdhani_regular"
+    android:fontStyle="normal"
+    android:fontWeight="400"
+    app:font="@font/rajdhani_regular" />
+  
+  <font
+    android:font="@font/rajdhani_light"
+    android:fontStyle="normal"
+    android:fontWeight="200"
+    app:font="@font/rajdhani_light" />
 </font-family>
