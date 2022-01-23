@@ -10,7 +10,6 @@ import damin.tothemoon.damin.extensions.visibleOrGone
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerEditorBinding
 import damin.tothemoon.timer.model.TimerColor
-import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.paletteListItem
 import damin.tothemoon.timer.viewmodel.TimerEditorViewModel
@@ -25,7 +24,6 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
 ) {
   private val editorViewModel by viewModels<TimerEditorViewModel> {
     TimerEditorViewModelFactory(
-      TimerDatabase.timerDao(requireContext()),
       navArgs.timerInfo ?: TimerInfo()
     )
   }

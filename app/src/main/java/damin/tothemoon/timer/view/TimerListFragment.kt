@@ -25,7 +25,7 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
 
   private fun FragmentTimerListBinding.drawTimerList() {
     CoroutineScope(Dispatchers.Main).launch {
-      TimerDatabase.timerDao(requireContext()).getTimerInfos().collect { timerInfoList ->
+      TimerDatabase.timerDao.getTimerInfos().collect { timerInfoList ->
         viewTimerList.withModels {
           timerInfoList.forEach { timerInfo ->
             timerListItem {
