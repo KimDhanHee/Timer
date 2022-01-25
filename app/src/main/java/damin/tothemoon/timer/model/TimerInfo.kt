@@ -19,11 +19,24 @@ data class TimerInfo(
   var color: TimerColor = TimerColor.Purple,
   var state: TimerState = TimerState.IDLE,
 ) : Parcelable {
+  fun start() {
+    state = TimerState.STARTED
+  }
+
+  fun pause() {
+    state = TimerState.PAUSED
+  }
+
+  fun dismiss() {
+    state = TimerState.IDLE
+    resetRemainedTime()
+  }
+
   fun countdown() {
     remainedTime -= TIME_TICK
   }
 
-  fun resetRemainedTime() {
+  private fun resetRemainedTime() {
     remainedTime = this.time
   }
 

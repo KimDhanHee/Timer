@@ -17,6 +17,8 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
   private var timer: Timer? = null
 
   fun start() {
+    timerInfo.start()
+
     this.timer = fixedRateTimer(period = TimerInfo.TIME_TICK) {
       timerInfo.countdown()
       _timerStateFlow.value = TimerUiState.CountDown(timerInfo.time, timerInfo.remainedTime)
@@ -26,6 +28,8 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
   fun pause() {
     if (timer == null) return
 
+    timerInfo.pause()
+
     timer!!.cancel()
     _timerStateFlow.value = TimerUiState.Paused(timerInfo.remainedTime)
   }
@@ -33,8 +37,9 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
   fun dismiss() {
     if (timer == null) return
 
+    timerInfo.dismiss()
+
     timer!!.cancel()
-    timerInfo.resetRemainedTime()
     _timerStateFlow.value = TimerUiState.Initialized(timerInfo.remainedTime)
   }
 
