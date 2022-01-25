@@ -79,6 +79,10 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
       timerViewModel.timerStateFlow.collect { state ->
         if (!isAdded) return@collect
 
+        viewStartPauseBtn.visibleOrGone(!state.displayDismiss)
+        viewDismissBtn.visibleOrGone(state.displayDismiss)
+        viewDismissLabel.visibleOrGone(state.displayDismiss)
+
         when (state) {
           is TimerUiState.Idle -> {
             viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)
@@ -86,12 +90,6 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
             viewProgressbar.progress = 1000
           }
           is TimerUiState.CountDown -> {
-            val isFinish = state.remainedTime < 0
-
-            viewStartPauseBtn.visibleOrGone(!isFinish)
-            viewDismissBtn.visibleOrGone(isFinish)
-            viewDismissLabel.visibleOrGone(isFinish)
-
             viewStartPauseBtn.setImageResource(R.drawable.ic_pause_24)
             viewTimer.text = state.remainedTime.timeStr
             viewProgressbar.progress = state.remainedProgress

@@ -88,6 +88,9 @@ sealed class TimerUiState {
   }
 
   data class Paused(val remainedTime: Long) : TimerUiState()
+
+  val displayDismiss: Boolean
+    get() = this is CountDown && this.remainedTime <= 0
 }
 
 class TimerViewModelFactory(
