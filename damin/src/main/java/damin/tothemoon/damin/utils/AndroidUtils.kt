@@ -2,6 +2,7 @@ package damin.tothemoon.damin.utils
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorRes
@@ -20,6 +21,14 @@ object AndroidUtils {
   }
 
   @JvmStatic
+  val context: Context
+    get() = application
+
+  @JvmStatic
+  val packageName: String
+    get() = context.packageName
+
+  @JvmStatic
   fun color(@ColorRes @AttrRes resId: Int): Int =
     color(application, resId)
 
@@ -29,4 +38,8 @@ object AndroidUtils {
     context.isAttribute(resId) -> context.attrColor(resId)
     else -> ContextCompat.getColor(context, resId)
   }
+
+  @JvmStatic
+  fun sharedPreferences(prefix: String = packageName, name: String): SharedPreferences =
+    application.getSharedPreferences("$prefix-$name", Context.MODE_PRIVATE)
 }
