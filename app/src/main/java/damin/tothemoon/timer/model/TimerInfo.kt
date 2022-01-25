@@ -17,6 +17,7 @@ data class TimerInfo(
   var time: Long = 0,
   var remainedTime: Long = time,
   var color: TimerColor = TimerColor.Purple,
+  var state: TimerState = TimerState.IDLE,
 ) : Parcelable {
   fun countdown() {
     remainedTime -= TIME_TICK
@@ -58,8 +59,8 @@ data class TimerInfo(
 
 val Long.timeStr: String
   get() {
-    val hour = ((abs(this )/ TimerInfo.HOUR_UNIT).toInt())
-    val minute = ((abs((this )/ TimerInfo.MINUTE_UNIT % 60)).toInt())
+    val hour = ((abs(this) / TimerInfo.HOUR_UNIT).toInt())
+    val minute = ((abs((this) / TimerInfo.MINUTE_UNIT % 60)).toInt())
     val seconds = ((abs((this) / TimerInfo.SECONDS_UNIT) % 60).toInt())
 
     val plusMinusSign = when {
@@ -78,5 +79,12 @@ enum class TimerColor(val src: Int) {
   Red(AndroidUtils.color(R.color.red)),
   Blue(AndroidUtils.color(R.color.blue)),
   Lavender(AndroidUtils.color(R.color.lavender)),
+  ;
+}
+
+enum class TimerState {
+  IDLE,
+  STARTED,
+  PAUSED,
   ;
 }
