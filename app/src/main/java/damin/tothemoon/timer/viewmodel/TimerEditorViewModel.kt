@@ -3,7 +3,6 @@ package damin.tothemoon.timer.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import damin.tothemoon.timer.model.TimerColor
-import damin.tothemoon.timer.model.TimerDAO
 import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
 import kotlinx.coroutines.CoroutineScope
