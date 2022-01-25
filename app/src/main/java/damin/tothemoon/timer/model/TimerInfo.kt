@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import damin.tothemoon.damin.utils.AndroidUtils
+import damin.tothemoon.timer.BuildConfig
 import damin.tothemoon.timer.R
 import kotlinx.parcelize.Parcelize
 import kotlin.math.abs
@@ -67,6 +68,8 @@ data class TimerInfo(
     const val SECONDS_UNIT = 1000L
 
     const val TIME_TICK = 100L
+
+    const val TIME_OUT_ACTION = BuildConfig.APPLICATION_ID + ".TIME_OUT"
   }
 }
 
