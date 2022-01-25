@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import damin.tothemoon.damin.BaseFragment
+import damin.tothemoon.damin.extensions.ioScope
 import damin.tothemoon.damin.extensions.mainScope
 import damin.tothemoon.damin.extensions.visibleOrGone
 import damin.tothemoon.timer.R
@@ -15,8 +16,10 @@ import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.paletteListItem
 import damin.tothemoon.timer.viewmodel.TimerEditorViewModel
 import damin.tothemoon.timer.viewmodel.TimerEditorViewModelFactory
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
   R.layout.fragment_timer_editor
@@ -127,14 +130,18 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
     }
 
     viewStartBtn.setOnClickListener {
-      when {
-        isNew -> editorViewModel.addTimerInfo()
-        else -> editorViewModel.updateTimerInfo()
-      }
+      ioScope.launch {
+        when {
+          isNew -> editorViewModel.addTimerInfo()
+          else -> editorViewModel.updateTimerInfo()
+        }
 
-      findNavController().navigate(
-        TimerEditorFragmentDirections.actionEditorToTimer(editorViewModel.timerInfoFlow.value)
-      )
+        withContext(Dispatchers.Main) {
+          findNavController().navigate(
+            TimerEditorFragmentDirections.actionEditorToTimer(editorViewModel.timerInfoFlow.value)
+          )
+        }
+      }
     }
   }
 }
