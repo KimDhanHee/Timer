@@ -15,8 +15,6 @@ import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.paletteListItem
 import damin.tothemoon.timer.viewmodel.TimerEditorViewModel
 import damin.tothemoon.timer.viewmodel.TimerEditorViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 

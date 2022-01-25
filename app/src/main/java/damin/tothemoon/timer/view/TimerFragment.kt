@@ -16,8 +16,6 @@ import damin.tothemoon.timer.model.timeStr
 import damin.tothemoon.timer.viewmodel.TimerUiState
 import damin.tothemoon.timer.viewmodel.TimerViewModel
 import damin.tothemoon.timer.viewmodel.TimerViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -47,12 +45,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   override fun FragmentTimerBinding.setEventListener() {
     val onBackListener = {
       when (timerViewModel.timerStateFlow.value) {
-        is TimerUiState.Idle, is TimerUiState.Initialized -> {
-          findNavController().navigateUp()
-        }
-        else -> {
-          activity?.finish()
-        }
+        is TimerUiState.Idle, is TimerUiState.Initialized -> findNavController().navigateUp()
+        else -> activity?.finish()
       }
     }
 

@@ -11,8 +11,6 @@ import damin.tothemoon.timer.databinding.FragmentTimerListBinding
 import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.timeStr
 import damin.tothemoon.timer.timerListItem
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
