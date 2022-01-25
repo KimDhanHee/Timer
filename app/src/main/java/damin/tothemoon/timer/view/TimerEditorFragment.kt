@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import damin.tothemoon.damin.BaseFragment
+import damin.tothemoon.damin.extensions.mainScope
 import damin.tothemoon.damin.extensions.visibleOrGone
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerEditorBinding
@@ -72,7 +73,7 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
   }
 
   override fun FragmentTimerEditorBinding.bindingVM() {
-    CoroutineScope(Dispatchers.Main).launch {
+    mainScope.launch {
       editorViewModel.timerInfoFlow.collect { timerInfo ->
         root.setBackgroundColor(timerInfo.color.src)
         activity?.window?.statusBarColor = timerInfo.color.src
@@ -82,7 +83,7 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
       }
     }
 
-    CoroutineScope(Dispatchers.Main).launch {
+    mainScope.launch {
       val fadeInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
       val fadeOutAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out)
       editorViewModel.paletteVisibilityFlow.collect { visible ->

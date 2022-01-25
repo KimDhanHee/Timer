@@ -5,6 +5,7 @@ import androidx.navigation.fragment.findNavController
 import damin.tothemoon.ad.AdManager
 import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
+import damin.tothemoon.damin.extensions.mainScope
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerListBinding
 import damin.tothemoon.timer.model.TimerDatabase
@@ -25,7 +26,7 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
   }
 
   private fun FragmentTimerListBinding.drawTimerList() {
-    CoroutineScope(Dispatchers.Main).launch {
+    mainScope.launch {
       TimerDatabase.timerDao.getTimerInfos().collect { timerInfoList ->
         viewTimerList.withModels {
           timerInfoList.forEach { timerInfo ->

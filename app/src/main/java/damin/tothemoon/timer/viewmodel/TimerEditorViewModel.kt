@@ -2,11 +2,10 @@ package damin.tothemoon.timer.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import damin.tothemoon.damin.extensions.ioScope
 import damin.tothemoon.timer.model.TimerColor
 import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -57,7 +56,6 @@ class TimerEditorViewModel(timerInfo: TimerInfo) : ViewModel() {
     }
   }
 
-  private val ioScope = CoroutineScope(Dispatchers.IO)
   fun addTimerInfo() {
     ioScope.launch {
       TimerDatabase.timerDao.addTimerInfo(_timerInfoFlow.value)

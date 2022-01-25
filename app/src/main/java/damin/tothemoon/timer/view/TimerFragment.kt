@@ -7,6 +7,7 @@ import androidx.navigation.fragment.navArgs
 import damin.tothemoon.ad.AdManager
 import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
+import damin.tothemoon.damin.extensions.mainScope
 import damin.tothemoon.damin.extensions.visibleOrGone
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerBinding
@@ -80,7 +81,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   }
 
   override fun FragmentTimerBinding.bindingVM() {
-    CoroutineScope(Dispatchers.Main).launch {
+    mainScope.launch {
       timerViewModel.timerStateFlow.collect { state ->
         if (!isAdded) return@collect
 
