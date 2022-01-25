@@ -2,9 +2,12 @@ package damin.tothemoon.timer.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import damin.tothemoon.damin.extensions.ioScope
+import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.Timer
 import kotlin.concurrent.fixedRateTimer
 import kotlin.math.max
@@ -18,6 +21,7 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
 
   fun start() {
     timerInfo.start()
+    saveTimerState()
 
     this.timer = fixedRateTimer(period = TimerInfo.TIME_TICK) {
       timerInfo.countdown()
@@ -29,6 +33,7 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
     if (timer == null) return
 
     timerInfo.pause()
+    saveTimerState()
 
     timer!!.cancel()
     _timerStateFlow.value = TimerUiState.Paused(timerInfo.remainedTime)
@@ -38,9 +43,16 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
     if (timer == null) return
 
     timerInfo.dismiss()
+    saveTimerState()
 
     timer!!.cancel()
     _timerStateFlow.value = TimerUiState.Initialized(timerInfo.remainedTime)
+  }
+
+  private fun saveTimerState() {
+    ioScope.launch {
+      TimerDatabase.timerDao.updateTimerInfo(timerInfo)
+    }
   }
 
   fun add1Minute() {
