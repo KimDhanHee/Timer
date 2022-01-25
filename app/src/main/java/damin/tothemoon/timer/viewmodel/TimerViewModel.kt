@@ -1,47 +1,64 @@
 package damin.tothemoon.timer.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import damin.tothemoon.damin.extensions.ioScope
+import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
+import damin.tothemoon.timer.model.TimerState
+import damin.tothemoon.timer.preferences.PrefTimer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.Timer
 import kotlin.concurrent.fixedRateTimer
 import kotlin.math.max
 
-class TimerViewModel : ViewModel() {
-  private val _timerStateFlow = MutableStateFlow<TimerState>(TimerState.Idle)
-  val timerStateFlow: StateFlow<TimerState>
+class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
+  private val _timerStateFlow = MutableStateFlow(when (timerInfo.state) {
+    TimerState.STARTED -> TimerUiState.CountDown(timerInfo.time, timerInfo.remainedTime)
+    TimerState.PAUSED -> TimerUiState.Paused(timerInfo.time, timerInfo.remainedTime)
+    else -> TimerUiState.Idle
+  })
+  val timerStateFlow: StateFlow<TimerUiState>
     get() = _timerStateFlow
 
   private var timer: Timer? = null
 
-  private lateinit var timerInfo: TimerInfo
+  fun start() {
+    timerInfo.start()
+    saveTimerState()
 
-  fun start(timerInfo: TimerInfo) {
-    this.timerInfo = timerInfo
     this.timer = fixedRateTimer(period = TimerInfo.TIME_TICK) {
       timerInfo.countdown()
-      _timerStateFlow.value = TimerState.CountDown(timerInfo.time, timerInfo.remainedTime)
+      _timerStateFlow.value = TimerUiState.CountDown(timerInfo.time, timerInfo.remainedTime)
     }
-  }
-
-  fun restart() {
-    start(timerInfo)
   }
 
   fun pause() {
     if (timer == null) return
 
+    timerInfo.pause()
+    saveTimerState()
+
     timer!!.cancel()
-    _timerStateFlow.value = TimerState.Paused(timerInfo.remainedTime)
+    _timerStateFlow.value = TimerUiState.Paused(timerInfo.time, timerInfo.remainedTime)
   }
 
   fun dismiss() {
     if (timer == null) return
 
+    timerInfo.dismiss()
+    saveTimerState()
+
     timer!!.cancel()
-    timerInfo.resetRemainedTime()
-    _timerStateFlow.value = TimerState.Initialized(timerInfo.remainedTime)
+    _timerStateFlow.value = TimerUiState.Initialized(timerInfo.remainedTime)
+  }
+
+  private fun saveTimerState() {
+    ioScope.launch {
+      TimerDatabase.timerDao.updateTimerInfo(timerInfo)
+    }
   }
 
   fun add1Minute() {
@@ -59,22 +76,47 @@ class TimerViewModel : ViewModel() {
   private fun addMinute(minute: Int) {
     this.timerInfo.minute += minute
 
-    if (_timerStateFlow.value !is TimerState.CountDown) {
-      _timerStateFlow.value = TimerState.Initialized(timerInfo.remainedTime)
+    if (_timerStateFlow.value !is TimerUiState.CountDown) {
+      _timerStateFlow.value = TimerUiState.Initialized(timerInfo.remainedTime)
     }
+  }
+
+  override fun onCleared() {
+    saveTimerState()
+    PrefTimer.saveLastRunningTime()
   }
 }
 
-sealed class TimerState {
-  data class Initialized(val remainedTime: Long) : TimerState()
-  object Idle : TimerState()
+sealed class TimerUiState {
+  data class Initialized(val remainedTime: Long) : TimerUiState()
+  object Idle : TimerUiState()
   data class CountDown(
     private val totalTime: Long,
     val remainedTime: Long,
-  ) : TimerState() {
+  ) : TimerUiState() {
     val remainedProgress: Int =
       max(((remainedTime / totalTime.toFloat()) * 1000).toInt(), 0)
   }
 
-  data class Paused(val remainedTime: Long) : TimerState()
+  data class Paused(
+    private val totalTime: Long,
+    val remainedTime: Long,
+  ) : TimerUiState() {
+    val remainedProgress: Int =
+      max(((remainedTime / totalTime.toFloat()) * 1000).toInt(), 0)
+  }
+
+  val displayDismiss: Boolean
+    get() = this is CountDown && this.remainedTime <= 0
+}
+
+class TimerViewModelFactory(
+  private val timerInfo: TimerInfo,
+) : ViewModelProvider.Factory {
+  override fun <T : ViewModel> create(modelClass: Class<T>): T {
+    if (modelClass.isAssignableFrom(TimerViewModel::class.java)) {
+      return TimerViewModel(timerInfo) as T
+    }
+    throw IllegalArgumentException()
+  }
 }

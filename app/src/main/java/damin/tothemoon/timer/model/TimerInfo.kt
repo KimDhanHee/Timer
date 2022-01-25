@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import damin.tothemoon.damin.utils.AndroidUtils
 import damin.tothemoon.timer.R
-import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlin.math.abs
 
@@ -16,20 +15,28 @@ data class TimerInfo(
   var id: Long = 0,
   var title: String = "",
   var time: Long = 0,
+  var remainedTime: Long = time,
   var color: TimerColor = TimerColor.Purple,
+  var state: TimerState = TimerState.IDLE,
 ) : Parcelable {
-  @IgnoredOnParcel
-  val timeStr: String
-    get() = time.timeStr
+  fun start() {
+    state = TimerState.STARTED
+  }
 
-  @IgnoredOnParcel
-  var remainedTime: Long = time
+  fun pause() {
+    state = TimerState.PAUSED
+  }
+
+  fun dismiss() {
+    state = TimerState.IDLE
+    resetRemainedTime()
+  }
 
   fun countdown() {
     remainedTime -= TIME_TICK
   }
 
-  fun resetRemainedTime() {
+  private fun resetRemainedTime() {
     remainedTime = this.time
   }
 
@@ -65,8 +72,8 @@ data class TimerInfo(
 
 val Long.timeStr: String
   get() {
-    val hour = ((abs(this )/ TimerInfo.HOUR_UNIT).toInt())
-    val minute = ((abs((this )/ TimerInfo.MINUTE_UNIT % 60)).toInt())
+    val hour = ((abs(this) / TimerInfo.HOUR_UNIT).toInt())
+    val minute = ((abs((this) / TimerInfo.MINUTE_UNIT % 60)).toInt())
     val seconds = ((abs((this) / TimerInfo.SECONDS_UNIT) % 60).toInt())
 
     val plusMinusSign = when {
@@ -85,5 +92,12 @@ enum class TimerColor(val src: Int) {
   Red(AndroidUtils.color(R.color.red)),
   Blue(AndroidUtils.color(R.color.blue)),
   Lavender(AndroidUtils.color(R.color.lavender)),
+  ;
+}
+
+enum class TimerState {
+  IDLE,
+  STARTED,
+  PAUSED,
   ;
 }
