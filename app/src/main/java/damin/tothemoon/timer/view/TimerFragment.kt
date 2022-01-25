@@ -9,9 +9,11 @@ import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.damin.extensions.visibleOrGone
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerBinding
+import damin.tothemoon.timer.model.TimerState
 import damin.tothemoon.timer.model.timeStr
-import damin.tothemoon.timer.viewmodel.TimerState
+import damin.tothemoon.timer.viewmodel.TimerUiState
 import damin.tothemoon.timer.viewmodel.TimerViewModel
+import damin.tothemoon.timer.viewmodel.TimerViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -21,15 +23,22 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   R.layout.fragment_timer
 ) {
   private val navArgs by navArgs<TimerFragmentArgs>()
-  private val timerViewModel by viewModels<TimerViewModel>()
+  private val timerViewModel by viewModels<TimerViewModel> {
+    TimerViewModelFactory(timerInfo)
+  }
 
   private val timerInfo by lazy { navArgs.timerInfo }
 
   override fun FragmentTimerBinding.initView() {
     activity?.window?.statusBarColor = timerInfo.color.src
     root.setBackgroundColor(timerInfo.color.src)
+
     viewTitle.text = timerInfo.title
-    timerViewModel.start(timerInfo)
+
+    if (timerInfo.state == TimerState.IDLE) {
+      timerViewModel.start()
+    }
+
     loadAd()
   }
 
@@ -44,9 +53,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
 
     viewStartPauseBtn.setOnClickListener {
       when (timerViewModel.timerStateFlow.value) {
-        is TimerState.CountDown -> timerViewModel.pause()
-        is TimerState.Paused -> timerViewModel.restart()
-        else -> timerViewModel.start(timerInfo)
+        is TimerUiState.CountDown -> timerViewModel.pause()
+        else -> timerViewModel.start()
       }
     }
 
@@ -65,12 +73,12 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         if (!isAdded) return@collect
 
         when (state) {
-          is TimerState.Idle -> {
+          is TimerUiState.Idle -> {
             viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)
             viewTimer.text = timerInfo.time.timeStr
             viewProgressbar.progress = 1000
           }
-          is TimerState.CountDown -> {
+          is TimerUiState.CountDown -> {
             val isFinish = state.remainedTime < 0
 
             viewStartPauseBtn.visibleOrGone(!isFinish)
@@ -81,11 +89,11 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
             viewTimer.text = state.remainedTime.timeStr
             viewProgressbar.progress = state.remainedProgress
           }
-          is TimerState.Paused -> {
+          is TimerUiState.Paused -> {
             viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)
             viewTimer.text = state.remainedTime.timeStr
           }
-          is TimerState.Initialized -> {
+          is TimerUiState.Initialized -> {
             viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)
             viewTimer.text = state.remainedTime.timeStr
             viewProgressbar.progress = 1000
