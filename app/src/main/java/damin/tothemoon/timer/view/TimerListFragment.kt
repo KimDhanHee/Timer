@@ -7,12 +7,14 @@ import damin.tothemoon.ad.AdManager
 import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.damin.extensions.mainScope
+import damin.tothemoon.damin.extensions.visibleOrGone
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerListBinding
 import damin.tothemoon.timer.model.TimerState
 import damin.tothemoon.timer.model.timeStr
 import damin.tothemoon.timer.preferences.PrefTimer
 import damin.tothemoon.timer.timerListItem
+import damin.tothemoon.timer.viewmodel.TimerListUiState
 import damin.tothemoon.timer.viewmodel.TimerListViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -30,15 +32,24 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
 
   private fun FragmentTimerListBinding.drawTimerList() {
     viewTimerList.withModels {
+      val deleteMode = timerListViewModel.timerListUiStateFlow.value == TimerListUiState.Deletable
+
       timerListViewModel.timerListFlow.value.forEach { timerInfo ->
         timerListItem {
           id(timerInfo.id)
           title(timerInfo.title)
           colorSrc(timerInfo.color.src)
           timeStr(timerInfo.time.timeStr)
+          isIdle(timerInfo.state == TimerState.IDLE)
+          deleteMode(deleteMode)
           onItemClick { _ ->
+            if (deleteMode) return@onItemClick
+
             findNavController()
               .navigate(TimerListFragmentDirections.actionListToEditor(timerInfo))
+          }
+          onItemDeleteClick { _ ->
+            timerListViewModel.deleteTimerInfo(timerInfo)
           }
         }
       }
@@ -57,6 +68,18 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
           findNavController()
             .navigate(TimerListFragmentDirections.actionListToTimer(timerInfo))
         }
+      }
+    }
+
+    mainScope.launch {
+      timerListViewModel.timerListUiStateFlow.collect { state ->
+        viewTimerList.requestModelBuild()
+
+        val deleteMode = state == TimerListUiState.Deletable
+        viewTitle.visibleOrGone(!deleteMode)
+        viewAddBtn.visibleOrGone(!deleteMode)
+        viewDeleteBtn.visibleOrGone(!deleteMode)
+        viewBackBtn.visibleOrGone(deleteMode)
       }
     }
   }
@@ -78,6 +101,12 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
       findNavController().navigate(TimerListFragmentDirections.actionListToEditor())
     }
 
-    viewDeleteBtn.setOnClickListener { }
+    viewDeleteBtn.setOnClickListener {
+      timerListViewModel.changeUiState()
+    }
+
+    viewBackBtn.setOnClickListener {
+      timerListViewModel.changeUiState()
+    }
   }
 }
