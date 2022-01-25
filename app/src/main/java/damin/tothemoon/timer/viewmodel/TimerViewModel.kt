@@ -6,6 +6,7 @@ import damin.tothemoon.damin.extensions.ioScope
 import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.model.TimerState
+import damin.tothemoon.timer.preferences.PrefTimer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -82,6 +83,7 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
 
   override fun onCleared() {
     saveTimerState()
+    PrefTimer.saveLastRunningTime()
   }
 }
 

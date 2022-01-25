@@ -11,6 +11,7 @@ import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerListBinding
 import damin.tothemoon.timer.model.TimerState
 import damin.tothemoon.timer.model.timeStr
+import damin.tothemoon.timer.preferences.PrefTimer
 import damin.tothemoon.timer.timerListItem
 import damin.tothemoon.timer.viewmodel.TimerListViewModel
 import kotlinx.coroutines.flow.collect
@@ -52,6 +53,7 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
         viewTimerList.requestModelBuild()
 
         timerInfoList.find { it.state != TimerState.IDLE }?.let { timerInfo ->
+          timerInfo.remainedTime -= PrefTimer.lastRunningTimeGap
           findNavController()
             .navigate(TimerListFragmentDirections.actionListToTimer(timerInfo))
         }
