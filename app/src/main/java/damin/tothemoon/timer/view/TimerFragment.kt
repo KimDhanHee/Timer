@@ -1,5 +1,6 @@
 package damin.tothemoon.timer.view
 
+import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -43,9 +44,20 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   }
 
   override fun FragmentTimerBinding.setEventListener() {
-    viewBackBtn.setOnClickListener {
-      findNavController().navigateUp()
+    val onBackListener = {
+      when (timerViewModel.timerStateFlow.value) {
+        is TimerUiState.Idle, is TimerUiState.Initialized -> {
+          findNavController().navigateUp()
+        }
+        else -> {
+          activity?.finish()
+        }
+      }
     }
+
+    viewBackBtn.setOnClickListener { onBackListener() }
+
+    activity?.onBackPressedDispatcher?.addCallback { onBackListener() }
 
     viewPlus1MinBtn.setOnClickListener { timerViewModel.add1Minute() }
     viewPlus5MinBtn.setOnClickListener { timerViewModel.add5Minute() }
