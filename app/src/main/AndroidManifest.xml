@@ -10,14 +10,10 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/Theme.Timer">
-    <receiver
-      android:name=".receiver.TimerReceiver"
+    <service
+      android:name=".service.TimerService"
       android:enabled="true"
-      android:exported="true">
-      <intent-filter>
-        <action android:name="${applicationId}.TIME_OUT" />
-      </intent-filter>
-    </receiver>
+      android:exported="true" />
     
     <activity
       android:name=".MainActivity"
