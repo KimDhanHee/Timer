@@ -36,22 +36,22 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
   }
 
   fun pause() {
-    if (timer == null) return
+    if (timerInfo.state != TimerState.STARTED) return
 
     timerInfo.pause()
     saveTimerState()
 
-    timer!!.cancel()
+    timer?.cancel()
     _timerStateFlow.value = TimerUiState.Paused(timerInfo.time, timerInfo.remainedTime)
   }
 
   fun dismiss() {
-    if (timer == null) return
+    if (timerInfo.state == TimerState.IDLE) return
 
     timerInfo.dismiss()
     saveTimerState()
 
-    timer!!.cancel()
+    timer?.cancel()
     _timerStateFlow.value = TimerUiState.Initialized(timerInfo.remainedTime)
   }
 

@@ -1,6 +1,7 @@
 package damin.tothemoon.timer.view
 
-import androidx.activity.addCallback
+import android.content.Context
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -47,16 +48,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   }
 
   override fun FragmentTimerBinding.setEventListener() {
-    val onBackListener = {
-      when (timerViewModel.timerStateFlow.value) {
-        is TimerUiState.Idle, is TimerUiState.Initialized -> findNavController().navigateUp()
-        else -> activity?.finish()
-      }
-    }
-
-    viewBackBtn.setOnClickListener { onBackListener() }
-
-    activity?.onBackPressedDispatcher?.addCallback { onBackListener() }
+    viewBackBtn.setOnClickListener { onBackPressedCallback.handleOnBackPressed() }
 
     viewPlus1MinBtn.setOnClickListener { timerViewModel.add1Minute() }
     viewPlus5MinBtn.setOnClickListener { timerViewModel.add5Minute() }
@@ -131,5 +123,25 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         viewAdContainer.addView(banner)
       }
     )
+  }
+
+  private lateinit var onBackPressedCallback: OnBackPressedCallback
+
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    onBackPressedCallback = object : OnBackPressedCallback(true) {
+      override fun handleOnBackPressed() {
+        when (timerViewModel.timerStateFlow.value) {
+          is TimerUiState.Idle, is TimerUiState.Initialized -> findNavController().navigateUp()
+          else -> activity?.finish()
+        }
+      }
+    }
+    activity?.onBackPressedDispatcher?.addCallback(onBackPressedCallback)
+  }
+
+  override fun onDetach() {
+    super.onDetach()
+    onBackPressedCallback.remove()
   }
 }

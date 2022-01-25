@@ -17,6 +17,8 @@ class TimerService : Service() {
 
   inner class TimerBinder: Binder() {
     fun start(time: Long) {
+      if (time < 0) return
+
       timeOutTimer?.cancel()
       timeOutTimer = Timer().apply {
         schedule(time) {
