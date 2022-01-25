@@ -86,7 +86,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         when (state) {
           is TimerUiState.Idle -> {
             viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)
-            viewTimer.text = timerInfo.time.timeStr
+            viewTimer.text = timerInfo.remainedTime.timeStr
             viewProgressbar.progress = 1000
           }
           is TimerUiState.CountDown -> {
@@ -97,6 +97,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
           is TimerUiState.Paused -> {
             viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)
             viewTimer.text = state.remainedTime.timeStr
+            viewProgressbar.progress = state.remainedProgress
           }
           is TimerUiState.Initialized -> {
             viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import damin.tothemoon.damin.extensions.ioScope
 import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
+import damin.tothemoon.timer.model.TimerState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -13,7 +14,11 @@ import kotlin.concurrent.fixedRateTimer
 import kotlin.math.max
 
 class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
-  private val _timerStateFlow = MutableStateFlow<TimerUiState>(TimerUiState.Idle)
+  private val _timerStateFlow = MutableStateFlow(when (timerInfo.state) {
+    TimerState.STARTED -> TimerUiState.CountDown(timerInfo.time, timerInfo.remainedTime)
+    TimerState.PAUSED -> TimerUiState.Paused(timerInfo.time, timerInfo.remainedTime)
+    else -> TimerUiState.Idle
+  })
   val timerStateFlow: StateFlow<TimerUiState>
     get() = _timerStateFlow
 
@@ -36,7 +41,7 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
     saveTimerState()
 
     timer!!.cancel()
-    _timerStateFlow.value = TimerUiState.Paused(timerInfo.remainedTime)
+    _timerStateFlow.value = TimerUiState.Paused(timerInfo.time, timerInfo.remainedTime)
   }
 
   fun dismiss() {
@@ -74,6 +79,10 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
       _timerStateFlow.value = TimerUiState.Initialized(timerInfo.remainedTime)
     }
   }
+
+  override fun onCleared() {
+    saveTimerState()
+  }
 }
 
 sealed class TimerUiState {
@@ -87,7 +96,13 @@ sealed class TimerUiState {
       max(((remainedTime / totalTime.toFloat()) * 1000).toInt(), 0)
   }
 
-  data class Paused(val remainedTime: Long) : TimerUiState()
+  data class Paused(
+    private val totalTime: Long,
+    val remainedTime: Long,
+  ) : TimerUiState() {
+    val remainedProgress: Int =
+      max(((remainedTime / totalTime.toFloat()) * 1000).toInt(), 0)
+  }
 
   val displayDismiss: Boolean
     get() = this is CountDown && this.remainedTime <= 0
