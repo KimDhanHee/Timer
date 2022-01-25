@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import damin.tothemoon.damin.utils.AndroidUtils
 import damin.tothemoon.timer.R
-import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlin.math.abs
 
@@ -16,15 +15,9 @@ data class TimerInfo(
   var id: Long = 0,
   var title: String = "",
   var time: Long = 0,
+  var remainedTime: Long = time,
   var color: TimerColor = TimerColor.Purple,
 ) : Parcelable {
-  @IgnoredOnParcel
-  val timeStr: String
-    get() = time.timeStr
-
-  @IgnoredOnParcel
-  var remainedTime: Long = time
-
   fun countdown() {
     remainedTime -= TIME_TICK
   }

@@ -6,8 +6,16 @@
   <data>
     
     <variable
-      name="timerInfo"
-      type="damin.tothemoon.timer.model.TimerInfo" />
+      name="title"
+      type="String" />
+    
+    <variable
+      name="colorSrc"
+      type="int" />
+    
+    <variable
+      name="timeStr"
+      type="String" />
     
     <variable
       name="onItemClick"
@@ -19,7 +27,7 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="20dp"
     android:layout_marginEnd="20dp"
-    app:cardBackgroundColor="@{timerInfo.color.src}"
+    app:cardBackgroundColor="@{colorSrc}"
     app:cardCornerRadius="16dp"
     app:cardElevation="0dp">
     
@@ -38,7 +46,7 @@
         android:ellipsize="end"
         android:fontFamily="sans-serif"
         android:maxLines="1"
-        android:text="@{timerInfo.title}"
+        android:text="@{title}"
         android:textColor="@color/white"
         android:textSize="16dp"
         android:textStyle="bold"
@@ -54,7 +62,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginBottom="14dp"
         android:fontFamily="@font/rajdhani_semi_bold"
-        android:text="@{timerInfo.timeStr}"
+        android:text="@{timeStr}"
         android:textColor="@color/white"
         android:textSize="40dp"
         app:layout_constraintBottom_toBottomOf="parent"

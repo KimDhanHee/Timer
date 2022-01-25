@@ -8,6 +8,7 @@ import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerListBinding
 import damin.tothemoon.timer.model.TimerDatabase
+import damin.tothemoon.timer.model.timeStr
 import damin.tothemoon.timer.timerListItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +31,9 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
           timerInfoList.forEach { timerInfo ->
             timerListItem {
               id(timerInfo.id)
-              timerInfo(timerInfo)
+              title(timerInfo.title)
+              colorSrc(timerInfo.color.src)
+              timeStr(timerInfo.time.timeStr)
               onItemClick { _ ->
                 findNavController()
                   .navigate(TimerListFragmentDirections.actionListToEditor(timerInfo))
