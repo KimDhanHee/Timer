@@ -36,7 +36,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
 
     viewTitle.text = timerInfo.title
 
-    if (timerInfo.state == TimerState.IDLE) {
+    if (timerInfo.state != TimerState.PAUSED) {
       timerViewModel.start()
     }
 
