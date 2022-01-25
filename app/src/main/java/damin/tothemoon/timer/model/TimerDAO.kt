@@ -13,7 +13,7 @@ interface TimerDAO {
   fun getTimerInfos(): Flow<List<TimerInfo>>
 
   @Insert
-  suspend fun addTimerInfo(timerInfo: TimerInfo)
+  suspend fun addTimerInfo(timerInfo: TimerInfo): Long
 
   @Update
   suspend fun updateTimerInfo(timerInfo: TimerInfo)
