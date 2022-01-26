@@ -69,7 +69,7 @@ data class TimerInfo(
 
     const val TIME_TICK = 100L
 
-    const val TIME_OUT_ACTION = BuildConfig.APPLICATION_ID + ".TIME_OUT"
+    const val MAX_TITLE_LENGTH = 16
   }
 }
 

@@ -1,10 +1,9 @@
 package damin.tothemoon.timer.view
 
 import android.view.animation.AnimationUtils
-import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
 import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.damin.extensions.ioScope
 import damin.tothemoon.damin.extensions.mainScope
@@ -24,7 +23,7 @@ import kotlinx.coroutines.withContext
 class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
   R.layout.fragment_timer_editor
 ) {
-  private val editorViewModel by viewModels<TimerEditorViewModel> {
+  private val editorViewModel by navGraphViewModels<TimerEditorViewModel>(R.id.main) {
     TimerEditorViewModelFactory(
       navArgs.timerInfo ?: TimerInfo()
     )
@@ -42,7 +41,6 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
   private fun FragmentTimerEditorBinding.initTimerInfo() {
     viewHourPicker.post {
       navArgs.timerInfo?.let { timerInfo ->
-        viewTitleInput.setText(timerInfo.title)
         viewHourPicker.value = timerInfo.hour
         viewMinutePicker.value = timerInfo.minute
         viewSecondsPicker.value = timerInfo.seconds
@@ -78,8 +76,11 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
       editorViewModel.timerInfoFlow.collect { timerInfo ->
         root.setBackgroundColor(timerInfo.color.src)
         activity?.window?.statusBarColor = timerInfo.color.src
-        viewTitleCounter.text = "${timerInfo.title.length}/20"
+
+        viewTitleInput.setText(timerInfo.title)
+
         viewStartBtn.isEnabled = timerInfo.title.isNotEmpty() && timerInfo.time != 0L
+
         viewPaletteList.requestModelBuild()
       }
     }
@@ -87,6 +88,7 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
     mainScope.launch {
       val fadeInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
       val fadeOutAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out)
+
       editorViewModel.paletteVisibilityFlow.collect { visible ->
         viewPaletteList.visibleOrGone(visible)
         viewPaletteList.startAnimation(
@@ -111,10 +113,10 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
       }
     }
 
-    viewTitleInput.addTextChangedListener { title ->
-      if (title == null) return@addTextChangedListener
-
-      editorViewModel.updateTitle(title.toString())
+    viewTitleInput.setOnClickListener {
+      findNavController().navigate(
+        TimerEditorFragmentDirections.actionEditorToEditTitle(editorViewModel.timerInfoFlow.value)
+      )
     }
 
     viewHourPicker.setOnValueChangedListener { _, _, hour ->

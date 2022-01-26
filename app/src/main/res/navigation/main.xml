@@ -37,5 +37,16 @@
       app:destination="@id/timerFragment"
       app:popUpTo="@id/timerListFragment"
       app:popUpToInclusive="false" />
+    <action
+      android:id="@+id/action_editor_to_editTitle"
+      app:destination="@id/timerEditTitleFragment" />
+  </fragment>
+  <fragment
+    android:id="@+id/timerEditTitleFragment"
+    android:name="damin.tothemoon.timer.view.TimerEditTitleFragment"
+    android:label="TimerEditTitleFragment" >
+    <argument
+      android:name="timerInfo"
+      app:argType="damin.tothemoon.timer.model.TimerInfo" />
   </fragment>
 </navigation>

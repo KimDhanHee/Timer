@@ -6,6 +6,8 @@
   <data>
     
     <import type="androidx.recyclerview.widget.LinearLayoutManager" />
+    
+    <import type="damin.tothemoon.timer.model.TimerInfo" />
   </data>
   
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,7 +60,6 @@
       android:hint="@string/timer_editor_title_hint"
       android:minWidth="140dp"
       android:textColor="@color/white"
-      android:textSize="30dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent">
@@ -69,8 +70,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:backgroundTint="@color/white"
+        android:focusable="false"
+        android:textAlignment="center"
         android:hint="@string/timer_editor_title_hint"
-        android:maxLength="20"
+        android:maxLength="@{TimerInfo.MAX_TITLE_LENGTH}"
         android:minWidth="140dp"
         android:textColor="@color/white"
         android:textSize="30dp"
@@ -78,16 +81,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     </FrameLayout>
-    
-    <TextView
-      android:id="@+id/viewTitleCounter"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textColor="@color/white"
-      app:layout_constraintEnd_toEndOf="@id/viewTitleInputContainer"
-      app:layout_constraintStart_toStartOf="@id/viewTitleInputContainer"
-      app:layout_constraintTop_toBottomOf="@id/viewTitleInputContainer"
-      tools:text="0/20" />
     
     <TextView
       android:id="@+id/viewHourLabel"
