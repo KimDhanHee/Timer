@@ -1,26 +1,19 @@
 package damin.tothemoon.timer.view
 
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.damin.utils.AndroidUtils
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerEditTitleBinding
 import damin.tothemoon.timer.model.TimerInfo
-import damin.tothemoon.timer.viewmodel.TimerEditorViewModel
-import damin.tothemoon.timer.viewmodel.TimerEditorViewModelFactory
 
 class TimerEditTitleFragment : BaseFragment<FragmentTimerEditTitleBinding>(
   R.layout.fragment_timer_edit_title
 ) {
-  private val editorViewModel by navGraphViewModels<TimerEditorViewModel>(R.id.main) {
-    TimerEditorViewModelFactory(
-      navArgs.timerInfo
-    )
-  }
-
   private val navArgs by navArgs<TimerEditTitleFragmentArgs>()
 
   override fun FragmentTimerEditTitleBinding.initView() {
@@ -49,11 +42,19 @@ class TimerEditTitleFragment : BaseFragment<FragmentTimerEditTitleBinding>(
     }
 
     viewSaveBtn.setOnClickListener {
-      editorViewModel.updateTitle(viewTitleInput.text.toString())
-
       AndroidUtils.hideKeyboard(viewTitleInput)
+
+      setFragmentResult(
+        REQUEST_TIMER_TITLE,
+        bundleOf(KEY_TIMER_TITLE to viewTitleInput.text.toString())
+      )
 
       findNavController().navigateUp()
     }
+  }
+
+  companion object {
+    const val REQUEST_TIMER_TITLE = "request_title"
+    const val KEY_TIMER_TITLE = "title"
   }
 }
