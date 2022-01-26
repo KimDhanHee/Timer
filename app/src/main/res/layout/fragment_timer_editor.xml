@@ -58,7 +58,6 @@
       android:hint="@string/timer_editor_title_hint"
       android:minWidth="140dp"
       android:textColor="@color/white"
-      android:textSize="30dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent">
