@@ -8,7 +8,6 @@ import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.damin.extensions.ioScope
 import damin.tothemoon.damin.extensions.mainScope
 import damin.tothemoon.damin.extensions.visibleOrGone
-import damin.tothemoon.damin.utils.AndroidUtils
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerEditorBinding
 import damin.tothemoon.timer.model.TimerColor

@@ -1,7 +1,5 @@
 package damin.tothemoon.timer.view
 
-import android.content.Context
-import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
