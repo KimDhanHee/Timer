@@ -3,6 +3,11 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
   
+  <data>
+    
+    <import type="damin.tothemoon.timer.model.TimerInfo" />
+  </data>
+  
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -40,8 +45,9 @@
         android:layout_gravity="center"
         android:backgroundTint="@color/white"
         android:hint="@string/timer_editor_title_hint"
-        android:maxLength="20"
+        android:maxLength="@{TimerInfo.MAX_TITLE_LENGTH}"
         android:minWidth="140dp"
+        android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +67,7 @@
       tools:text="0/20" />
     
     <androidx.appcompat.widget.AppCompatButton
-      android:id="@+id/viewStartBtn"
+      android:id="@+id/viewSaveBtn"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="85dp"
