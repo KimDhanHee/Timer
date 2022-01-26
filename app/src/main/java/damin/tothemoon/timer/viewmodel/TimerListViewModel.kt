@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class TimerListViewModel: ViewModel() {
+class TimerListViewModel : ViewModel() {
   init {
     ioScope.launch {
       TimerDatabase.timerDao.getTimerInfos().collect {
@@ -21,4 +21,26 @@ class TimerListViewModel: ViewModel() {
   private val _timerListFlow = MutableStateFlow<List<TimerInfo>>(emptyList())
   val timerListFlow: StateFlow<List<TimerInfo>>
     get() = _timerListFlow
+
+  private val _timerListUiStateFlow = MutableStateFlow<TimerListUiState>(TimerListUiState.Idle)
+  val timerListUiStateFlow: StateFlow<TimerListUiState>
+    get() = _timerListUiStateFlow
+
+  fun changeUiState() {
+    _timerListUiStateFlow.value = when (_timerListUiStateFlow.value) {
+      TimerListUiState.Idle -> TimerListUiState.Deletable
+      else -> TimerListUiState.Idle
+    }
+  }
+
+  fun deleteTimerInfo(timerInfo: TimerInfo) {
+    ioScope.launch {
+      TimerDatabase.timerDao.deleteTimerInfo(timerInfo)
+    }
+  }
+}
+
+sealed class TimerListUiState {
+  object Idle : TimerListUiState()
+  object Deletable : TimerListUiState()
 }
