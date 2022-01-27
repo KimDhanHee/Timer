@@ -1,9 +1,10 @@
 package damin.tothemoon.timer.view
 
 import android.view.animation.AnimationUtils
+import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.damin.extensions.ioScope
 import damin.tothemoon.damin.extensions.mainScope
@@ -23,7 +24,7 @@ import kotlinx.coroutines.withContext
 class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
   R.layout.fragment_timer_editor
 ) {
-  private val editorViewModel by navGraphViewModels<TimerEditorViewModel>(R.id.main) {
+  private val editorViewModel by viewModels<TimerEditorViewModel>() {
     TimerEditorViewModelFactory(
       navArgs.timerInfo ?: TimerInfo()
     )
@@ -144,6 +145,12 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
           )
         }
       }
+    }
+
+    setFragmentResultListener(TimerEditTitleFragment.REQUEST_TIMER_TITLE) { _, bundle ->
+      editorViewModel.updateTitle(
+        bundle.getString(TimerEditTitleFragment.KEY_TIMER_TITLE, "")
+      )
     }
   }
 }
