@@ -26,6 +26,9 @@ class TimerListViewModel : ViewModel() {
   val timerListUiStateFlow: StateFlow<TimerListUiState>
     get() = _timerListUiStateFlow
 
+  val isDeleteMode: Boolean
+    get() = _timerListUiStateFlow.value == TimerListUiState.Deletable
+
   fun changeUiState() {
     _timerListUiStateFlow.value = when (_timerListUiStateFlow.value) {
       TimerListUiState.Idle -> TimerListUiState.Deletable

@@ -31,8 +31,6 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
 
   private fun FragmentTimerListBinding.drawTimerList() {
     viewTimerList.withModels {
-      val deleteMode = timerListViewModel.timerListUiStateFlow.value == TimerListUiState.Deletable
-
       timerListViewModel.timerListFlow.value.forEach { timerInfo ->
         timerListItem {
           id(timerInfo.id)
@@ -40,9 +38,9 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
           colorSrc(timerInfo.color.src)
           timeStr(timerInfo.time.timeStr)
           isIdle(timerInfo.state == TimerState.IDLE)
-          deleteMode(deleteMode)
+          deleteMode(timerListViewModel.isDeleteMode)
           onItemClick { _ ->
-            if (deleteMode) return@onItemClick
+            if (timerListViewModel.isDeleteMode) return@onItemClick
 
             navigateTo(TimerListFragmentDirections.actionListToEditor(timerInfo))
           }
