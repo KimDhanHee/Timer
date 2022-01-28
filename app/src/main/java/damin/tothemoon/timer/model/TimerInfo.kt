@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import damin.tothemoon.damin.utils.AndroidUtils
-import damin.tothemoon.timer.BuildConfig
 import damin.tothemoon.timer.R
 import kotlinx.parcelize.Parcelize
 import kotlin.math.abs
