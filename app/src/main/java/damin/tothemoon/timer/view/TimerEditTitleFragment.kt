@@ -33,7 +33,7 @@ class TimerEditTitleFragment : BaseFragment<FragmentTimerEditTitleBinding>(
 
   override fun FragmentTimerEditTitleBinding.setEventListener() {
     viewBackBtn.setOnClickListener {
-      goBack()
+      findNavController().navigateUp()
     }
 
     viewTitleInput.addTextChangedListener { title ->
@@ -51,7 +51,7 @@ class TimerEditTitleFragment : BaseFragment<FragmentTimerEditTitleBinding>(
         bundleOf(KEY_TIMER_TITLE to viewTitleInput.text.toString())
       )
 
-      goBack()
+      findNavController().navigateUp()
     }
   }
 
