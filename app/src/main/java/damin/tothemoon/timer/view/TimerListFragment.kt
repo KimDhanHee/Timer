@@ -2,7 +2,6 @@ package damin.tothemoon.timer.view
 
 import android.graphics.Color
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import damin.tothemoon.ad.AdManager
 import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
