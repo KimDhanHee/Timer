@@ -102,4 +102,7 @@ enum class TimerState {
   STARTED,
   PAUSED,
   ;
+
+  val isRunning: Boolean
+    get() = this != IDLE
 }

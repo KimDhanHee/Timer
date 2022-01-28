@@ -59,7 +59,7 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
 
         viewTimerList.requestModelBuild()
 
-        val runningTimer = timerInfoList.find { it.state != TimerState.IDLE }
+        val runningTimer = timerInfoList.find { it.state.isRunning }
         if (runningTimer != null) {
           runningTimer.remainedTime -= PrefTimer.lastRunningTimeGap
           navigateTo(TimerListFragmentDirections.actionListToTimer(runningTimer))
