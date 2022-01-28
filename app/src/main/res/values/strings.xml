@@ -13,6 +13,7 @@
   
   <string name="timer_editor_title_hint">제목 입력</string>
   <string name="timer_editor_save_title">저장</string>
+  <string name="timer_editor_count_indicator">%d/%d</string>
   
   <string name="timer_editor_hour_label">시간</string>
   <string name="timer_editor_minute_label">분</string>
