@@ -1,6 +1,8 @@
 package damin.tothemoon.timer.view
 
+import android.content.Context
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -24,11 +26,11 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   R.layout.fragment_timer
 ) {
   private val navArgs by navArgs<TimerFragmentArgs>()
-  private val timerInfo by lazy { navArgs.timerInfo }
-
   private val timerViewModel by viewModels<TimerViewModel> {
     TimerViewModelFactory(timerInfo)
   }
+
+  private val timerInfo by lazy { navArgs.timerInfo }
 
   private val timerActivity by lazy { activity as MainActivity }
 
@@ -47,7 +49,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   }
 
   override fun FragmentTimerBinding.setEventListener() {
-    viewBackBtn.setOnClickListener { goBack() }
+    viewBackBtn.setOnClickListener { onBackPressedCallback.handleOnBackPressed() }
 
     viewPlus1MinBtn.setOnClickListener { timerViewModel.add1Minute() }
     viewPlus5MinBtn.setOnClickListener { timerViewModel.add5Minute() }
@@ -72,13 +74,6 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
     }
     viewCancelBtn.setOnClickListener(onDismiss)
     viewDismissBtn.setOnClickListener(onDismiss)
-
-    setOnBackPressedListener {
-      when (timerViewModel.timerStateFlow.value) {
-        is TimerUiState.Idle, is TimerUiState.Initialized -> findNavController().navigateUp()
-        else -> activity?.finish()
-      }
-    }
   }
 
   override fun FragmentTimerBinding.bindingVM() {
@@ -111,5 +106,25 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         viewAdContainer.addView(banner)
       }
     )
+  }
+
+  private lateinit var onBackPressedCallback: OnBackPressedCallback
+
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    onBackPressedCallback = object : OnBackPressedCallback(true) {
+      override fun handleOnBackPressed() {
+        when (timerViewModel.timerStateFlow.value) {
+          is TimerUiState.Idle, is TimerUiState.Initialized -> findNavController().navigateUp()
+          else -> activity?.finish()
+        }
+      }
+    }
+    activity?.onBackPressedDispatcher?.addCallback(onBackPressedCallback)
+  }
+
+  override fun onDetach() {
+    super.onDetach()
+    onBackPressedCallback.remove()
   }
 }

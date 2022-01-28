@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -44,28 +43,4 @@ open class BaseFragment<VDB : ViewDataBinding>(
   protected open fun VDB.bindingVM() {}
   protected open fun VDB.bindingViewData() {}
   protected open fun VDB.setEventListener() {}
-
-  private var onBackPressedCallback: OnBackPressedCallback? = null
-
-  fun setOnBackPressedListener(onBackCallback: () -> Unit) {
-    onBackPressedCallback = object : OnBackPressedCallback(true) {
-      override fun handleOnBackPressed() {
-        onBackCallback()
-      }
-    }
-    activity?.onBackPressedDispatcher?.addCallback(onBackPressedCallback!!)
-  }
-
-  override fun onDetach() {
-    super.onDetach()
-    onBackPressedCallback?.remove()
-    onBackPressedCallback = null
-  }
-
-  fun goBack() {
-    when {
-      onBackPressedCallback != null -> onBackPressedCallback!!.handleOnBackPressed()
-      else -> findNavController().navigateUp()
-    }
-  }
 }
