@@ -128,11 +128,9 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
     viewHourPicker.setOnValueChangedListener { _, _, hour ->
       editorViewModel.updateHour(hour)
     }
-
     viewMinutePicker.setOnValueChangedListener { _, _, minute ->
       editorViewModel.updateMinute(minute)
     }
-
     viewSecondsPicker.setOnValueChangedListener { _, _, seconds ->
       editorViewModel.updateSeconds(seconds)
     }
