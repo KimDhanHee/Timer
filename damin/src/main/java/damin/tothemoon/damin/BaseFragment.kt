@@ -59,6 +59,7 @@ open class BaseFragment<VDB : ViewDataBinding>(
   override fun onDetach() {
     super.onDetach()
     onBackPressedCallback?.remove()
+    onBackPressedCallback = null
   }
 
   fun goBack() {

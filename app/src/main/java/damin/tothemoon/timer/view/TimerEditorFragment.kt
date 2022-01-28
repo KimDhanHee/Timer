@@ -104,7 +104,7 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
 
   override fun FragmentTimerEditorBinding.setEventListener() {
     viewBackBtn.setOnClickListener {
-      findNavController().navigateUp()
+      goBack()
     }
 
     viewPaletteBtn.setOnClickListener {
