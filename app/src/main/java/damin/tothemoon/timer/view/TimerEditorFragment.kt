@@ -120,9 +120,8 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
       )
     }
     setFragmentResultListener(TimerEditTitleFragment.REQUEST_TIMER_TITLE) { _, bundle ->
-      editorViewModel.updateTitle(
-        bundle.getString(TimerEditTitleFragment.KEY_TIMER_TITLE, "")
-      )
+      val newTitle = bundle.getString(TimerEditTitleFragment.KEY_TIMER_TITLE, "")
+      editorViewModel.updateTitle(newTitle)
     }
 
     viewHourPicker.setOnValueChangedListener { _, _, hour ->
