@@ -91,21 +91,23 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
 sealed class TimerUiState {
   data class Initialized(val remainedTime: Long) : TimerUiState()
   object Idle : TimerUiState()
-  data class CountDown(
-    private val totalTime: Long,
-    val remainedTime: Long,
+
+  open class TimeTick(
+    totalTime: Long,
+    remainedTime: Long,
   ) : TimerUiState() {
     val remainedProgress: Int =
       max(((remainedTime / totalTime.toFloat()) * 1000).toInt(), 0)
   }
 
+  data class CountDown(
+    private val totalTime: Long,
+    val remainedTime: Long,
+  ) : TimeTick(totalTime, remainedTime)
   data class Paused(
     private val totalTime: Long,
     val remainedTime: Long,
-  ) : TimerUiState() {
-    val remainedProgress: Int =
-      max(((remainedTime / totalTime.toFloat()) * 1000).toInt(), 0)
-  }
+  ) : TimeTick(totalTime, remainedTime)
 
   val displayDismiss: Boolean
     get() = this is CountDown && this.remainedTime <= 0

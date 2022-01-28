@@ -94,8 +94,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
 
         viewTimer.text = timerInfo.remainedTime.timeStr
         viewProgressbar.progress = when (state) {
-          is TimerUiState.CountDown -> state.remainedProgress
-          is TimerUiState.Paused -> state.remainedProgress
+          is TimerUiState.TimeTick -> state.remainedProgress
           else -> 1000
         }
       }
