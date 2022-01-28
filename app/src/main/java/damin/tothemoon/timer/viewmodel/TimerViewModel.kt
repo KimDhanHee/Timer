@@ -62,19 +62,7 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
     }
   }
 
-  fun add1Minute() {
-    addMinute(1)
-  }
-
-  fun add5Minute() {
-    addMinute(5)
-  }
-
-  fun add10Minute() {
-    addMinute(10)
-  }
-
-  private fun addMinute(minute: Int) {
+  fun addMinute(minute: Int) {
     this.timerInfo.minute += minute
 
     if (_timerStateFlow.value !is TimerUiState.CountDown) {

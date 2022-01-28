@@ -51,9 +51,13 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   override fun FragmentTimerBinding.setEventListener() {
     viewBackBtn.setOnClickListener { onBackPressedCallback.handleOnBackPressed() }
 
-    viewPlus1MinBtn.setOnClickListener { timerViewModel.add1Minute() }
-    viewPlus5MinBtn.setOnClickListener { timerViewModel.add5Minute() }
-    viewPlus10MinBtn.setOnClickListener { timerViewModel.add10Minute() }
+    val addMinute = { minute: Int ->
+      timerViewModel.addMinute(minute)
+      timerActivity.startBackgroundTimer(timerInfo.remainedTime)
+    }
+    viewPlus1MinBtn.setOnClickListener { addMinute(1) }
+    viewPlus5MinBtn.setOnClickListener { addMinute(5) }
+    viewPlus10MinBtn.setOnClickListener { addMinute(10) }
 
     viewStartPauseBtn.setOnClickListener {
       when (timerViewModel.timerStateFlow.value) {
