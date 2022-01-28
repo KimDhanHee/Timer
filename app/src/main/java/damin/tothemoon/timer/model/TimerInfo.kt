@@ -15,6 +15,7 @@ data class TimerInfo(
   var id: Long = 0,
   var title: String = "",
   var time: Long = 0,
+  var runningTime: Long = time,
   var remainedTime: Long = time,
   var color: TimerColor = TimerColor.Purple,
   var state: TimerState = TimerState.IDLE,
@@ -29,6 +30,7 @@ data class TimerInfo(
 
   fun dismiss() {
     state = TimerState.IDLE
+    runningTime = time
     resetRemainedTime()
   }
 

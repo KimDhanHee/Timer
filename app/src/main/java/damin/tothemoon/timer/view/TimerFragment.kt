@@ -131,4 +131,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
     super.onDetach()
     onBackPressedCallback.remove()
   }
+
+  override fun onPause() {
+    super.onPause()
+    timerViewModel.backupTimerInfo()
+  }
 }

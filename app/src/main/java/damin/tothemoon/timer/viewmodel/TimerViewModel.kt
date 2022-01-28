@@ -32,7 +32,7 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
 
     this.timer = fixedRateTimer(period = TimerInfo.TIME_TICK) {
       timerInfo.countdown()
-      _timerStateFlow.value = TimerUiState.CountDown(timerInfo.time, timerInfo.remainedTime)
+      _timerStateFlow.value = TimerUiState.CountDown(timerInfo.runningTime, timerInfo.remainedTime)
     }
   }
 
@@ -43,7 +43,7 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
     saveTimerState()
 
     timer?.cancel()
-    _timerStateFlow.value = TimerUiState.Paused(timerInfo.time, timerInfo.remainedTime)
+    _timerStateFlow.value = TimerUiState.Paused(timerInfo.runningTime, timerInfo.remainedTime)
   }
 
   fun dismiss() {
@@ -53,7 +53,7 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
     saveTimerState()
 
     timer?.cancel()
-    _timerStateFlow.value = TimerUiState.Initialized(timerInfo.remainedTime)
+    _timerStateFlow.value = TimerUiState.Initialized(timerInfo.time)
   }
 
   private fun saveTimerState() {
@@ -63,7 +63,8 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
   }
 
   fun addMinute(minute: Int) {
-    this.timerInfo.minute += minute
+    timerInfo.runningTime += minute * TimerInfo.MINUTE_UNIT
+    timerInfo.remainedTime += minute * TimerInfo.MINUTE_UNIT
 
     if (_timerStateFlow.value !is TimerUiState.CountDown) {
       _timerStateFlow.value = TimerUiState.Initialized(timerInfo.remainedTime)
@@ -71,6 +72,11 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
   }
 
   override fun onCleared() {
+    super.onCleared()
+    backupTimerInfo()
+  }
+
+  fun backupTimerInfo() {
     saveTimerState()
     PrefTimer.saveLastRunningTime()
   }
