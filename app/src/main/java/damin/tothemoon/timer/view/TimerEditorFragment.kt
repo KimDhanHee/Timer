@@ -115,7 +115,7 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
     }
 
     viewTitleInput.setOnClickListener {
-      findNavController().navigate(
+      navigateTo(
         TimerEditorFragmentDirections.actionEditorToEditTitle(editorViewModel.timerInfoFlow.value)
       )
     }
@@ -140,7 +140,7 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
         }
 
         withContext(Dispatchers.Main) {
-          findNavController().navigate(
+          navigateTo(
             TimerEditorFragmentDirections.actionEditorToTimer(editorViewModel.timerInfoFlow.value)
           )
         }

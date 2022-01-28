@@ -8,6 +8,8 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
 
 open class BaseFragment<VDB : ViewDataBinding>(
   @LayoutRes
@@ -31,6 +33,10 @@ open class BaseFragment<VDB : ViewDataBinding>(
     setEventListener()
 
     root
+  }
+
+  fun navigateTo(direction: NavDirections) {
+    findNavController().navigate(direction)
   }
 
   protected open fun VDB.initView() {}

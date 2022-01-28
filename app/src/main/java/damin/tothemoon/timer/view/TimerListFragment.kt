@@ -45,8 +45,7 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
           onItemClick { _ ->
             if (deleteMode) return@onItemClick
 
-            findNavController()
-              .navigate(TimerListFragmentDirections.actionListToEditor(timerInfo))
+            navigateTo(TimerListFragmentDirections.actionListToEditor(timerInfo))
           }
           onItemDeleteClick { _ ->
             timerListViewModel.deleteTimerInfo(timerInfo)
@@ -65,8 +64,7 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
 
         timerInfoList.find { it.state != TimerState.IDLE }?.let { timerInfo ->
           timerInfo.remainedTime -= PrefTimer.lastRunningTimeGap
-          findNavController()
-            .navigate(TimerListFragmentDirections.actionListToTimer(timerInfo))
+          navigateTo(TimerListFragmentDirections.actionListToTimer(timerInfo))
         }
       }
     }
@@ -98,7 +96,7 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
 
   override fun FragmentTimerListBinding.setEventListener() {
     viewAddBtn.setOnClickListener {
-      findNavController().navigate(TimerListFragmentDirections.actionListToEditor())
+      navigateTo(TimerListFragmentDirections.actionListToEditor())
     }
 
     viewDeleteBtn.setOnClickListener {
