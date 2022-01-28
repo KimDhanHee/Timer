@@ -1,5 +1,6 @@
 package damin.tothemoon.timer.view
 
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -65,15 +66,12 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
       }
     }
 
-    viewCancelBtn.setOnClickListener {
+    val onDismiss = View.OnClickListener {
       timerViewModel.dismiss()
       timerActivity.stopBackgroundTimer()
     }
-
-    viewDismissBtn.setOnClickListener {
-      timerViewModel.dismiss()
-      timerActivity.stopBackgroundTimer()
-    }
+    viewCancelBtn.setOnClickListener(onDismiss)
+    viewDismissBtn.setOnClickListener(onDismiss)
 
     setOnBackPressedListener {
       when (timerViewModel.timerStateFlow.value) {
