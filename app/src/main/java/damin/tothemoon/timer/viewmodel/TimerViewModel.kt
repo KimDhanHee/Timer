@@ -3,6 +3,7 @@ package damin.tothemoon.timer.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import damin.tothemoon.damin.extensions.ioScope
+import damin.tothemoon.timer.R
 import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.model.TimerState
@@ -108,6 +109,12 @@ sealed class TimerUiState {
 
   val displayDismiss: Boolean
     get() = this is CountDown && this.remainedTime <= 0
+
+  val startPauseIcon: Int
+    get() = when (this) {
+      is CountDown -> R.drawable.ic_pause_24
+      else -> R.drawable.ic_play_24
+    }
 }
 
 class TimerViewModelFactory(

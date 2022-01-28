@@ -87,30 +87,16 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         if (!isAdded) return@collect
 
         viewStartPauseBtn.visibleOrGone(!state.displayDismiss)
+        viewStartPauseBtn.setImageResource(state.startPauseIcon)
+
         viewDismissBtn.visibleOrGone(state.displayDismiss)
         viewDismissLabel.visibleOrGone(state.displayDismiss)
 
-        when (state) {
-          is TimerUiState.Idle -> {
-            viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)
-            viewTimer.text = timerInfo.remainedTime.timeStr
-            viewProgressbar.progress = 1000
-          }
-          is TimerUiState.CountDown -> {
-            viewStartPauseBtn.setImageResource(R.drawable.ic_pause_24)
-            viewTimer.text = state.remainedTime.timeStr
-            viewProgressbar.progress = state.remainedProgress
-          }
-          is TimerUiState.Paused -> {
-            viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)
-            viewTimer.text = state.remainedTime.timeStr
-            viewProgressbar.progress = state.remainedProgress
-          }
-          is TimerUiState.Initialized -> {
-            viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)
-            viewTimer.text = state.remainedTime.timeStr
-            viewProgressbar.progress = 1000
-          }
+        viewTimer.text = timerInfo.remainedTime.timeStr
+        viewProgressbar.progress = when (state) {
+          is TimerUiState.CountDown -> state.remainedProgress
+          is TimerUiState.Paused -> state.remainedProgress
+          else -> 1000
         }
       }
     }
