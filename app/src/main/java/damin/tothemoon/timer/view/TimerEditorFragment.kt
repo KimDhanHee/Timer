@@ -119,6 +119,11 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
         TimerEditorFragmentDirections.actionEditorToEditTitle(editorViewModel.timerInfoFlow.value)
       )
     }
+    setFragmentResultListener(TimerEditTitleFragment.REQUEST_TIMER_TITLE) { _, bundle ->
+      editorViewModel.updateTitle(
+        bundle.getString(TimerEditTitleFragment.KEY_TIMER_TITLE, "")
+      )
+    }
 
     viewHourPicker.setOnValueChangedListener { _, _, hour ->
       editorViewModel.updateHour(hour)
@@ -145,12 +150,6 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
           )
         }
       }
-    }
-
-    setFragmentResultListener(TimerEditTitleFragment.REQUEST_TIMER_TITLE) { _, bundle ->
-      editorViewModel.updateTitle(
-        bundle.getString(TimerEditTitleFragment.KEY_TIMER_TITLE, "")
-      )
     }
   }
 }
