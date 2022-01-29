@@ -122,6 +122,9 @@ sealed class TimerUiState {
   val displayDismiss: Boolean
     get() = this is CountDown && this.remainedTime <= 0
 
+  val displayCancel: Boolean
+    get() = this is CountDown || this is Paused
+
   val startPauseIcon: Int
     get() = when (this) {
       is CountDown -> R.drawable.ic_pause_24
