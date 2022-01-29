@@ -1,7 +1,6 @@
 package damin.tothemoon.timer.view
 
 import android.content.Context
-import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -41,9 +40,12 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
 
     viewTitle.text = timerInfo.title
 
-    if (timerInfo.state != TimerState.PAUSED) {
-      timerViewModel.start()
-      timerActivity.startBackgroundTimer(timerInfo.remainedTime)
+    when (timerInfo.state) {
+      TimerState.IDLE -> {
+        timerViewModel.start()
+        timerActivity.startBackgroundTimer(timerInfo)
+      }
+      TimerState.STARTED -> timerViewModel.start()
     }
 
     loadAd()
@@ -54,7 +56,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
 
     val addMinute = { minute: Int ->
       timerViewModel.addMinute(minute)
-      timerActivity.startBackgroundTimer(timerInfo.remainedTime)
+      timerActivity.startBackgroundTimer(timerInfo)
     }
     viewPlus1MinBtn.setOnClickListener { addMinute(1) }
     viewPlus5MinBtn.setOnClickListener { addMinute(5) }
@@ -64,22 +66,22 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
       when (timerViewModel.timerStateFlow.value) {
         is TimerUiState.CountDown -> {
           timerViewModel.pause()
-          timerActivity.stopBackgroundTimer()
+          timerActivity.stopBackgroundTimer(timerInfo)
         }
         else -> {
           timerViewModel.start()
-          timerActivity.startBackgroundTimer(timerInfo.remainedTime)
+          timerActivity.startBackgroundTimer(timerInfo)
         }
       }
     }
 
     viewCancelBtn.setOnClickListener {
       timerViewModel.cancel()
-      timerActivity.stopBackgroundTimer()
+      timerActivity.stopBackgroundTimer(timerInfo)
     }
     viewDismissBtn.setOnClickListener {
       timerViewModel.dismiss()
-      timerActivity.stopBackgroundTimer()
+      timerActivity.stopBackgroundTimer(timerInfo)
     }
   }
 

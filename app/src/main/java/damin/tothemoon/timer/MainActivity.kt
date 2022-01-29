@@ -7,7 +7,9 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
+import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.service.TimerService
+import damin.tothemoon.timer.utils.AlarmUtils
 
 class MainActivity : AppCompatActivity() {
   private var timerBinder: TimerService.TimerBinder? = null
@@ -32,11 +34,13 @@ class MainActivity : AppCompatActivity() {
     )
   }
 
-  fun startBackgroundTimer(time: Long) {
-    timerBinder?.start(time)
+  fun startBackgroundTimer(timerInfo: TimerInfo) {
+    timerBinder?.start(timerInfo.remainedTime)
+    AlarmUtils.setAlarm(this, timerInfo)
   }
 
-  fun stopBackgroundTimer() {
+  fun stopBackgroundTimer(timerInfo: TimerInfo) {
     timerBinder?.stop()
+    AlarmUtils.cancelAlarm(this, timerInfo)
   }
 }
