@@ -20,7 +20,7 @@ object AlarmUtils {
       timerInfo.id.toInt(),
       Intent(context, TimerReceiver::class.java).apply {
         action = TimerInfo.ACTION_TIME_OUT
-        putExtra("timer", timerInfo)
+        putExtra(TimerInfo.BUNDLE_KEY_TIMER_INFO, timerInfo)
       },
       PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )

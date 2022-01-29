@@ -73,6 +73,8 @@ data class TimerInfo(
 
     const val MAX_TITLE_LENGTH = 16
 
+    const val BUNDLE_KEY_TIMER_INFO = "timer_info"
+
     const val ACTION_TIME_OUT = "${BuildConfig.APPLICATION_ID}.TIME_OUT"
   }
 }
