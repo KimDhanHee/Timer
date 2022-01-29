@@ -33,14 +33,13 @@ object NotificationUtils {
     NotificationCompat.Builder(context, TIMER_ALARM_CHANNEL_ID)
       .setSmallIcon(R.drawable.ic_bell_off_16)
       .setContentTitle(timerInfo.title)
-      .setFullScreenIntent(
+      .setContentIntent(
         PendingIntent.getActivity(
           context,
           0,
           Intent(context, MainActivity::class.java),
           PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        ),
-        true
+        )
       )
       .build()
 
