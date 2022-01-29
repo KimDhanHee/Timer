@@ -93,6 +93,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         viewDismissBtn.visibleOrGone(state.displayDismiss)
         viewDismissLabel.visibleOrGone(state.displayDismiss)
 
+        viewCancelBtn.visibleOrGone(state.displayCancel)
+
         viewTimer.text = timerInfo.remainedTime.timeStr
         viewProgressbar.progress = when (state) {
           is TimerUiState.TimeTick -> state.remainedProgress
