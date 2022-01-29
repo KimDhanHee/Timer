@@ -31,10 +31,10 @@ abstract class TimerDatabase : RoomDatabase() {
               super.onCreate(db)
               ioScope.launch {
                 arrayOf(
-                  TimerInfo(title = "라면", time = 3 * TimerInfo.MINUTE_UNIT, color = TimerColor.Green),
-                  TimerInfo(title = "계란 반숙", time = 6 * TimerInfo.MINUTE_UNIT, color = TimerColor.Black),
-                  TimerInfo(title = "계란 완숙", time = 12 * TimerInfo.MINUTE_UNIT, color = TimerColor.Red),
-                  TimerInfo(title = "플랭크", time = 1 * TimerInfo.MINUTE_UNIT, color = TimerColor.Purple)
+                  TimerInfo(title = "🍜라면", time = 3 * TimerInfo.MINUTE_UNIT, color = TimerColor.Green),
+                  TimerInfo(title = "🥚계란 반숙", time = 6 * TimerInfo.MINUTE_UNIT, color = TimerColor.Black),
+                  TimerInfo(title = "🥚계란 완숙", time = 12 * TimerInfo.MINUTE_UNIT, color = TimerColor.Red),
+                  TimerInfo(title = "💪플랭크", time = 1 * TimerInfo.MINUTE_UNIT, color = TimerColor.Purple)
                 ).forEach {
                   timerDao.addTimerInfo(it)
                 }
