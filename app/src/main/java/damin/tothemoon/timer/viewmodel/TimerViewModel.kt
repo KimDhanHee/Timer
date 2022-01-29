@@ -123,7 +123,7 @@ sealed class TimerUiState {
     get() = this is CountDown && this.remainedTime <= 0
 
   val displayCancel: Boolean
-    get() = this is CountDown || this is Paused
+    get() = (this is CountDown && this.remainedTime > 0 || this is Paused)
 
   val displayBack: Boolean
     get() = this is Idle || this is Canceled || this is Dismissed

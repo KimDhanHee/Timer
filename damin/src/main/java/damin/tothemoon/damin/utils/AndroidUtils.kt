@@ -1,14 +1,18 @@
 package damin.tothemoon.damin.utils
 
+import android.app.AlarmManager
 import android.app.Application
+import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Resources
 import android.graphics.Color
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import damin.tothemoon.damin.extensions.attrColor
 import damin.tothemoon.damin.extensions.isAttribute
@@ -32,6 +36,14 @@ object AndroidUtils {
   val packageName: String
     get() = context.packageName
 
+  val resources: Resources
+    get() = context.resources
+
+  fun string(@StringRes resId: Int): String = when (resId) {
+    0 -> ""
+    else -> resources.getString(resId)
+  }
+
   fun color(@ColorRes @AttrRes resId: Int): Int =
     color(application, resId)
 
@@ -43,6 +55,12 @@ object AndroidUtils {
 
   fun sharedPreferences(prefix: String = packageName, name: String): SharedPreferences =
     application.getSharedPreferences("$prefix-$name", Context.MODE_PRIVATE)
+
+  val alarmManager: AlarmManager
+    get() = systemService(Context.ALARM_SERVICE)
+
+  val notificationManager: NotificationManager
+    get() = systemService(Context.NOTIFICATION_SERVICE)
 
   @Suppress("UNCHECKED_CAST")
   fun <T> systemService(service: String, context: Context = application): T =

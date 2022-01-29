@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import damin.tothemoon.damin.utils.AndroidUtils
+import damin.tothemoon.timer.BuildConfig
 import damin.tothemoon.timer.R
 import kotlinx.parcelize.Parcelize
 import kotlin.math.abs
@@ -30,37 +31,37 @@ data class TimerInfo(
 
   fun reset() {
     state = TimerState.IDLE
-    runningTime = time
-    resetRemainedTime()
+    resetTime()
   }
 
   fun countdown() {
     remainedTime -= TIME_TICK
   }
 
-  private fun resetRemainedTime() {
-    remainedTime = this.time
+  private fun resetTime() {
+    runningTime = time
+    remainedTime = time
   }
 
   var hour: Int
     get() = ((time / HOUR_UNIT)).toInt()
     set(value) {
       time = value * HOUR_UNIT + minute * MINUTE_UNIT + seconds * SECONDS_UNIT
-      resetRemainedTime()
+      resetTime()
     }
 
   var minute: Int
     get() = (time / MINUTE_UNIT % 60).toInt()
     set(value) {
       time = hour * HOUR_UNIT + value * MINUTE_UNIT + seconds * SECONDS_UNIT
-      resetRemainedTime()
+      resetTime()
     }
 
   var seconds: Int
     get() = ((time / SECONDS_UNIT) % 60).toInt()
     set(value) {
       time = hour * HOUR_UNIT + minute * MINUTE_UNIT + value * SECONDS_UNIT
-      resetRemainedTime()
+      resetTime()
     }
 
   companion object {
@@ -71,6 +72,10 @@ data class TimerInfo(
     const val TIME_TICK = 100L
 
     const val MAX_TITLE_LENGTH = 16
+
+    const val BUNDLE_KEY_TIMER_INFO = "timer_info"
+
+    const val ACTION_TIME_OUT = "${BuildConfig.APPLICATION_ID}.TIME_OUT"
   }
 }
 
