@@ -28,7 +28,7 @@ data class TimerInfo(
     state = TimerState.PAUSED
   }
 
-  fun dismiss() {
+  fun reset() {
     state = TimerState.IDLE
     runningTime = time
     resetRemainedTime()

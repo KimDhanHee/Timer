@@ -11,6 +11,7 @@ import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.damin.extensions.mainScope
 import damin.tothemoon.damin.extensions.visibleOrGone
+import damin.tothemoon.damin.extensions.visibleOrInvisible
 import damin.tothemoon.timer.MainActivity
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerBinding
@@ -72,12 +73,14 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
       }
     }
 
-    val onDismiss = View.OnClickListener {
+    viewCancelBtn.setOnClickListener {
+      timerViewModel.cancel()
+      timerActivity.stopBackgroundTimer()
+    }
+    viewDismissBtn.setOnClickListener {
       timerViewModel.dismiss()
       timerActivity.stopBackgroundTimer()
     }
-    viewCancelBtn.setOnClickListener(onDismiss)
-    viewDismissBtn.setOnClickListener(onDismiss)
   }
 
   override fun FragmentTimerBinding.bindingVM() {
@@ -85,11 +88,15 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
       timerViewModel.timerStateFlow.collect { state ->
         if (!isAdded) return@collect
 
+        viewBackBtn.visibleOrInvisible(state.displayBack)
+
         viewStartPauseBtn.visibleOrGone(!state.displayDismiss)
         viewStartPauseBtn.setImageResource(state.startPauseIcon)
 
         viewDismissBtn.visibleOrGone(state.displayDismiss)
         viewDismissLabel.visibleOrGone(state.displayDismiss)
+
+        viewCancelBtn.visibleOrGone(state.displayCancel)
 
         viewTimer.text = timerInfo.remainedTime.timeStr
         viewProgressbar.progress = when (state) {
@@ -119,7 +126,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
     onBackPressedCallback = object : OnBackPressedCallback(true) {
       override fun handleOnBackPressed() {
         when (timerViewModel.timerStateFlow.value) {
-          is TimerUiState.Idle, is TimerUiState.Initialized -> findNavController().navigateUp()
+          is TimerUiState.Idle, is TimerUiState.Dismissed -> findNavController().navigateUp()
+          is TimerUiState.Canceled ->
+            navigateTo(TimerFragmentDirections.actionTimerToTimerEditor(timerInfo))
           else -> activity?.finish()
         }
       }
