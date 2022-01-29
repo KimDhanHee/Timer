@@ -39,7 +39,9 @@ class TimerEditTitleFragment : BaseFragment<FragmentTimerEditTitleBinding>(
     viewTitleInput.addTextChangedListener { title ->
       if (title == null) return@addTextChangedListener
 
-      viewTitleCounter.text = "${title.length}/${TimerInfo.MAX_TITLE_LENGTH}"
+      viewTitleCounter.text = getString(
+        R.string.timer_editor_count_indicator, title.length, TimerInfo.MAX_TITLE_LENGTH
+      )
       viewSaveBtn.isEnabled = title.isNotBlank()
     }
 

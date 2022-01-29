@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
+    startService(Intent(this, TimerService::class.java))
     bindService(
       Intent(this, TimerService::class.java),
       object : ServiceConnection {

@@ -45,6 +45,7 @@
         android:layout_gravity="center"
         android:backgroundTint="@color/white"
         android:hint="@string/timer_editor_title_hint"
+        android:inputType="text"
         android:maxLength="@{TimerInfo.MAX_TITLE_LENGTH}"
         android:minWidth="140dp"
         android:textAlignment="center"
