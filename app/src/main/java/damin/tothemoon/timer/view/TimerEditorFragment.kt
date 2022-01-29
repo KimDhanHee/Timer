@@ -108,9 +108,9 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
     }
 
     viewPaletteBtn.setOnClickListener {
-      when (val visible = editorViewModel.paletteVisibilityFlow.value) {
-        visible -> editorViewModel.closePalette()
-        else -> editorViewModel.openPalette()
+      when (editorViewModel.paletteVisibilityFlow.value) {
+        true -> editorViewModel.closePalette()
+        false -> editorViewModel.openPalette()
       }
     }
 
@@ -147,6 +147,10 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
           )
         }
       }
+    }
+
+    root.setOnClickListener {
+      editorViewModel.closePalette()
     }
   }
 }
