@@ -53,7 +53,7 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
     saveTimerState()
 
     timer?.cancel()
-    _timerStateFlow.value = TimerUiState.Initialized(timerInfo.time)
+    _timerStateFlow.value = TimerUiState.Initialized(timerInfo.time, timerInfo.remainedTime)
   }
 
   private fun saveTimerState() {
@@ -66,9 +66,7 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
     timerInfo.runningTime += minute * TimerInfo.MINUTE_UNIT
     timerInfo.remainedTime += minute * TimerInfo.MINUTE_UNIT
 
-    if (_timerStateFlow.value !is TimerUiState.CountDown) {
-      _timerStateFlow.value = TimerUiState.Initialized(timerInfo.remainedTime)
-    }
+    _timerStateFlow.value = TimerUiState.Initialized(timerInfo.runningTime, timerInfo.remainedTime)
   }
 
   override fun onCleared() {
@@ -83,7 +81,6 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
 }
 
 sealed class TimerUiState {
-  data class Initialized(val remainedTime: Long) : TimerUiState()
   object Idle : TimerUiState()
 
   open class TimeTick(
@@ -94,10 +91,16 @@ sealed class TimerUiState {
       max(((remainedTime / totalTime.toFloat()) * 1000).toInt(), 0)
   }
 
+  data class Initialized(
+    private val totalTime: Long,
+    val remainedTime: Long,
+  ) : TimeTick(totalTime, remainedTime)
+
   data class CountDown(
     private val totalTime: Long,
     val remainedTime: Long,
   ) : TimeTick(totalTime, remainedTime)
+
   data class Paused(
     private val totalTime: Long,
     val remainedTime: Long,
