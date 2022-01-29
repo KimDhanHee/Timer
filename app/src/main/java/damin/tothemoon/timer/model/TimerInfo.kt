@@ -31,37 +31,37 @@ data class TimerInfo(
 
   fun reset() {
     state = TimerState.IDLE
-    runningTime = time
-    resetRemainedTime()
+    resetTime()
   }
 
   fun countdown() {
     remainedTime -= TIME_TICK
   }
 
-  private fun resetRemainedTime() {
-    remainedTime = this.time
+  private fun resetTime() {
+    runningTime = time
+    remainedTime = time
   }
 
   var hour: Int
     get() = ((time / HOUR_UNIT)).toInt()
     set(value) {
       time = value * HOUR_UNIT + minute * MINUTE_UNIT + seconds * SECONDS_UNIT
-      resetRemainedTime()
+      resetTime()
     }
 
   var minute: Int
     get() = (time / MINUTE_UNIT % 60).toInt()
     set(value) {
       time = hour * HOUR_UNIT + value * MINUTE_UNIT + seconds * SECONDS_UNIT
-      resetRemainedTime()
+      resetTime()
     }
 
   var seconds: Int
     get() = ((time / SECONDS_UNIT) % 60).toInt()
     set(value) {
       time = hour * HOUR_UNIT + minute * MINUTE_UNIT + value * SECONDS_UNIT
-      resetRemainedTime()
+      resetTime()
     }
 
   companion object {
