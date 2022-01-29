@@ -31,6 +31,13 @@ versions.android_junit = "1.1.3"
 versions.espresso = "3.4.0"
 ext.versions = versions
 
+// Google
+versions.google_services = "4.3.10"
+
+// Firebase
+versions.firebase_bom = '29.0.4'
+versions.firebase_crashlytics_classpath = "2.8.1"
+
 
 // 3rd
 versions.epoxy = '4.6.3'
@@ -82,6 +89,23 @@ material.material = "com.google.android.material:material:${versions.material}"
 deps.material = material
 
 deps.material = material
+
+/**
+ * Google
+ */
+def google = [:]
+google.services = "com.google.gms:google-services:${versions.google_services}"
+deps.google = google
+
+/**
+ * Firebase
+ */
+def firebase = [:]
+firebase.bom = "com.google.firebase:firebase-bom:${versions.firebase_bom}"
+firebase.analytics = "com.google.firebase:firebase-analytics-ktx"
+firebase.crashlytics = "com.google.firebase:firebase-crashlytics-ktx"
+firebase.crashlytics_classpath = "com.google.firebase:firebase-crashlytics-gradle:${versions.firebase_crashlytics_classpath}"
+deps.firebase = firebase
 
 /**
  * 3rd

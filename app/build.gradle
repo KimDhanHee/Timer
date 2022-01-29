@@ -4,6 +4,8 @@ plugins {
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -40,6 +42,10 @@ android {
 dependencies {
     implementation project(":ad")
     implementation project(':damin')
+
+    implementation platform(deps.firebase.bom)
+    implementation deps.firebase.analytics
+    implementation deps.firebase.crashlytics
 
     kapt deps.epoxy.annotation
     kapt deps.room.compiler
