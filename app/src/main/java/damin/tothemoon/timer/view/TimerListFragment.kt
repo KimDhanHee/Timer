@@ -2,7 +2,6 @@ package damin.tothemoon.timer.view
 
 import android.graphics.Color
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import damin.tothemoon.ad.AdManager
 import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
@@ -32,8 +31,6 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
 
   private fun FragmentTimerListBinding.drawTimerList() {
     viewTimerList.withModels {
-      val deleteMode = timerListViewModel.timerListUiStateFlow.value == TimerListUiState.Deletable
-
       timerListViewModel.timerListFlow.value.forEach { timerInfo ->
         timerListItem {
           id(timerInfo.id)
@@ -41,12 +38,11 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
           colorSrc(timerInfo.color.src)
           timeStr(timerInfo.time.timeStr)
           isIdle(timerInfo.state == TimerState.IDLE)
-          deleteMode(deleteMode)
+          deleteMode(timerListViewModel.isDeleteMode)
           onItemClick { _ ->
-            if (deleteMode) return@onItemClick
+            if (timerListViewModel.isDeleteMode) return@onItemClick
 
-            findNavController()
-              .navigate(TimerListFragmentDirections.actionListToEditor(timerInfo))
+            navigateTo(TimerListFragmentDirections.actionListToEditor(timerInfo))
           }
           onItemDeleteClick { _ ->
             timerListViewModel.deleteTimerInfo(timerInfo)
@@ -63,10 +59,10 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
 
         viewTimerList.requestModelBuild()
 
-        timerInfoList.find { it.state != TimerState.IDLE }?.let { timerInfo ->
-          timerInfo.remainedTime -= PrefTimer.lastRunningTimeGap
-          findNavController()
-            .navigate(TimerListFragmentDirections.actionListToTimer(timerInfo))
+        val runningTimer = timerInfoList.find { it.state.isRunning }
+        if (runningTimer != null) {
+          runningTimer.remainedTime -= PrefTimer.lastRunningTimeGap
+          navigateTo(TimerListFragmentDirections.actionListToTimer(runningTimer))
         }
       }
     }
@@ -98,7 +94,7 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
 
   override fun FragmentTimerListBinding.setEventListener() {
     viewAddBtn.setOnClickListener {
-      findNavController().navigate(TimerListFragmentDirections.actionListToEditor())
+      navigateTo(TimerListFragmentDirections.actionListToEditor())
     }
 
     viewDeleteBtn.setOnClickListener {

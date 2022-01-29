@@ -21,7 +21,9 @@ class TimerEditTitleFragment : BaseFragment<FragmentTimerEditTitleBinding>(
       root.setBackgroundColor(timer.color.src)
 
       viewTitleInput.setText(timer.title)
-      viewTitleCounter.text = "${timer.title.length}/${TimerInfo.MAX_TITLE_LENGTH}"
+      viewTitleCounter.text = getString(
+        R.string.timer_editor_count_indicator, timer.title.length, TimerInfo.MAX_TITLE_LENGTH
+      )
 
       viewSaveBtn.isEnabled = timer.title.isNotBlank()
     }

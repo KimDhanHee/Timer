@@ -108,26 +108,28 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
     }
 
     viewPaletteBtn.setOnClickListener {
-      when (editorViewModel.paletteVisibilityFlow.value) {
-        true -> editorViewModel.closePalette()
-        false -> editorViewModel.openPalette()
+      when (val visible = editorViewModel.paletteVisibilityFlow.value) {
+        visible -> editorViewModel.closePalette()
+        else -> editorViewModel.openPalette()
       }
     }
 
     viewTitleInput.setOnClickListener {
-      findNavController().navigate(
+      navigateTo(
         TimerEditorFragmentDirections.actionEditorToEditTitle(editorViewModel.timerInfoFlow.value)
       )
+    }
+    setFragmentResultListener(TimerEditTitleFragment.REQUEST_TIMER_TITLE) { _, bundle ->
+      val newTitle = bundle.getString(TimerEditTitleFragment.KEY_TIMER_TITLE, "")
+      editorViewModel.updateTitle(newTitle)
     }
 
     viewHourPicker.setOnValueChangedListener { _, _, hour ->
       editorViewModel.updateHour(hour)
     }
-
     viewMinutePicker.setOnValueChangedListener { _, _, minute ->
       editorViewModel.updateMinute(minute)
     }
-
     viewSecondsPicker.setOnValueChangedListener { _, _, seconds ->
       editorViewModel.updateSeconds(seconds)
     }
@@ -140,17 +142,11 @@ class TimerEditorFragment : BaseFragment<FragmentTimerEditorBinding>(
         }
 
         withContext(Dispatchers.Main) {
-          findNavController().navigate(
+          navigateTo(
             TimerEditorFragmentDirections.actionEditorToTimer(editorViewModel.timerInfoFlow.value)
           )
         }
       }
-    }
-
-    setFragmentResultListener(TimerEditTitleFragment.REQUEST_TIMER_TITLE) { _, bundle ->
-      editorViewModel.updateTitle(
-        bundle.getString(TimerEditTitleFragment.KEY_TIMER_TITLE, "")
-      )
     }
   }
 }

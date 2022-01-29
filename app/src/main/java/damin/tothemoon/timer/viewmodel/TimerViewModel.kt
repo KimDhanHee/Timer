@@ -3,6 +3,7 @@ package damin.tothemoon.timer.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import damin.tothemoon.damin.extensions.ioScope
+import damin.tothemoon.timer.R
 import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.model.TimerState
@@ -31,7 +32,7 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
 
     this.timer = fixedRateTimer(period = TimerInfo.TIME_TICK) {
       timerInfo.countdown()
-      _timerStateFlow.value = TimerUiState.CountDown(timerInfo.time, timerInfo.remainedTime)
+      _timerStateFlow.value = TimerUiState.CountDown(timerInfo.runningTime, timerInfo.remainedTime)
     }
   }
 
@@ -42,7 +43,7 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
     saveTimerState()
 
     timer?.cancel()
-    _timerStateFlow.value = TimerUiState.Paused(timerInfo.time, timerInfo.remainedTime)
+    _timerStateFlow.value = TimerUiState.Paused(timerInfo.runningTime, timerInfo.remainedTime)
   }
 
   fun dismiss() {
@@ -52,7 +53,7 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
     saveTimerState()
 
     timer?.cancel()
-    _timerStateFlow.value = TimerUiState.Initialized(timerInfo.remainedTime)
+    _timerStateFlow.value = TimerUiState.Initialized(timerInfo.time, timerInfo.remainedTime)
   }
 
   private fun saveTimerState() {
@@ -61,53 +62,58 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
     }
   }
 
-  fun add1Minute() {
-    addMinute(1)
-  }
+  fun addMinute(minute: Int) {
+    timerInfo.runningTime += minute * TimerInfo.MINUTE_UNIT
+    timerInfo.remainedTime += minute * TimerInfo.MINUTE_UNIT
 
-  fun add5Minute() {
-    addMinute(5)
-  }
-
-  fun add10Minute() {
-    addMinute(10)
-  }
-
-  private fun addMinute(minute: Int) {
-    this.timerInfo.minute += minute
-
-    if (_timerStateFlow.value !is TimerUiState.CountDown) {
-      _timerStateFlow.value = TimerUiState.Initialized(timerInfo.remainedTime)
-    }
+    _timerStateFlow.value = TimerUiState.Initialized(timerInfo.runningTime, timerInfo.remainedTime)
   }
 
   override fun onCleared() {
+    super.onCleared()
+    backupTimerInfo()
+  }
+
+  fun backupTimerInfo() {
     saveTimerState()
     PrefTimer.saveLastRunningTime()
   }
 }
 
 sealed class TimerUiState {
-  data class Initialized(val remainedTime: Long) : TimerUiState()
   object Idle : TimerUiState()
-  data class CountDown(
-    private val totalTime: Long,
-    val remainedTime: Long,
+
+  open class TimeTick(
+    totalTime: Long,
+    remainedTime: Long,
   ) : TimerUiState() {
     val remainedProgress: Int =
       max(((remainedTime / totalTime.toFloat()) * 1000).toInt(), 0)
   }
+
+  data class Initialized(
+    private val totalTime: Long,
+    val remainedTime: Long,
+  ) : TimeTick(totalTime, remainedTime)
+
+  data class CountDown(
+    private val totalTime: Long,
+    val remainedTime: Long,
+  ) : TimeTick(totalTime, remainedTime)
 
   data class Paused(
     private val totalTime: Long,
     val remainedTime: Long,
-  ) : TimerUiState() {
-    val remainedProgress: Int =
-      max(((remainedTime / totalTime.toFloat()) * 1000).toInt(), 0)
-  }
+  ) : TimeTick(totalTime, remainedTime)
 
   val displayDismiss: Boolean
     get() = this is CountDown && this.remainedTime <= 0
+
+  val startPauseIcon: Int
+    get() = when (this) {
+      is CountDown -> R.drawable.ic_pause_24
+      else -> R.drawable.ic_play_24
+    }
 }
 
 class TimerViewModelFactory(

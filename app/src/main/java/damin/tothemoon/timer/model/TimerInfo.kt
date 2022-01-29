@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import damin.tothemoon.damin.utils.AndroidUtils
-import damin.tothemoon.timer.BuildConfig
 import damin.tothemoon.timer.R
 import kotlinx.parcelize.Parcelize
 import kotlin.math.abs
@@ -16,6 +15,7 @@ data class TimerInfo(
   var id: Long = 0,
   var title: String = "",
   var time: Long = 0,
+  var runningTime: Long = time,
   var remainedTime: Long = time,
   var color: TimerColor = TimerColor.Purple,
   var state: TimerState = TimerState.IDLE,
@@ -30,6 +30,7 @@ data class TimerInfo(
 
   fun dismiss() {
     state = TimerState.IDLE
+    runningTime = time
     resetRemainedTime()
   }
 
@@ -103,4 +104,7 @@ enum class TimerState {
   STARTED,
   PAUSED,
   ;
+
+  val isRunning: Boolean
+    get() = this != IDLE
 }

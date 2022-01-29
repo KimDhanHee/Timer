@@ -1,6 +1,7 @@
 package damin.tothemoon.timer.view
 
 import android.content.Context
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -50,9 +51,13 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   override fun FragmentTimerBinding.setEventListener() {
     viewBackBtn.setOnClickListener { onBackPressedCallback.handleOnBackPressed() }
 
-    viewPlus1MinBtn.setOnClickListener { timerViewModel.add1Minute() }
-    viewPlus5MinBtn.setOnClickListener { timerViewModel.add5Minute() }
-    viewPlus10MinBtn.setOnClickListener { timerViewModel.add10Minute() }
+    val addMinute = { minute: Int ->
+      timerViewModel.addMinute(minute)
+      timerActivity.startBackgroundTimer(timerInfo.remainedTime)
+    }
+    viewPlus1MinBtn.setOnClickListener { addMinute(1) }
+    viewPlus5MinBtn.setOnClickListener { addMinute(5) }
+    viewPlus10MinBtn.setOnClickListener { addMinute(10) }
 
     viewStartPauseBtn.setOnClickListener {
       when (timerViewModel.timerStateFlow.value) {
@@ -67,15 +72,12 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
       }
     }
 
-    viewCancelBtn.setOnClickListener {
+    val onDismiss = View.OnClickListener {
       timerViewModel.dismiss()
       timerActivity.stopBackgroundTimer()
     }
-
-    viewDismissBtn.setOnClickListener {
-      timerViewModel.dismiss()
-      timerActivity.stopBackgroundTimer()
-    }
+    viewCancelBtn.setOnClickListener(onDismiss)
+    viewDismissBtn.setOnClickListener(onDismiss)
   }
 
   override fun FragmentTimerBinding.bindingVM() {
@@ -84,30 +86,15 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         if (!isAdded) return@collect
 
         viewStartPauseBtn.visibleOrGone(!state.displayDismiss)
+        viewStartPauseBtn.setImageResource(state.startPauseIcon)
+
         viewDismissBtn.visibleOrGone(state.displayDismiss)
         viewDismissLabel.visibleOrGone(state.displayDismiss)
 
-        when (state) {
-          is TimerUiState.Idle -> {
-            viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)
-            viewTimer.text = timerInfo.remainedTime.timeStr
-            viewProgressbar.progress = 1000
-          }
-          is TimerUiState.CountDown -> {
-            viewStartPauseBtn.setImageResource(R.drawable.ic_pause_24)
-            viewTimer.text = state.remainedTime.timeStr
-            viewProgressbar.progress = state.remainedProgress
-          }
-          is TimerUiState.Paused -> {
-            viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)
-            viewTimer.text = state.remainedTime.timeStr
-            viewProgressbar.progress = state.remainedProgress
-          }
-          is TimerUiState.Initialized -> {
-            viewStartPauseBtn.setImageResource(R.drawable.ic_play_24)
-            viewTimer.text = state.remainedTime.timeStr
-            viewProgressbar.progress = 1000
-          }
+        viewTimer.text = timerInfo.remainedTime.timeStr
+        viewProgressbar.progress = when (state) {
+          is TimerUiState.TimeTick -> state.remainedProgress
+          else -> 1000
         }
       }
     }
@@ -143,5 +130,10 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   override fun onDetach() {
     super.onDetach()
     onBackPressedCallback.remove()
+  }
+
+  override fun onPause() {
+    super.onPause()
+    timerViewModel.backupTimerInfo()
   }
 }
