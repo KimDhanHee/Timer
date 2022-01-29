@@ -72,12 +72,14 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
       }
     }
 
-    val onDismiss = View.OnClickListener {
+    viewCancelBtn.setOnClickListener {
+      timerViewModel.cancel()
+      timerActivity.stopBackgroundTimer()
+    }
+    viewDismissBtn.setOnClickListener {
       timerViewModel.dismiss()
       timerActivity.stopBackgroundTimer()
     }
-    viewCancelBtn.setOnClickListener(onDismiss)
-    viewDismissBtn.setOnClickListener(onDismiss)
   }
 
   override fun FragmentTimerBinding.bindingVM() {
@@ -119,7 +121,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
     onBackPressedCallback = object : OnBackPressedCallback(true) {
       override fun handleOnBackPressed() {
         when (timerViewModel.timerStateFlow.value) {
-          is TimerUiState.Idle, is TimerUiState.Initialized -> findNavController().navigateUp()
+          is TimerUiState.Idle, is TimerUiState.Dismissed -> findNavController().navigateUp()
+          is TimerUiState.Canceled ->
+            navigateTo(TimerFragmentDirections.actionTimerToTimerEditor(timerInfo))
           else -> activity?.finish()
         }
       }

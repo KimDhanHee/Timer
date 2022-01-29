@@ -22,6 +22,10 @@
     <argument
       android:name="timerInfo"
       app:argType="damin.tothemoon.timer.model.TimerInfo" />
+    <action
+      android:id="@+id/action_timer_to_timerEditor"
+      app:destination="@id/timerEditorFragment"
+      app:popUpTo="@id/timerListFragment" />
   </fragment>
   <fragment
     android:id="@+id/timerEditorFragment"
@@ -35,8 +39,7 @@
     <action
       android:id="@+id/action_editor_to_timer"
       app:destination="@id/timerFragment"
-      app:popUpTo="@id/timerListFragment"
-      app:popUpToInclusive="false" />
+      app:popUpTo="@id/timerListFragment" />
     <action
       android:id="@+id/action_editor_to_editTitle"
       app:destination="@id/timerEditTitleFragment" />
