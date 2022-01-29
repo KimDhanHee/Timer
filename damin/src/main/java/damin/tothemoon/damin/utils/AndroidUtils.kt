@@ -1,5 +1,6 @@
 package damin.tothemoon.damin.utils
 
+import android.app.AlarmManager
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -43,6 +44,9 @@ object AndroidUtils {
 
   fun sharedPreferences(prefix: String = packageName, name: String): SharedPreferences =
     application.getSharedPreferences("$prefix-$name", Context.MODE_PRIVATE)
+
+  val alarmManager: AlarmManager
+    get() = systemService(Context.ALARM_SERVICE)
 
   @Suppress("UNCHECKED_CAST")
   fun <T> systemService(service: String, context: Context = application): T =
