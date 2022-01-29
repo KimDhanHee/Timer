@@ -11,6 +11,7 @@ import damin.tothemoon.ad.AdPosition
 import damin.tothemoon.damin.BaseFragment
 import damin.tothemoon.damin.extensions.mainScope
 import damin.tothemoon.damin.extensions.visibleOrGone
+import damin.tothemoon.damin.extensions.visibleOrInvisible
 import damin.tothemoon.timer.MainActivity
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerBinding
@@ -86,6 +87,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
     mainScope.launch {
       timerViewModel.timerStateFlow.collect { state ->
         if (!isAdded) return@collect
+
+        viewBackBtn.visibleOrInvisible(state.displayBack)
 
         viewStartPauseBtn.visibleOrGone(!state.displayDismiss)
         viewStartPauseBtn.setImageResource(state.startPauseIcon)
