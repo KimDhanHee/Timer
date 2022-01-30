@@ -31,7 +31,7 @@ object NotificationUtils {
 
   fun buildNotification(context: Context, timerInfo: TimerInfo) =
     NotificationCompat.Builder(context, TIMER_ALARM_CHANNEL_ID)
-      .setSmallIcon(R.drawable.ic_bell_off_16)
+      .setSmallIcon(R.mipmap.ic_launcher)
       .setContentTitle(timerInfo.title)
       .setContentIntent(
         PendingIntent.getActivity(
