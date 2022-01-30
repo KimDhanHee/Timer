@@ -33,6 +33,7 @@ object NotificationUtils {
     NotificationCompat.Builder(context, TIMER_ALARM_CHANNEL_ID)
       .setSmallIcon(R.mipmap.ic_launcher)
       .setContentTitle(timerInfo.title)
+      .setContentText(AndroidUtils.string(R.string.timer_notification_text))
       .setContentIntent(
         PendingIntent.getActivity(
           context,
