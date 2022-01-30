@@ -11,7 +11,8 @@
   
   <style name="PlusMinuteButton" parent="Widget.AppCompat.Button">
     <item name="android:minWidth">84dp</item>
-    <item name="android:textColor">@color/white</item>
+    <item name="background">@drawable/add_minute_button_background</item>
+    <item name="android:textColor">@color/add_minute_button</item>
     <item name="android:textSize">20dp</item>
     <item name="android:minHeight">0dp</item>
     <item name="android:background">@drawable/add_minute_button_background</item>
