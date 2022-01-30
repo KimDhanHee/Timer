@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
-import androidx.core.app.NotificationManagerCompat
 import damin.tothemoon.timer.media.DaminMediaPlayer
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.utils.NotificationUtils
@@ -28,16 +27,11 @@ class TimerService : Service() {
       Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
         NotificationUtils.createNotificationChannel()
         startForeground(
-          NotificationUtils.TIMER_SERVICE_NOTIFICATION_ID,
+          timerInfo.id.toInt(),
           NotificationUtils.buildNotification(this, timerInfo)
         )
       }
-      else -> with(NotificationManagerCompat.from(this)) {
-        notify(
-          timerInfo.id.toInt(),
-          NotificationUtils.buildNotification(this@TimerService, timerInfo)
-        )
-      }
+      else -> NotificationUtils.notifyTimer(this, timerInfo)
     }
 
     if (timeOutTimer == null) {

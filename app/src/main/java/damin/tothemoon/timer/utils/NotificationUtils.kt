@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import damin.tothemoon.damin.utils.AndroidUtils
 import damin.tothemoon.timer.MainActivity
 import damin.tothemoon.timer.R
@@ -29,10 +30,20 @@ object NotificationUtils {
     )
   }
 
+  fun notifyTimer(context: Context, timerInfo: TimerInfo) {
+    with(NotificationManagerCompat.from(context)) {
+      notify(
+        timerInfo.id.toInt(),
+        buildNotification(context, timerInfo)
+      )
+    }
+  }
+
   fun buildNotification(context: Context, timerInfo: TimerInfo) =
     NotificationCompat.Builder(context, TIMER_ALARM_CHANNEL_ID)
       .setSmallIcon(R.mipmap.ic_launcher)
       .setContentTitle(timerInfo.title)
+      .setContentText(AndroidUtils.string(R.string.timer_notification_text))
       .setContentIntent(
         PendingIntent.getActivity(
           context,

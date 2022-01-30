@@ -16,6 +16,7 @@ import damin.tothemoon.timer.R
 import damin.tothemoon.timer.databinding.FragmentTimerBinding
 import damin.tothemoon.timer.model.TimerState
 import damin.tothemoon.timer.model.timeStr
+import damin.tothemoon.timer.utils.NotificationUtils
 import damin.tothemoon.timer.viewmodel.TimerUiState
 import damin.tothemoon.timer.viewmodel.TimerViewModel
 import damin.tothemoon.timer.viewmodel.TimerViewModelFactory
@@ -44,6 +45,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
       TimerState.IDLE -> {
         timerViewModel.start()
         timerActivity.startBackgroundTimer(timerInfo)
+        NotificationUtils.notifyTimer(requireContext(), timerInfo)
       }
       TimerState.STARTED -> timerViewModel.start()
     }
@@ -71,6 +73,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         else -> {
           timerViewModel.start()
           timerActivity.startBackgroundTimer(timerInfo)
+          NotificationUtils.notifyTimer(requireContext(), timerInfo)
         }
       }
     }
@@ -78,10 +81,12 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
     viewCancelBtn.setOnClickListener {
       timerViewModel.cancel()
       timerActivity.stopBackgroundTimer(timerInfo)
+      NotificationUtils.removeNotification(timerInfo)
     }
     viewDismissBtn.setOnClickListener {
       timerViewModel.dismiss()
       timerActivity.stopBackgroundTimer(timerInfo)
+      NotificationUtils.removeNotification(timerInfo)
     }
   }
 
