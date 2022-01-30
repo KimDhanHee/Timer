@@ -110,6 +110,11 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
           is TimerUiState.TimeTick -> state.remainedProgress
           else -> 1000
         }
+
+        val plusBtnEnabled = state is TimerUiState.TimeTick && state.remainedTime > 0
+        viewPlus1MinBtn.isEnabled = plusBtnEnabled
+        viewPlus5MinBtn.isEnabled = plusBtnEnabled
+        viewPlus10MinBtn.isEnabled = plusBtnEnabled
       }
     }
   }
