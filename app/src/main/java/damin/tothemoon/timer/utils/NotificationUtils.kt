@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import damin.tothemoon.damin.utils.AndroidUtils
 import damin.tothemoon.timer.MainActivity
 import damin.tothemoon.timer.R
@@ -27,6 +28,15 @@ object NotificationUtils {
         NotificationManager.IMPORTANCE_HIGH
       )
     )
+  }
+
+  fun notifyTimer(context: Context, timerInfo: TimerInfo) {
+    with(NotificationManagerCompat.from(context)) {
+      notify(
+        timerInfo.id.toInt(),
+        buildNotification(context, timerInfo)
+      )
+    }
   }
 
   fun buildNotification(context: Context, timerInfo: TimerInfo) =
