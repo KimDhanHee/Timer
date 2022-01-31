@@ -38,6 +38,7 @@ class TimerService : Service() {
         else -> NotificationUtils.notifyTimer(this@TimerService, timerInfo)
       }
 
+      // timeOutTimer == null: Activity 가 Service 와 unbind 된 경우
       if (timeOutTimer == null && TimerDatabase.timerDao.getRunningTimers().isNotEmpty()) {
         DaminMediaPlayer.play()
       }
