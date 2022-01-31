@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.graphics.Color
+import android.media.AudioManager
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -59,6 +60,9 @@ object AndroidUtils {
 
   val alarmManager: AlarmManager
     get() = systemService(NotificationCompat.CATEGORY_ALARM)
+
+  val audioManager: AudioManager
+    get() = systemService(Context.AUDIO_SERVICE)
 
   val notificationManager: NotificationManager
     get() = systemService(Context.NOTIFICATION_SERVICE)
