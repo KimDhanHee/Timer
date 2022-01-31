@@ -5,9 +5,12 @@ import android.content.Intent
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import damin.tothemoon.damin.extensions.ioScope
 import damin.tothemoon.timer.media.DaminMediaPlayer
+import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.utils.NotificationUtils
+import kotlinx.coroutines.launch
 import java.util.Timer
 import kotlin.concurrent.schedule
 
@@ -23,19 +26,21 @@ class TimerService : Service() {
     val timerInfo = intent.getParcelableExtra<TimerInfo>(TimerInfo.BUNDLE_KEY_TIMER_INFO)
       ?: return super.onStartCommand(intent, flags, startId)
 
-    when {
-      Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
-        NotificationUtils.createNotificationChannel()
-        startForeground(
-          timerInfo.id.toInt(),
-          NotificationUtils.buildNotification(this, timerInfo)
-        )
+    ioScope.launch {
+      when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
+          NotificationUtils.createNotificationChannel()
+          startForeground(
+            timerInfo.id.toInt(),
+            NotificationUtils.buildNotification(this@TimerService, timerInfo)
+          )
+        }
+        else -> NotificationUtils.notifyTimer(this@TimerService, timerInfo)
       }
-      else -> NotificationUtils.notifyTimer(this, timerInfo)
-    }
 
-    if (timeOutTimer == null) {
-      DaminMediaPlayer.play()
+      if (timeOutTimer == null && TimerDatabase.timerDao.getRunningTimers().isNotEmpty()) {
+        DaminMediaPlayer.play()
+      }
     }
 
     return super.onStartCommand(intent, flags, startId)
