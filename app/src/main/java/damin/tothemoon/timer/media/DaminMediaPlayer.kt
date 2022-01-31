@@ -1,7 +1,5 @@
 package damin.tothemoon.timer.media
 
-import android.media.AudioAttributes
-import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.RingtoneManager
 import damin.tothemoon.damin.utils.AndroidUtils
@@ -10,16 +8,14 @@ object DaminMediaPlayer {
   private var mediaPlayer: MediaPlayer? = null
 
   private fun init() {
-    val uri =
-      RingtoneManager.getActualDefaultRingtoneUri(AndroidUtils.context, RingtoneManager.TYPE_ALARM)
+    val mediaUri = RingtoneManager.getActualDefaultRingtoneUri(
+      AndroidUtils.context,
+      RingtoneManager.TYPE_ALARM
+    )
 
     mediaPlayer = MediaPlayer().apply {
-      setAudioAttributes(
-        AudioAttributes.Builder()
-          .setLegacyStreamType(AudioManager.STREAM_MUSIC)
-          .build()
-      )
-      setDataSource(AndroidUtils.context, uri)
+      setAudioAttributes(DaminAudioManager.audioAttributes)
+      setDataSource(AndroidUtils.context, mediaUri)
       isLooping = true
     }
   }
@@ -27,6 +23,9 @@ object DaminMediaPlayer {
   fun play() {
     release()
     init()
+
+    DaminAudioManager.setTimerVolume()
+
     mediaPlayer!!.setOnPreparedListener { player ->
       player.start()
     }
@@ -34,6 +33,8 @@ object DaminMediaPlayer {
   }
 
   fun release() {
+    DaminAudioManager.release()
+
     mediaPlayer?.release()
     mediaPlayer = null
   }
