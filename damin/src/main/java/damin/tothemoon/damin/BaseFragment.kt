@@ -36,7 +36,9 @@ open class BaseFragment<VDB : ViewDataBinding>(
   }
 
   fun navigateTo(direction: NavDirections) {
-    findNavController().navigate(direction)
+    kotlin.runCatching {
+      findNavController().navigate(direction)
+    }
   }
 
   protected open fun VDB.initView() {}

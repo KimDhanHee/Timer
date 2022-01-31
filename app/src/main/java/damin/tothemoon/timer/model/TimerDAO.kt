@@ -12,6 +12,9 @@ interface TimerDAO {
   @Query("SELECT * FROM timer")
   fun getTimerInfos(): Flow<List<TimerInfo>>
 
+  @Query("SELECT * FROM timer WHERE state == 'STARTED'")
+  fun getRunningTimers(): List<TimerInfo>
+
   @Insert
   suspend fun addTimerInfo(timerInfo: TimerInfo): Long
 

@@ -17,8 +17,6 @@ import damin.tothemoon.timer.model.TimerInfo
 object NotificationUtils {
   private const val TIMER_ALARM_CHANNEL_ID = "timer_alarm_channel"
 
-  const val TIMER_SERVICE_NOTIFICATION_ID = 10
-
   @RequiresApi(Build.VERSION_CODES.O)
   fun createNotificationChannel() {
     AndroidUtils.notificationManager.createNotificationChannel(
