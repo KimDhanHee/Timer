@@ -13,6 +13,7 @@ import android.widget.EditText
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import damin.tothemoon.damin.extensions.attrColor
 import damin.tothemoon.damin.extensions.isAttribute
@@ -57,7 +58,7 @@ object AndroidUtils {
     application.getSharedPreferences("$prefix-$name", Context.MODE_PRIVATE)
 
   val alarmManager: AlarmManager
-    get() = systemService(Context.ALARM_SERVICE)
+    get() = systemService(NotificationCompat.CATEGORY_ALARM)
 
   val notificationManager: NotificationManager
     get() = systemService(Context.NOTIFICATION_SERVICE)
