@@ -1,4 +1,68 @@
 package damin.tothemoon.timer.media
 
+import android.media.AudioAttributes
+import android.media.AudioFocusRequest
+import android.media.AudioManager
+import android.os.Build
+import androidx.annotation.RequiresApi
+import damin.tothemoon.damin.utils.AndroidUtils
+
 object DaminAudioManager {
+  private val defaultVolume: Int =
+    AndroidUtils.audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) / 2 + 1
+  private var originalVolume: Int = 0
+
+  val audioAttributes: AudioAttributes
+    get() = AudioAttributes.Builder()
+      .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+      .setUsage(AudioAttributes.USAGE_ALARM)
+      .setFlags(AudioAttributes.FLAG_AUDIBILITY_ENFORCED)
+      .build()
+
+  fun setTimerVolume() {
+    requestAudioFocus()
+    originalVolume = AndroidUtils.audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+    setVolume(defaultVolume)
+  }
+
+  fun release() {
+    setVolume(originalVolume)
+    abandonAudioFocus()
+  }
+
+  private fun setVolume(volume: Int) {
+    AndroidUtils.audioManager.setStreamVolume(
+      AudioManager.STREAM_MUSIC,
+      volume,
+      AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE
+    )
+  }
+
+  private val audioFocusRequest: AudioFocusRequest
+    @RequiresApi(Build.VERSION_CODES.O)
+    get() = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+      .setAudioAttributes(audioAttributes)
+      .build()
+
+  private fun requestAudioFocus() {
+    when {
+      Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ->
+        AndroidUtils.audioManager.requestAudioFocus(audioFocusRequest)
+      else ->
+        AndroidUtils.audioManager.requestAudioFocus(
+          null,
+          AudioManager.STREAM_MUSIC,
+          AudioManager.AUDIOFOCUS_GAIN
+        )
+    }
+  }
+
+  private fun abandonAudioFocus() {
+    when {
+      Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ->
+        AndroidUtils.audioManager.abandonAudioFocusRequest(audioFocusRequest)
+      else ->
+        AndroidUtils.audioManager.abandonAudioFocus(null)
+    }
+  }
 }
