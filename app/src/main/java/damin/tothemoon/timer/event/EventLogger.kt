@@ -1,13 +1,17 @@
 package damin.tothemoon.timer.event
 
+import android.os.Bundle
 import androidx.core.os.bundleOf
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import damin.tothemoon.timer.model.TimerInfo
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 object EventLogger {
   fun logTimer(event: DaminEvent, timerInfo: TimerInfo) {
-    Firebase.analytics.logEvent(event.name, bundleOf(
+    log(event, bundleOf(
       "id" to timerInfo.id,
       "time" to timerInfo.time,
       "state" to timerInfo.state.name,
@@ -15,14 +19,41 @@ object EventLogger {
       "remained_time" to timerInfo.remainedTime,
     ))
   }
+
+  fun logBackground(event: DaminEvent, bundle: Bundle? = null) = log(event, bundle)
+
+  fun logMedia(event: DaminEvent, bundle: Bundle? = null) = log(event, bundle)
+
+  private fun log(event: DaminEvent, bundle: Bundle? = null) {
+    Firebase.analytics.logEvent(event.name, bundle?.apply {
+      putString("timestamp", currentTimeStr)
+    })
+  }
+
+  private val currentTimeStr: String
+    get() = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ROOT).format(Date())
 }
 
 enum class DaminEvent {
+  // User Action
   START_TIMER,
   PAUSE_TIMER,
-  TIMEOUT_TIMER,
   CANCEL_TIMER,
   DISMISS_TIMER,
-  RING_TIMER,
+
+  // Background
+  RECEIVER_TIMEOUT,
+  SERVICE_TIMEOUT,
+  BINDER_START,
+  BINDER_STOP,
+  BINDER_TIMEOUT,
+
+  // Media
+  MEDIA_PREPARE,
+  MEDIA_PLAY,
+  MEDIA_RELEASE,
+  AUDIO_PLAY,
+  AUDIO_VOLUME_SET,
+  AUDIO_RELEASE,
   ;
 }
