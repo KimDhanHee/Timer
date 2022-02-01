@@ -44,6 +44,8 @@ versions.epoxy = '4.6.3'
 
 // AD
 versions.admob = '20.5.0'
+versions.fan = '6.8.0.0'
+versions.inmobi = '10.0.1.0'
 
 def deps = [:]
 
@@ -121,6 +123,8 @@ deps.epoxy = epoxy
  */
 def admob = [:]
 admob.runtime = "com.google.android.gms:play-services-ads:${versions.admob}"
+admob.fan = "com.google.ads.mediation:facebook:${versions.fan}"
+admob.inmobi = "com.google.ads.mediation:inmobi:${versions.inmobi}"
 deps.admob = admob
 
 def test = [:]

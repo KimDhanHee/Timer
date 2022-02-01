@@ -35,4 +35,6 @@ dependencies {
     implementation project(':damin')
 
     implementation deps.admob.runtime
+    implementation deps.admob.fan
+    implementation deps.admob.inmobi
 }
