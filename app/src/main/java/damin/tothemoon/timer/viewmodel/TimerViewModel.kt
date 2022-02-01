@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import damin.tothemoon.damin.extensions.ioScope
 import damin.tothemoon.timer.R
+import damin.tothemoon.timer.event.DaminEvent
+import damin.tothemoon.timer.event.EventLogger
 import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.model.TimerState
@@ -30,6 +32,8 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
     timerInfo.start()
     saveTimerState()
 
+    EventLogger.logTimer(DaminEvent.START_TIMER, timerInfo)
+
     this.timer = fixedRateTimer(period = TimerInfo.TIME_TICK) {
       timerInfo.countdown()
       _timerStateFlow.value = TimerUiState.CountDown(timerInfo.runningTime, timerInfo.remainedTime)
@@ -42,6 +46,8 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
     timerInfo.pause()
     saveTimerState()
 
+    EventLogger.logTimer(DaminEvent.PAUSE_TIMER, timerInfo)
+
     timer?.cancel()
     _timerStateFlow.value = TimerUiState.Paused(timerInfo.runningTime, timerInfo.remainedTime)
   }
@@ -49,6 +55,8 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
   fun cancel() {
     timerInfo.reset()
     saveTimerState()
+
+    EventLogger.logTimer(DaminEvent.CANCEL_TIMER, timerInfo)
 
     timer?.cancel()
     _timerStateFlow.value = TimerUiState.Canceled(timerInfo.time, timerInfo.remainedTime)
@@ -59,6 +67,8 @@ class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
 
     timerInfo.reset()
     saveTimerState()
+
+    EventLogger.logTimer(DaminEvent.DISMISS_TIMER, timerInfo)
 
     timer?.cancel()
     _timerStateFlow.value = TimerUiState.Dismissed(timerInfo.time, timerInfo.remainedTime)

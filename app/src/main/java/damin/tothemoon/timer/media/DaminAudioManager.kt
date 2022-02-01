@@ -5,11 +5,14 @@ import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
 import damin.tothemoon.damin.utils.AndroidUtils
+import damin.tothemoon.timer.event.DaminEvent
+import damin.tothemoon.timer.event.EventLogger
 
 object DaminAudioManager {
-  private val defaultVolume: Int =
-    AndroidUtils.audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) / 2 + 1
+  private val defaultVolume: Int
+    get() = AndroidUtils.audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) / 2
   private var originalVolume: Int = 0
 
   val audioAttributes: AudioAttributes
@@ -20,17 +23,25 @@ object DaminAudioManager {
       .build()
 
   fun setTimerVolume() {
+    EventLogger.logMedia(DaminEvent.AUDIO_PLAY)
+
     requestAudioFocus()
     originalVolume = AndroidUtils.audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
     setVolume(defaultVolume)
   }
 
   fun release() {
+    EventLogger.logMedia(DaminEvent.AUDIO_RELEASE)
+
     setVolume(originalVolume)
     abandonAudioFocus()
   }
 
   private fun setVolume(volume: Int) {
+    EventLogger.logMedia(DaminEvent.AUDIO_VOLUME_SET, bundleOf(
+      "volume" to volume
+    ))
+
     AndroidUtils.audioManager.setStreamVolume(
       AudioManager.STREAM_MUSIC,
       volume,
