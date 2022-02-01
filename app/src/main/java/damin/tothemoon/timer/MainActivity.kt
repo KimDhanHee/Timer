@@ -59,4 +59,8 @@ class MainActivity : AppCompatActivity() {
     timerBinder?.stop()
     AlarmUtils.cancelAlarm(this, timerInfo)
   }
+
+  fun dismiss() {
+    timerBinder?.dismiss()
+  }
 }

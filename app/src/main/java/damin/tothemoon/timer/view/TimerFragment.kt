@@ -86,6 +86,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
     viewDismissBtn.setOnClickListener {
       timerViewModel.dismiss()
       timerActivity.stopBackgroundTimer(timerInfo)
+      timerActivity.dismiss()
       NotificationUtils.removeNotification(timerInfo)
     }
   }

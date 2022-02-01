@@ -78,6 +78,9 @@ class TimerService : Service() {
       timeOutTimer = null
 
       DaminMediaPlayer.release()
+    }
+
+    fun dismiss() {
       stopForeground(true)
     }
   }
