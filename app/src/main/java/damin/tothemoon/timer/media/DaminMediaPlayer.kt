@@ -25,6 +25,7 @@ object DaminMediaPlayer {
     mediaPlayer = MediaPlayer().apply {
       setAudioAttributes(DaminAudioManager.audioAttributes)
       setDataSource(AndroidUtils.context, mediaUri)
+      setVolume(1f, 1f)
       isLooping = true
     }
   }
@@ -44,12 +45,14 @@ object DaminMediaPlayer {
           if (needToPlay) play()
         }
 
+      DaminAudioManager.setTimerVolume()
+
       mediaPlayer!!.setOnPreparedListener { player ->
         EventLogger.logMedia(DaminEvent.MEDIA_PLAY)
 
         player.start()
 
-        DaminAudioManager.setTimerVolume()
+        DaminAudioManager.requestAudioFocus()
       }
       mediaPlayer!!.prepareAsync()
     }
