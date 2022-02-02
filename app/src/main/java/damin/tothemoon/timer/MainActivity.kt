@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
     AlarmUtils.cancelAlarm(this, timerInfo)
   }
 
-  fun dismiss() {
+  fun dismissBackgroundTimer() {
     timerBinder?.dismiss()
   }
 }
