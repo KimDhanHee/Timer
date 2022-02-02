@@ -67,7 +67,10 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
 
     val addMinute = { minute: Int ->
       timerViewModel.addMinute(minute)
-      timerActivity.startBackgroundTimer(timerInfo)
+
+      if (timerViewModel.timerStateFlow.value.isRunning) {
+        timerActivity.startBackgroundTimer(timerInfo)
+      }
     }
     viewPlus1MinBtn.setOnClickListener { addMinute(1) }
     viewPlus5MinBtn.setOnClickListener { addMinute(5) }
