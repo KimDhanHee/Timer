@@ -12,12 +12,12 @@ import damin.tothemoon.timer.event.EventLogger
 
 object DaminAudioManager {
   private val defaultVolume: Int
-    get() = AndroidUtils.audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) / 2
+    get() = AndroidUtils.audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM) / 2
   private var originalVolume: Int = 0
 
   val audioAttributes: AudioAttributes
     get() = AudioAttributes.Builder()
-      .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+      .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
       .setUsage(AudioAttributes.USAGE_ALARM)
       .setFlags(AudioAttributes.FLAG_AUDIBILITY_ENFORCED)
       .build()
@@ -25,8 +25,7 @@ object DaminAudioManager {
   fun setTimerVolume() {
     EventLogger.logMedia(DaminEvent.AUDIO_PLAY)
 
-    requestAudioFocus()
-    originalVolume = AndroidUtils.audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+    originalVolume = AndroidUtils.audioManager.getStreamVolume(AudioManager.STREAM_ALARM)
     setVolume(defaultVolume)
   }
 
@@ -43,7 +42,7 @@ object DaminAudioManager {
     ))
 
     AndroidUtils.audioManager.setStreamVolume(
-      AudioManager.STREAM_MUSIC,
+      AudioManager.STREAM_ALARM,
       volume,
       AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE
     )
@@ -55,14 +54,14 @@ object DaminAudioManager {
       .setAudioAttributes(audioAttributes)
       .build()
 
-  private fun requestAudioFocus() {
+  fun requestAudioFocus() {
     when {
       Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ->
         AndroidUtils.audioManager.requestAudioFocus(audioFocusRequest)
       else ->
         AndroidUtils.audioManager.requestAudioFocus(
           null,
-          AudioManager.STREAM_MUSIC,
+          AudioManager.STREAM_ALARM,
           AudioManager.AUDIOFOCUS_GAIN
         )
     }

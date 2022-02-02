@@ -28,29 +28,36 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
 ) {
   private val navArgs by navArgs<TimerFragmentArgs>()
   private val timerViewModel by viewModels<TimerViewModel> {
-    TimerViewModelFactory(timerInfo)
+    TimerViewModelFactory(navArgs.timerInfo)
   }
-
-  private val timerInfo by lazy { navArgs.timerInfo }
 
   private val timerActivity by lazy { activity as MainActivity }
 
   override fun FragmentTimerBinding.initView() {
-    activity?.window?.statusBarColor = timerInfo.color.src
-    root.setBackgroundColor(timerInfo.color.src)
+    initTimerInfo()
 
-    viewTitle.text = timerInfo.title
-
-    when (timerInfo.state) {
-      TimerState.IDLE -> {
-        timerViewModel.start()
-        timerActivity.startBackgroundTimer(timerInfo)
-        NotificationUtils.notifyTimer(requireContext(), timerInfo)
-      }
-      TimerState.STARTED -> timerViewModel.start()
-    }
+    startTimer()
 
     loadAd()
+  }
+
+  private fun FragmentTimerBinding.initTimerInfo() {
+    activity?.window?.statusBarColor = timerViewModel.timerInfo.color.src
+    root.setBackgroundColor(timerViewModel.timerInfo.color.src)
+
+    viewTitle.text = timerViewModel.timerInfo.title
+  }
+
+  private fun startTimer() {
+    when (timerViewModel.timerInfo.state) {
+      TimerState.IDLE -> {
+        timerViewModel.start()
+        timerActivity.startBackgroundTimer(timerViewModel.timerInfo)
+        NotificationUtils.notifyTimer(requireContext(), timerViewModel.timerInfo)
+      }
+      TimerState.STARTED -> timerViewModel.start()
+      else -> Unit
+    }
   }
 
   override fun FragmentTimerBinding.setEventListener() {
@@ -58,7 +65,10 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
 
     val addMinute = { minute: Int ->
       timerViewModel.addMinute(minute)
-      timerActivity.startBackgroundTimer(timerInfo)
+
+      if (timerViewModel.timerStateFlow.value.isRunning) {
+        timerActivity.startBackgroundTimer(timerViewModel.timerInfo)
+      }
     }
     viewPlus1MinBtn.setOnClickListener { addMinute(1) }
     viewPlus5MinBtn.setOnClickListener { addMinute(5) }
@@ -68,25 +78,26 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
       when (timerViewModel.timerStateFlow.value) {
         is TimerUiState.CountDown -> {
           timerViewModel.pause()
-          timerActivity.stopBackgroundTimer(timerInfo)
+          timerActivity.stopBackgroundTimer(timerViewModel.timerInfo)
         }
         else -> {
           timerViewModel.start()
-          timerActivity.startBackgroundTimer(timerInfo)
-          NotificationUtils.notifyTimer(requireContext(), timerInfo)
+          timerActivity.startBackgroundTimer(timerViewModel.timerInfo)
+          NotificationUtils.notifyTimer(requireContext(), timerViewModel.timerInfo)
         }
       }
     }
 
     viewCancelBtn.setOnClickListener {
       timerViewModel.cancel()
-      timerActivity.stopBackgroundTimer(timerInfo)
-      NotificationUtils.removeNotification(timerInfo)
+      timerActivity.stopBackgroundTimer(timerViewModel.timerInfo)
+      NotificationUtils.removeNotification(timerViewModel.timerInfo)
     }
     viewDismissBtn.setOnClickListener {
       timerViewModel.dismiss()
-      timerActivity.stopBackgroundTimer(timerInfo)
-      NotificationUtils.removeNotification(timerInfo)
+      timerActivity.stopBackgroundTimer(timerViewModel.timerInfo)
+      timerActivity.dismissBackgroundTimer()
+      NotificationUtils.removeNotification(timerViewModel.timerInfo)
     }
   }
 
@@ -105,7 +116,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
 
         viewCancelBtn.visibleOrGone(state.displayCancel)
 
-        viewTimer.text = timerInfo.remainedTime.timeStr
+        viewTimer.text = timerViewModel.timerInfo.remainedTime.timeStr
         viewProgressbar.progress = when (state) {
           is TimerUiState.TimeTick -> state.remainedProgress
           else -> 1000
@@ -140,7 +151,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         when (timerViewModel.timerStateFlow.value) {
           is TimerUiState.Idle, is TimerUiState.Dismissed -> findNavController().navigateUp()
           is TimerUiState.Canceled ->
-            navigateTo(TimerFragmentDirections.actionTimerToTimerEditor(timerInfo))
+            navigateTo(TimerFragmentDirections.actionTimerToTimerEditor(timerViewModel.timerInfo))
           else -> activity?.finish()
         }
       }

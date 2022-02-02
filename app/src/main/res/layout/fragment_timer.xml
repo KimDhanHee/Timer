@@ -6,6 +6,7 @@
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:keepScreenOn="true"
     tools:background="@color/purple_500">
     
     <androidx.appcompat.widget.AppCompatImageView
@@ -164,7 +165,7 @@
     <FrameLayout
       android:id="@+id/viewAdContainer"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="50dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent" />

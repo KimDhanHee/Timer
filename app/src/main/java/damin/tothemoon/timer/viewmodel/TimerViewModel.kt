@@ -17,7 +17,7 @@ import java.util.Timer
 import kotlin.concurrent.fixedRateTimer
 import kotlin.math.max
 
-class TimerViewModel(private val timerInfo: TimerInfo) : ViewModel() {
+class TimerViewModel(val timerInfo: TimerInfo) : ViewModel() {
   private val _timerStateFlow = MutableStateFlow(when (timerInfo.state) {
     TimerState.STARTED -> TimerUiState.CountDown(timerInfo.time, timerInfo.remainedTime)
     TimerState.PAUSED -> TimerUiState.Paused(timerInfo.time, timerInfo.remainedTime)
@@ -137,6 +137,9 @@ sealed class TimerUiState {
 
   val displayBack: Boolean
     get() = this is Idle || this is Canceled || this is Dismissed
+
+  val isRunning: Boolean
+    get() = this is CountDown || this is Paused
 
   val startPauseIcon: Int
     get() = when (this) {
