@@ -6,7 +6,7 @@ import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import androidx.core.os.bundleOf
-import damin.tothemoon.damin.extensions.ioScope
+import damin.tothemoon.damin.extensions.defaultScope
 import damin.tothemoon.timer.event.DaminEvent
 import damin.tothemoon.timer.event.EventLogger
 import damin.tothemoon.timer.media.DaminMediaPlayer
@@ -29,9 +29,9 @@ class TimerService : Service() {
     val timerInfo = intent.getParcelableExtra<TimerInfo>(TimerInfo.BUNDLE_KEY_TIMER_INFO)
       ?: return super.onStartCommand(intent, flags, startId)
 
-    EventLogger.logTimer(DaminEvent.SERVICE_TIMEOUT, timerInfo)
+    defaultScope.launch {
+      EventLogger.logTimer(DaminEvent.SERVICE_TIMEOUT, timerInfo)
 
-    ioScope.launch {
       when {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
           NotificationUtils.createNotificationChannel()
@@ -58,30 +58,35 @@ class TimerService : Service() {
     fun start(time: Long) {
       if (time < 0) return
 
-      EventLogger.logBackground(DaminEvent.BINDER_START, bundleOf(
-        "remained_time" to time
-      ))
+      defaultScope.launch {
+        EventLogger.logBackground(DaminEvent.BINDER_START, bundleOf(
+          "remained_time" to time
+        ))
 
-      timeOutTimer?.cancel()
-      timeOutTimer = Timer().apply {
-        schedule(time) {
-          EventLogger.logBackground(DaminEvent.BINDER_TIMEOUT)
-          DaminMediaPlayer.play()
+        timeOutTimer?.cancel()
+        timeOutTimer = Timer().apply {
+          schedule(time) {
+            EventLogger.logBackground(DaminEvent.BINDER_TIMEOUT)
+            DaminMediaPlayer.play()
+          }
         }
       }
     }
 
     fun stop() {
-      EventLogger.logBackground(DaminEvent.BINDER_STOP)
+      defaultScope.launch {
+        EventLogger.logBackground(DaminEvent.BINDER_STOP)
 
-      timeOutTimer?.cancel()
-      timeOutTimer = null
-
-      DaminMediaPlayer.release()
+        timeOutTimer?.cancel()
+        timeOutTimer = null
+      }
     }
 
     fun dismiss() {
-      stopForeground(true)
+      defaultScope.launch {
+        stopForeground(true)
+        DaminMediaPlayer.release()
+      }
     }
   }
 }

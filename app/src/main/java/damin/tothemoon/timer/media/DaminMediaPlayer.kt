@@ -2,9 +2,11 @@ package damin.tothemoon.timer.media
 
 import android.media.MediaPlayer
 import android.media.RingtoneManager
+import damin.tothemoon.damin.extensions.ioScope
 import damin.tothemoon.damin.utils.AndroidUtils
 import damin.tothemoon.timer.event.DaminEvent
 import damin.tothemoon.timer.event.EventLogger
+import kotlinx.coroutines.launch
 
 object DaminMediaPlayer {
   private var mediaPlayer: MediaPlayer? = null
@@ -23,27 +25,31 @@ object DaminMediaPlayer {
   }
 
   fun play() {
-    EventLogger.logMedia(DaminEvent.MEDIA_PREPARE)
+    ioScope.launch {
+      EventLogger.logMedia(DaminEvent.MEDIA_PREPARE)
 
-    release()
-    init()
+      release()
+      init()
 
-    DaminAudioManager.setTimerVolume()
+      DaminAudioManager.setTimerVolume()
 
-    mediaPlayer!!.setOnPreparedListener { player ->
-      EventLogger.logMedia(DaminEvent.MEDIA_PLAY)
+      mediaPlayer!!.setOnPreparedListener { player ->
+        EventLogger.logMedia(DaminEvent.MEDIA_PLAY)
 
-      player.start()
+        player.start()
+      }
+      mediaPlayer!!.prepareAsync()
     }
-    mediaPlayer!!.prepareAsync()
   }
 
   fun release() {
-    EventLogger.logMedia(DaminEvent.MEDIA_RELEASE)
+    ioScope.launch {
+      EventLogger.logMedia(DaminEvent.MEDIA_RELEASE)
 
-    DaminAudioManager.release()
+      DaminAudioManager.release()
 
-    mediaPlayer?.release()
-    mediaPlayer = null
+      mediaPlayer?.release()
+      mediaPlayer = null
+    }
   }
 }
