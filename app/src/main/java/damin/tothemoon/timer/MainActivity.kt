@@ -14,14 +14,11 @@ import damin.tothemoon.timer.utils.AlarmUtils
 class MainActivity : AppCompatActivity() {
   private var timerBinder: TimerService.TimerBinder? = null
 
-  private var isBinding: Boolean = false
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
     startService(Intent(this, TimerService::class.java))
-    bindService()
   }
 
   private fun bindService(onBind: () -> Unit = {}) {
@@ -29,13 +26,11 @@ class MainActivity : AppCompatActivity() {
       Intent(this, TimerService::class.java),
       object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
-          isBinding = true
           timerBinder = service as TimerService.TimerBinder
           onBind()
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-          isBinding = false
           timerBinder = null
         }
       },
@@ -45,13 +40,13 @@ class MainActivity : AppCompatActivity() {
 
   fun startBackgroundTimer(timerInfo: TimerInfo) {
     val onBind = {
-      timerBinder?.start(timerInfo.remainedTime)
+      timerBinder!!.start(timerInfo.remainedTime)
       AlarmUtils.setAlarm(this, timerInfo)
     }
 
-    when (isBinding) {
-      true -> onBind()
-      false -> bindService(onBind)
+    when {
+      timerBinder != null -> onBind()
+      else -> bindService(onBind)
     }
   }
 
