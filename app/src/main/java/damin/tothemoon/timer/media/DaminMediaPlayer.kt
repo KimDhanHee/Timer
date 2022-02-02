@@ -44,12 +44,12 @@ object DaminMediaPlayer {
           if (needToPlay) play()
         }
 
-      DaminAudioManager.setTimerVolume()
-
       mediaPlayer!!.setOnPreparedListener { player ->
         EventLogger.logMedia(DaminEvent.MEDIA_PLAY)
 
         player.start()
+
+        DaminAudioManager.setTimerVolume()
       }
       mediaPlayer!!.prepareAsync()
     }
