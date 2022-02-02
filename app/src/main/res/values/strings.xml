@@ -1,22 +1,25 @@
 <resources>
-  <string name="app_name">타이머</string>
+  <string name="app_name">Timer</string>
   
-  <string name="timer_start">시작</string>
-  <string name="timer_cancel">취소</string>
-  <string name="timer_dismiss">해제</string>
-  <string name="timer_finish">타이머 종료</string>
-  <string name="timer_add_1min">+ 1분</string>
-  <string name="timer_add_5min">+ 5분</string>
-  <string name="timer_add_10min">+ 10분</string>
-  <string name="timer_notification_text">타이머가 실행 중 입니다.</string>
+  <string name="preset_timer_ramen">🍜Ramen</string>
+  <string name="preset_timer_soft_boiled_egg">🥚Soft Boiled Egg</string>
+  <string name="preset_timer_hard_boiled_egg">🥚Hard Boiled Egg</string>
+  <string name="preset_timer_plank">💪Plank</string>
   
-  <string name="timer_list_add">타이머 추가</string>
+  <string name="timer_start">start</string>
+  <string name="timer_cancel">cancel</string>
+  <string name="timer_dismiss">dismiss</string>
+  <string name="timer_finish">timer finished</string>
+  <string name="timer_add_1min">+ 1 min</string>
+  <string name="timer_add_5min">+ 5 min</string>
+  <string name="timer_add_10min">+ 10 min</string>
+  <string name="timer_notification_text">timer is running.</string>
   
-  <string name="timer_editor_title_hint">제목 입력</string>
-  <string name="timer_editor_save_title">저장</string>
-  <string name="timer_editor_count_indicator">%d/%d</string>
+  <string name="timer_editor_title_hint">input title</string>
+  <string name="timer_editor_save_title">save</string>
+  <string name="timer_editor_count_indicator" translatable="false">%d/%d</string>
   
-  <string name="timer_editor_hour_label">시간</string>
-  <string name="timer_editor_minute_label">분</string>
-  <string name="timer_editor_seconds_label">초</string>
+  <string name="timer_editor_hour_label">hour</string>
+  <string name="timer_editor_minute_label">minute</string>
+  <string name="timer_editor_seconds_label">seconds</string>
 </resources>
