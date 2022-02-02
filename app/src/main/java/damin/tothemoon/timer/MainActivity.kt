@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     setContentView(R.layout.activity_main)
 
     startService(Intent(this, TimerService::class.java))
+    bindService()
   }
 
   private fun bindService(onBind: () -> Unit = {}) {
