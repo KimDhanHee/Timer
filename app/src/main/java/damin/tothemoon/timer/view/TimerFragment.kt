@@ -36,11 +36,21 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
   private val timerActivity by lazy { activity as MainActivity }
 
   override fun FragmentTimerBinding.initView() {
+    initTimerInfo()
+
+    startTimer()
+
+    loadAd()
+  }
+
+  private fun FragmentTimerBinding.initTimerInfo() {
     activity?.window?.statusBarColor = timerInfo.color.src
     root.setBackgroundColor(timerInfo.color.src)
 
     viewTitle.text = timerInfo.title
+  }
 
+  private fun startTimer() {
     when (timerInfo.state) {
       TimerState.IDLE -> {
         timerViewModel.start()
@@ -48,9 +58,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         NotificationUtils.notifyTimer(requireContext(), timerInfo)
       }
       TimerState.STARTED -> timerViewModel.start()
+      else -> Unit
     }
-
-    loadAd()
   }
 
   override fun FragmentTimerBinding.setEventListener() {
