@@ -7,9 +7,14 @@ import damin.tothemoon.damin.utils.AndroidUtils
 import damin.tothemoon.timer.event.DaminEvent
 import damin.tothemoon.timer.event.EventLogger
 import kotlinx.coroutines.launch
+import java.util.Timer
+import kotlin.concurrent.fixedRateTimer
 
 object DaminMediaPlayer {
   private var mediaPlayer: MediaPlayer? = null
+  private var periodicPlayingChecker: Timer? = null
+
+  private const val CHECK_PERIOID = 1000L
 
   private fun init() {
     val mediaUri = RingtoneManager.getActualDefaultRingtoneUri(
@@ -31,6 +36,14 @@ object DaminMediaPlayer {
       release()
       init()
 
+      periodicPlayingChecker =
+        fixedRateTimer(initialDelay = CHECK_PERIOID, period = CHECK_PERIOID) {
+          val needToPlay =
+            mediaPlayer == null || (mediaPlayer != null && mediaPlayer?.isPlaying == false)
+
+          if (needToPlay) play()
+        }
+
       DaminAudioManager.setTimerVolume()
 
       mediaPlayer!!.setOnPreparedListener { player ->
@@ -45,6 +58,9 @@ object DaminMediaPlayer {
   fun release() {
     ioScope.launch {
       EventLogger.logMedia(DaminEvent.MEDIA_RELEASE)
+
+      periodicPlayingChecker?.cancel()
+      periodicPlayingChecker = null
 
       DaminAudioManager.release()
 
