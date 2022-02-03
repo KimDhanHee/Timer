@@ -5,6 +5,7 @@
   <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
   <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
   
   <application
     android:name=".DaminApp"
@@ -16,8 +17,7 @@
     android:theme="@style/Theme.Timer">
     <receiver
       android:name=".receiver.TimerReceiver"
-      android:enabled="true"
-      android:exported="true">
+      android:exported="false">
       <intent-filter>
         <action android:name="${applicationId}.TIME_OUT" />
       </intent-filter>
@@ -25,7 +25,6 @@
     
     <service
       android:name=".service.TimerService"
-      android:enabled="true"
       android:exported="false" />
     
     <activity
