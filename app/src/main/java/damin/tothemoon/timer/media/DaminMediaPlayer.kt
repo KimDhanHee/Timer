@@ -10,7 +10,10 @@ object DaminMediaPlayer {
   private var mediaPlayer: MediaPlayer? = null
 
   private fun init() {
-    val mediaUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+    val mediaUri = RingtoneManager.getActualDefaultRingtoneUri(
+      AndroidUtils.context,
+      RingtoneManager.TYPE_ALARM
+    )
 
     mediaPlayer = MediaPlayer().apply {
       setAudioAttributes(DaminAudioManager.audioAttributes)
@@ -19,7 +22,7 @@ object DaminMediaPlayer {
     }
   }
 
-  fun play() {
+  fun play() = synchronized(this) {
     release()
     init()
 
@@ -37,8 +40,13 @@ object DaminMediaPlayer {
   fun release() {
     EventLogger.logMedia(DaminEvent.MEDIA_RELEASE)
 
-    DaminAudioManager.release()
+    if (mediaPlayer?.isPlaying == true) {
+      mediaPlayer?.stop()
+    }
 
     mediaPlayer?.release()
+    mediaPlayer = null
+
+    DaminAudioManager.release()
   }
 }
