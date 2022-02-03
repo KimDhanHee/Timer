@@ -25,13 +25,13 @@ object EventLogger {
   fun logMedia(event: DaminEvent, bundle: Bundle? = null) = log(event, bundle)
 
   private fun log(event: DaminEvent, bundle: Bundle? = null) {
-    Firebase.analytics.logEvent(event.name, bundle?.apply {
+    Firebase.analytics.logEvent(event.name, (bundle ?: Bundle()).apply {
       putString("timestamp", currentTimeStr)
     })
   }
 
   private val currentTimeStr: String
-    get() = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ROOT).format(Date())
+    get() = SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS", Locale.ROOT).format(Date())
 }
 
 enum class DaminEvent {
@@ -42,11 +42,14 @@ enum class DaminEvent {
   DISMISS_TIMER,
 
   // Background
+  SET_TIMER_ALARM,
+  CANCEL_TIMER_ALARM,
   RECEIVER_TIMEOUT,
   SERVICE_TIMEOUT,
   BINDER_START,
   BINDER_STOP,
   BINDER_TIMEOUT,
+  BINDER_DISMISS,
 
   // Media
   MEDIA_PREPARE,
