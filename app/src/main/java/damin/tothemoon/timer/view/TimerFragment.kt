@@ -66,7 +66,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
     val addMinute = { minute: Int ->
       timerViewModel.addMinute(minute)
 
-      if (timerViewModel.timerStateFlow.value.isRunning) {
+      if (timerViewModel.timerStateFlow.value is TimerUiState.CountDown) {
         timerActivity.startBackgroundTimer(timerViewModel.timerInfo)
       }
     }
@@ -156,7 +156,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         }
       }
     }
-    activity?.onBackPressedDispatcher?.addCallback(onBackPressedCallback)
+    activity?.onBackPressedDispatcher?.addCallback(this, onBackPressedCallback)
   }
 
   override fun onDetach() {

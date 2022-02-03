@@ -34,7 +34,8 @@ class TimerViewModel(val timerInfo: TimerInfo) : ViewModel() {
 
     EventLogger.logTimer(DaminEvent.START_TIMER, timerInfo)
 
-    this.timer = fixedRateTimer(period = TimerInfo.TIME_TICK) {
+    timer?.cancel()
+    timer = fixedRateTimer(period = TimerInfo.TIME_TICK) {
       timerInfo.countdown()
       _timerStateFlow.value = TimerUiState.CountDown(timerInfo.runningTime, timerInfo.remainedTime)
     }
@@ -84,7 +85,13 @@ class TimerViewModel(val timerInfo: TimerInfo) : ViewModel() {
     timerInfo.runningTime += minute * TimerInfo.MINUTE_UNIT
     timerInfo.remainedTime += minute * TimerInfo.MINUTE_UNIT
 
-    _timerStateFlow.value = TimerUiState.Dismissed(timerInfo.runningTime, timerInfo.remainedTime)
+    _timerStateFlow.value = when (_timerStateFlow.value) {
+      is TimerUiState.Paused -> TimerUiState.Paused(timerInfo.runningTime, timerInfo.remainedTime)
+      is TimerUiState.CountDown -> TimerUiState.CountDown(timerInfo.runningTime, timerInfo.remainedTime)
+      is TimerUiState.Canceled -> TimerUiState.Canceled(timerInfo.runningTime, timerInfo.remainedTime)
+      is TimerUiState.Dismissed -> TimerUiState.Dismissed(timerInfo.runningTime, timerInfo.remainedTime)
+      else -> TimerUiState.Idle
+    }
   }
 
   override fun onCleared() {
@@ -137,9 +144,6 @@ sealed class TimerUiState {
 
   val displayBack: Boolean
     get() = this is Idle || this is Canceled || this is Dismissed
-
-  val isRunning: Boolean
-    get() = this is CountDown || this is Paused
 
   val startPauseIcon: Int
     get() = when (this) {
