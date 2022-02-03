@@ -17,12 +17,15 @@ object DaminAudioManager {
 
   val audioAttributes: AudioAttributes
     get() = AudioAttributes.Builder()
+      .setLegacyStreamType(AudioManager.STREAM_ALARM)
       .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
       .setUsage(AudioAttributes.USAGE_ALARM)
       .setFlags(AudioAttributes.FLAG_AUDIBILITY_ENFORCED)
       .build()
 
   fun setTimerVolume() {
+    requestAudioFocus()
+
     EventLogger.logMedia(DaminEvent.AUDIO_PLAY)
 
     originalVolume = AndroidUtils.audioManager.getStreamVolume(AudioManager.STREAM_ALARM)
@@ -54,7 +57,7 @@ object DaminAudioManager {
       .setAudioAttributes(audioAttributes)
       .build()
 
-  fun requestAudioFocus() {
+  private fun requestAudioFocus() {
     when {
       Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ->
         AndroidUtils.audioManager.requestAudioFocus(audioFocusRequest)
