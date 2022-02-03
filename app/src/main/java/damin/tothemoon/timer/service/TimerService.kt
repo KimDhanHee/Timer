@@ -6,13 +6,14 @@ import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import androidx.core.os.bundleOf
-import damin.tothemoon.damin.extensions.defaultScope
 import damin.tothemoon.timer.event.DaminEvent
 import damin.tothemoon.timer.event.EventLogger
 import damin.tothemoon.timer.media.DaminMediaPlayer
 import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.utils.NotificationUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Timer
 import kotlin.concurrent.schedule
@@ -22,6 +23,8 @@ class TimerService : Service() {
 
   private var timeOutTimer: Timer? = null
 
+  private val timerServiceScope = CoroutineScope(Dispatchers.IO)
+
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     if (intent?.action != TimerInfo.ACTION_TIME_OUT)
       return super.onStartCommand(intent, flags, startId)
@@ -29,7 +32,7 @@ class TimerService : Service() {
     val timerInfo = intent.getParcelableExtra<TimerInfo>(TimerInfo.BUNDLE_KEY_TIMER_INFO)
       ?: return super.onStartCommand(intent, flags, startId)
 
-    defaultScope.launch {
+    timerServiceScope.launch {
       EventLogger.logTimer(DaminEvent.SERVICE_TIMEOUT, timerInfo)
 
       when {
@@ -42,8 +45,10 @@ class TimerService : Service() {
         else -> NotificationUtils.notifyTimer(this@TimerService, timerInfo)
       }
 
-      // timeOutTimer == null: Activity 가 Service 와 unbind 된 경우
-      if (timeOutTimer == null && TimerDatabase.timerDao.getRunningTimers().isNotEmpty()) {
+      val needToPlayMedia = timeOutTimer == null &&
+        TimerDatabase.timerDao.getRunningTimers().isNotEmpty()
+
+      if (needToPlayMedia) {
         DaminMediaPlayer.play()
       }
     }
@@ -51,21 +56,29 @@ class TimerService : Service() {
     return super.onStartCommand(intent, flags, startId)
   }
 
-  override fun onBind(intent: Intent): IBinder = timerBinder
+  override fun onBind(intent: Intent): IBinder {
+    return timerBinder
+  }
+
+  override fun onUnbind(intent: Intent?): Boolean {
+    timerBinder.stop()
+    return super.onUnbind(intent)
+  }
 
   inner class TimerBinder : Binder() {
     fun start(time: Long) {
       if (time < 0) return
 
-      defaultScope.launch {
-        EventLogger.logBackground(DaminEvent.BINDER_START, bundleOf(
-          "remained_time" to time
-        ))
+      EventLogger.logBackground(DaminEvent.BINDER_START, bundleOf(
+        "remained_time" to time
+      ))
 
-        timeOutTimer?.cancel()
-        timeOutTimer = Timer().apply {
-          schedule(time) {
-            EventLogger.logBackground(DaminEvent.BINDER_TIMEOUT)
+      timeOutTimer?.cancel()
+      timeOutTimer = Timer().apply {
+        schedule(time) {
+          EventLogger.logBackground(DaminEvent.BINDER_TIMEOUT)
+
+          timerServiceScope.launch {
             DaminMediaPlayer.play()
           }
         }
@@ -73,7 +86,7 @@ class TimerService : Service() {
     }
 
     fun stop() {
-      defaultScope.launch {
+      timerServiceScope.launch {
         EventLogger.logBackground(DaminEvent.BINDER_STOP)
 
         timeOutTimer?.cancel()
@@ -82,7 +95,9 @@ class TimerService : Service() {
     }
 
     fun dismiss() {
-      defaultScope.launch {
+      timerServiceScope.launch {
+        EventLogger.logBackground(DaminEvent.BINDER_DISMISS)
+
         stopForeground(true)
         DaminMediaPlayer.release()
       }
