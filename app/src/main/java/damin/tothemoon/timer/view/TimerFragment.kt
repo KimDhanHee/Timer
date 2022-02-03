@@ -156,7 +156,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         }
       }
     }
-    activity?.onBackPressedDispatcher?.addCallback(onBackPressedCallback)
+    activity?.onBackPressedDispatcher?.addCallback(this, onBackPressedCallback)
   }
 
   override fun onDetach() {
