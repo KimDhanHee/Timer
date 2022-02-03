@@ -9,19 +9,20 @@ import androidx.core.os.bundleOf
 import damin.tothemoon.timer.event.DaminEvent
 import damin.tothemoon.timer.event.EventLogger
 import damin.tothemoon.timer.media.DaminMediaPlayer
-import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.utils.NotificationUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Timer
+import java.util.TimerTask
 import kotlin.concurrent.schedule
 
 class TimerService : Service() {
   private val timerBinder = TimerBinder()
 
   private var timeOutTimer: Timer? = null
+  private var timeOutTask: TimerTask? = null
 
   private val timerServiceScope = CoroutineScope(Dispatchers.IO)
 
@@ -45,12 +46,9 @@ class TimerService : Service() {
         else -> NotificationUtils.notifyTimer(this@TimerService, timerInfo)
       }
 
-      val needToPlayMedia = timeOutTimer == null &&
-        TimerDatabase.timerDao.getRunningTimers().isNotEmpty()
+      timerBinder.stop()
 
-      if (needToPlayMedia) {
-        DaminMediaPlayer.play()
-      }
+      DaminMediaPlayer.play()
     }
 
     return super.onStartCommand(intent, flags, startId)
@@ -73,14 +71,14 @@ class TimerService : Service() {
         "remained_time" to time
       ))
 
-      timeOutTimer?.cancel()
-      timeOutTimer = Timer().apply {
-        schedule(time) {
-          EventLogger.logBackground(DaminEvent.BINDER_TIMEOUT)
+      stop()
 
-          timerServiceScope.launch {
-            DaminMediaPlayer.play()
-          }
+      timeOutTimer = Timer()
+      timeOutTask = timeOutTimer!!.schedule(time) {
+        EventLogger.logBackground(DaminEvent.BINDER_TIMEOUT)
+
+        timerServiceScope.launch {
+          DaminMediaPlayer.play()
         }
       }
     }
@@ -90,7 +88,9 @@ class TimerService : Service() {
         EventLogger.logBackground(DaminEvent.BINDER_STOP)
 
         timeOutTimer?.cancel()
+        timeOutTask?.cancel()
         timeOutTimer = null
+        timeOutTask = null
       }
     }
 
