@@ -34,7 +34,6 @@ class TimerService : Service() {
 
       when {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
-          NotificationUtils.createNotificationChannel()
           startForeground(
             timerInfo.id.toInt(),
             NotificationUtils.buildNotification(this@TimerService, timerInfo)
