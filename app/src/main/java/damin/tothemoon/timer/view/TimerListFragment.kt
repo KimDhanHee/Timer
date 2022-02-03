@@ -1,6 +1,8 @@
 package damin.tothemoon.timer.view
 
+import android.content.Context
 import android.graphics.Color
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import damin.tothemoon.ad.AdManager
 import damin.tothemoon.ad.AdPosition
@@ -102,7 +104,27 @@ class TimerListFragment : BaseFragment<FragmentTimerListBinding>(
     }
 
     viewBackBtn.setOnClickListener {
-      timerListViewModel.changeUiState()
+      onBackPressedCallback.handleOnBackPressed()
     }
+  }
+
+  private lateinit var onBackPressedCallback: OnBackPressedCallback
+
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    onBackPressedCallback = object : OnBackPressedCallback(true) {
+      override fun handleOnBackPressed() {
+        when (timerListViewModel.timerListUiStateFlow.value) {
+          TimerListUiState.Idle -> activity?.finish()
+          TimerListUiState.Deletable -> timerListViewModel.changeUiState()
+        }
+      }
+    }
+    activity?.onBackPressedDispatcher?.addCallback(this, onBackPressedCallback)
+  }
+
+  override fun onDetach() {
+    super.onDetach()
+    onBackPressedCallback.remove()
   }
 }
