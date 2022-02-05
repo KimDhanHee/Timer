@@ -15,8 +15,6 @@ object AlarmUtils {
   private const val REQUEST_MAIN_ACTIVITY = 100
 
   fun setAlarm(context: Context, timerInfo: TimerInfo) {
-    cancelAlarm(context, timerInfo)
-
     EventLogger.logTimer(DaminEvent.SET_TIMER_ALARM, timerInfo)
 
     val pendingIntent = PendingIntent.getBroadcast(
