@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.content.res.Resources
 import android.graphics.Color
 import android.media.AudioManager
+import android.os.PowerManager
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -66,6 +67,9 @@ object AndroidUtils {
 
   val notificationManager: NotificationManager
     get() = systemService(Context.NOTIFICATION_SERVICE)
+
+  val powerManager: PowerManager
+    get() = systemService(Context.POWER_SERVICE)
 
   @Suppress("UNCHECKED_CAST")
   fun <T> systemService(service: String, context: Context = application): T =

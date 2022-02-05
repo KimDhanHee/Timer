@@ -8,11 +8,14 @@ import damin.tothemoon.timer.event.DaminEvent
 import damin.tothemoon.timer.event.EventLogger
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.service.TimerService
+import damin.tothemoon.timer.utils.WakeLockManager
 
 class TimerReceiver : BroadcastReceiver() {
 
   override fun onReceive(context: Context, intent: Intent) {
     if (intent.action != TimerInfo.ACTION_TIME_OUT) return
+
+    WakeLockManager.acquireCpuWakeLock()
 
     intent.getParcelableExtra<TimerInfo>(TimerInfo.BUNDLE_KEY_TIMER_INFO)?.let { timerInfo ->
       EventLogger.logTimer(

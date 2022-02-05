@@ -11,6 +11,7 @@ import damin.tothemoon.timer.event.EventLogger
 import damin.tothemoon.timer.media.DaminMediaPlayer
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.utils.NotificationUtils
+import damin.tothemoon.timer.utils.WakeLockManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -100,6 +101,7 @@ class TimerService : Service() {
 
         stopForeground(true)
         DaminMediaPlayer.release()
+        WakeLockManager.release()
       }
     }
   }
