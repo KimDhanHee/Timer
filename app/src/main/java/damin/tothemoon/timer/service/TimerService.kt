@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import damin.tothemoon.timer.event.DaminEvent
 import damin.tothemoon.timer.event.EventLogger
 import damin.tothemoon.timer.media.DaminMediaPlayer
+import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.utils.NotificationUtils
 import damin.tothemoon.timer.utils.WakeLockManager
@@ -47,9 +48,10 @@ class TimerService : Service() {
         else -> NotificationUtils.notifyTimer(this@TimerService, timerInfo)
       }
 
-      timerBinder.stop()
-
-      DaminMediaPlayer.play()
+      if (TimerDatabase.timerDao.getRunningTimers().isNotEmpty()) {
+        timerBinder.stop()
+        DaminMediaPlayer.play()
+      }
     }
 
     return super.onStartCommand(intent, flags, startId)
@@ -79,6 +81,8 @@ class TimerService : Service() {
         EventLogger.logBackground(DaminEvent.BINDER_TIMEOUT)
 
         timerServiceScope.launch {
+          if (TimerDatabase.timerDao.getRunningTimers().isEmpty()) return@launch
+
           DaminMediaPlayer.play()
         }
       }
