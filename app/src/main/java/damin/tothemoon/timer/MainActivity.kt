@@ -7,6 +7,7 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.service.TimerService
 import damin.tothemoon.timer.utils.AlarmUtils
@@ -18,8 +19,12 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    startService(Intent(this, TimerService::class.java))
-    bindService()
+    try {
+      startService(Intent(this, TimerService::class.java))
+      bindService()
+    } catch (e: Exception) {
+      FirebaseCrashlytics.getInstance().log(e.message ?: "exception while start service.")
+    }
   }
 
   private fun bindService(onBind: () -> Unit = {}) {
