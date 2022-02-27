@@ -22,7 +22,8 @@ object DaminMediaPlayer {
     }
   }
 
-  fun play() = synchronized(this) {
+  @Synchronized
+  fun play() {
     release()
     init()
 
