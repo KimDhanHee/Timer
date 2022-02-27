@@ -22,4 +22,5 @@
   <string name="timer_editor_hour_label">hour</string>
   <string name="timer_editor_minute_label">minute</string>
   <string name="timer_editor_seconds_label">seconds</string>
+  <string name="timer_end_notification_text">The timer has ended. Turn off the alarm!</string>
 </resources>
