@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Timer</string>
+  <string name="preset_timer_ramen">🍜Ramen</string>
+  <string name="preset_timer_soft_boiled_egg">🥚 huevo cocido suave</string>
+  <string name="preset_timer_hard_boiled_egg">🥚 huevo cocido duro</string>
+  <string name="preset_timer_plank">💪plano</string>
+  <string name="timer_start">comienzo</string>
+  <string name="timer_cancel">cancelar</string>
+  <string name="timer_dismiss">descartar</string>
+  <string name="timer_finish">el cronómetro terminó</string>
+  <string name="timer_add_1min">+ 1 min</string>
+  <string name="timer_add_5min">+ 5 min</string>
+  <string name="timer_add_10min">+ 10 min</string>
+  <string name="timer_notification_text">está funcionando el cronómetro.</string>
+  <string name="timer_editor_title_hint">el título de entrada</string>
+  <string name="timer_editor_save_title">a salvo</string>
+  <string name="timer_editor_minute_label">minutos</string>
+  <string name="timer_editor_seconds_label">segundos</string>
+  <string name="timer_editor_hour_label">hora</string>
+  <string name="timer_end_notification_text">El cronómetro se ha acabado. ¡Apaga la alarma!</string>
+</resources>
