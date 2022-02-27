@@ -1,5 +1,6 @@
 package damin.tothemoon.timer.utils
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -28,20 +29,47 @@ object NotificationUtils {
     )
   }
 
-  fun notifyTimer(context: Context, timerInfo: TimerInfo) {
+  fun notifyTimerStart(context: Context, timerInfo: TimerInfo) {
     with(NotificationManagerCompat.from(context)) {
       notify(
         timerInfo.id.toInt(),
-        buildNotification(context, timerInfo)
+        buildNotification(
+          context = context,
+          title = timerInfo.title,
+          description = AndroidUtils.string(R.string.timer_notification_text)
+        )
       )
     }
   }
 
-  fun buildNotification(context: Context, timerInfo: TimerInfo) =
+  fun notifyTimerTimeout(context: Context, timerInfo: TimerInfo) {
+    with(NotificationManagerCompat.from(context)) {
+      notify(
+        timerInfo.id.toInt(),
+        buildTimerTimeoutNotification(
+          context = context,
+          title = timerInfo.title
+        )
+      )
+    }
+  }
+
+  fun buildTimerTimeoutNotification(context: Context, title: String): Notification =
+    buildNotification(
+      context = context,
+      title = title,
+      description = AndroidUtils.string(R.string.timer_end_notification_text)
+    )
+
+  private fun buildNotification(
+    context: Context,
+    title: String,
+    description: String,
+  ): Notification =
     NotificationCompat.Builder(context, TIMER_ALARM_CHANNEL_ID)
       .setSmallIcon(R.mipmap.ic_launcher)
-      .setContentTitle(timerInfo.title)
-      .setContentText(AndroidUtils.string(R.string.timer_notification_text))
+      .setContentTitle(title)
+      .setContentText(description)
       .setContentIntent(
         PendingIntent.getActivity(
           context,
