@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Timer</string>
+  <string name="app_name">Temporizador</string>
   <string name="preset_timer_ramen">🍜Ramen</string>
   <string name="preset_timer_soft_boiled_egg">🥚 huevo cocido suave</string>
   <string name="preset_timer_hard_boiled_egg">🥚 huevo cocido duro</string>
