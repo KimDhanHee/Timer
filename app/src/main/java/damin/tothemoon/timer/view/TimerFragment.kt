@@ -53,7 +53,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
       TimerState.IDLE -> {
         timerViewModel.start()
         timerActivity.startBackgroundTimer(timerViewModel.timerInfo)
-        NotificationUtils.notifyTimer(requireContext(), timerViewModel.timerInfo)
+        NotificationUtils.notifyTimerStart(requireContext(), timerViewModel.timerInfo)
       }
       TimerState.STARTED -> timerViewModel.start()
       else -> Unit
@@ -83,7 +83,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(
         else -> {
           timerViewModel.start()
           timerActivity.startBackgroundTimer(timerViewModel.timerInfo)
-          NotificationUtils.notifyTimer(requireContext(), timerViewModel.timerInfo)
+          NotificationUtils.notifyTimerStart(requireContext(), timerViewModel.timerInfo)
         }
       }
     }
