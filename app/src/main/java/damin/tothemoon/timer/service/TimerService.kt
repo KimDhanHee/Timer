@@ -42,10 +42,10 @@ class TimerService : Service() {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
           startForeground(
             timerInfo.id.toInt(),
-            NotificationUtils.buildNotification(this@TimerService, timerInfo)
+            NotificationUtils.buildTimerTimeoutNotification(this@TimerService, timerInfo.title)
           )
         }
-        else -> NotificationUtils.notifyTimer(this@TimerService, timerInfo)
+        else -> NotificationUtils.notifyTimerTimeout(this@TimerService, timerInfo)
       }
 
       if (TimerDatabase.timerDao.getRunningTimers().isNotEmpty()) {
