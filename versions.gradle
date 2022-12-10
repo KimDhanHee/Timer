@@ -22,6 +22,7 @@ versions.lifecycle = '2.4.0'
 versions.navigation = '2.3.5'
 versions.room = '2.4.0'
 
+versions.exoplayer = '1.0.0-beta03'
 // Material
 versions.material = '1.4.0'
 
@@ -92,6 +93,9 @@ deps.material = material
 
 deps.material = material
 
+def exoplayer = [:]
+exoplayer.core = "androidx.media3:media3-exoplayer:${versions.exoplayer}"
+deps.exoplayer = exoplayer
 /**
  * Google
  */
