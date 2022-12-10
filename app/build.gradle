@@ -49,6 +49,7 @@ android {
 dependencies {
     implementation project(":ad")
     implementation project(':damin')
+    implementation project(':media')
 
     implementation platform(deps.firebase.bom)
     implementation deps.firebase.analytics
