@@ -1,6 +1,6 @@
 def build_versions = [:]
 build_versions.min_sdk = 24
-build_versions.target_sdk = 31
+build_versions.target_sdk = 33
 ext.build_versions = build_versions
 
 
@@ -9,7 +9,7 @@ def versions = [:]
 versions.gradle = '7.0.3'
 versions.gradle_plugin = '1.6.0'
 
-versions.kotlin = '1.6.10'
+versions.kotlin = '1.7.20'
 
 // AndroidX
 versions.ktx = '1.7.0'
@@ -21,6 +21,11 @@ versions.fragment = '1.4.0'
 versions.lifecycle = '2.4.0'
 versions.navigation = '2.3.5'
 versions.room = '2.4.0'
+
+versions.exoplayer = '1.0.0-beta03'
+
+// kotlinx
+versions.coroutine = '1.6.4'
 
 // Material
 versions.material = '1.4.0'
@@ -58,6 +63,10 @@ def kotlin = [:]
 kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin_version}"
 deps.kotlin = kotlin
 
+def kotlinx = [:]
+kotlinx.coroutine = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutine}"
+deps.kotlinx = kotlinx
+
 def androidx = [:]
 androidx.ktx = "androidx.core:core-ktx:${versions.ktx_version}"
 androidx.appcompat = "androidx.appcompat:appcompat:${versions.appcompat}"
@@ -92,6 +101,9 @@ deps.material = material
 
 deps.material = material
 
+def exoplayer = [:]
+exoplayer.core = "androidx.media3:media3-exoplayer:${versions.exoplayer}"
+deps.exoplayer = exoplayer
 /**
  * Google
  */

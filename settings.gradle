@@ -10,3 +10,4 @@ rootProject.name = "timer"
 include ':app'
 include ':ad'
 include ':damin'
+include ':media'
