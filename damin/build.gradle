@@ -53,14 +53,10 @@ dependencies {
     api deps.navigation.fragment
     api deps.navigation.ui
 
-    api deps.room.runtime
-
     api deps.material.material
 
     api deps.epoxy.runtime
     api deps.epoxy.databinding
-
-    kapt deps.room.compiler
     kapt deps.epoxy.annotation
 
     testImplementation deps.test.junit

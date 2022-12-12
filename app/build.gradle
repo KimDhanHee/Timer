@@ -65,6 +65,9 @@ dependencies {
     implementation deps.compose.activity
     implementation deps.compose.viewmodel
 
+    implementation deps.room.runtime
+    annotationProcessor deps.room.compiler
+    kapt deps.room.compiler
 
     implementation platform(deps.firebase.bom)
     implementation deps.firebase.analytics
