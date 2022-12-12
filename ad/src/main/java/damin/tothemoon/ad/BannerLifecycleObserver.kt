@@ -21,6 +21,7 @@ internal class BannerLifecycleObserver(
         lifecycleOwner.lifecycle.removeObserver(this)
         adView.destroy()
       }
+      else -> Unit
     }
   }
 }

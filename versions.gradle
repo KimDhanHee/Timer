@@ -6,8 +6,8 @@ ext.build_versions = build_versions
 
 def versions = [:]
 
-versions.gradle = '7.0.3'
-versions.gradle_plugin = '1.6.0'
+versions.gradle = '7.3.1'
+versions.gradle_plugin = '1.7.20'
 
 versions.kotlin = '1.7.20'
 
@@ -20,7 +20,7 @@ versions.fragment = '1.4.0'
 
 versions.lifecycle = '2.4.0'
 versions.navigation = '2.3.5'
-versions.room = '2.4.0'
+versions.room = '2.4.3'
 
 versions.exoplayer = '1.0.0-beta03'
 
@@ -80,6 +80,16 @@ def lifecycle = [:]
 lifecycle.runtime = "androidx.lifecycle:lifecycle-runtime-ktx:${versions.lifecycle}"
 lifecycle.viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
 deps.lifecycle = lifecycle
+
+// Compose
+def compose = [:]
+compose.bom = "androidx.compose:compose-bom:2022.10.00"
+compose.material = "androidx.compose.material3:material3"
+compose.preview = "androidx.compose.ui:ui-tooling-preview"
+compose.tooling = "androidx.compose.ui:ui-tooling"
+compose.activity = "androidx.activity:activity-compose:1.5.1"
+compose.viewmodel = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
+deps.compose = compose
 
 // navigation
 def navigation = [:]
