@@ -1,17 +1,18 @@
 package damin.tothemoon.timer.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import damin.tothemoon.damin.extensions.ioScope
 import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class TimerListViewModel : ViewModel() {
   init {
-    ioScope.launch {
+    viewModelScope.launch(Dispatchers.IO) {
       TimerDatabase.timerDao.getTimerInfos().collect {
         _timerListFlow.value = it
       }
