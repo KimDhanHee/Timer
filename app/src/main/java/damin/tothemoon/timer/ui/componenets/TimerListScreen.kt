@@ -1,6 +1,10 @@
 package damin.tothemoon.timer.ui.componenets
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -78,9 +82,11 @@ private fun Header(
   onAddClick: () -> Unit = {},
   onBackClick: () -> Unit = {},
 ) {
-  when {
-    isDeletable -> DeletableStateHeader(onBackClick)
-    else -> IdleStateHeader(onDeleteClick, onAddClick)
+  Crossfade(isDeletable) { deletable ->
+    when {
+      deletable -> DeletableStateHeader(onBackClick)
+      else -> IdleStateHeader(onDeleteClick, onAddClick)
+    }
   }
 }
 
@@ -177,7 +183,11 @@ private fun TimerListItem(
           maxLines = 1,
           style = MaterialTheme.typography.labelMedium.copy(color = Color.White)
         )
-        if (isDeletable) {
+        AnimatedVisibility(
+          isDeletable,
+          enter = fadeIn(),
+          exit = fadeOut()
+        ) {
           Icon(
             painter = painterResource(id = R.drawable.ic_delete_20),
             contentDescription = null,
