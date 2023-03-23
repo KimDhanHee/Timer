@@ -6,10 +6,10 @@ ext.build_versions = build_versions
 
 def versions = [:]
 
-versions.gradle = '7.3.1'
-versions.gradle_plugin = '1.7.20'
+versions.gradle = '7.4.1'
+versions.gradle_plugin = '1.8.10'
 
-versions.kotlin = '1.7.20'
+versions.kotlin = '1.8.10'
 
 // AndroidX
 versions.ktx = '1.7.0'
@@ -19,8 +19,8 @@ versions.activity = '1.4.0'
 versions.fragment = '1.4.0'
 
 versions.lifecycle = '2.4.0'
-versions.navigation = '2.3.5'
-versions.room = '2.4.3'
+versions.navigation = '2.5.3'
+versions.room = '2.5.0'
 
 versions.exoplayer = '1.0.0-beta03'
 
@@ -60,11 +60,13 @@ gradle.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.gradle_plu
 deps.gradle = gradle
 
 def kotlin = [:]
-kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin_version}"
+kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
 deps.kotlin = kotlin
 
 def kotlinx = [:]
 kotlinx.coroutine = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutine}"
+kotlinx.serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
+kotlinx.serialization_plugin = "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}"
 deps.kotlinx = kotlinx
 
 def androidx = [:]
@@ -83,12 +85,15 @@ deps.lifecycle = lifecycle
 
 // Compose
 def compose = [:]
-compose.bom = "androidx.compose:compose-bom:2022.10.00"
+compose.bom = "androidx.compose:compose-bom:2023.01.00"
 compose.material = "androidx.compose.material3:material3"
 compose.preview = "androidx.compose.ui:ui-tooling-preview"
 compose.tooling = "androidx.compose.ui:ui-tooling"
-compose.activity = "androidx.activity:activity-compose:1.5.1"
+compose.icons_core = "androidx.compose.material:material-icons-core"
+compose.icons_extended = "androidx.compose.material:material-icons-extended"
+compose.activity = "androidx.activity:activity-compose:1.6.1"
 compose.viewmodel = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
+compose.navigation = "androidx.navigation:navigation-compose:2.5.3"
 deps.compose = compose
 
 // navigation
@@ -119,6 +124,7 @@ deps.exoplayer = exoplayer
  */
 def google = [:]
 google.services = "com.google.gms:google-services:${versions.google_services}"
+google.appcompanist = "com.google.accompanist:accompanist-systemuicontroller:0.29.1-alpha"
 deps.google = google
 
 /**

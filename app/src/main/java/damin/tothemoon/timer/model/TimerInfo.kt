@@ -1,5 +1,6 @@
 package damin.tothemoon.timer.model
 
+import android.net.Uri
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,9 +8,13 @@ import damin.tothemoon.damin.utils.AndroidUtils
 import damin.tothemoon.timer.BuildConfig
 import damin.tothemoon.timer.R
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import kotlin.math.abs
 
 @Parcelize
+@Serializable
 @Entity(tableName = "timer")
 data class TimerInfo(
   @PrimaryKey(autoGenerate = true)
@@ -63,6 +68,8 @@ data class TimerInfo(
       time = hour * HOUR_UNIT + minute * MINUTE_UNIT + value * SECONDS_UNIT
       resetTime()
     }
+
+  override fun toString(): String = Uri.encode(Json.encodeToString(this))
 
   companion object {
     const val HOUR_UNIT = 60 * 60 * 1000L

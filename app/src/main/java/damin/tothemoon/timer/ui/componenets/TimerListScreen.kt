@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import damin.tothemoon.timer.R
 import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.model.timeStr
@@ -43,14 +45,22 @@ import damin.tothemoon.timer.viewmodel.TimerListViewModel
 @Composable
 fun TimerInfoListScreen(
   timerListViewModel: TimerListViewModel = viewModel(),
-  onTimerInfoClick: (TimerInfo) -> Unit = {},
+  onClickAdd: () -> Unit,
+  onClickTimerInfo: (TimerInfo) -> Unit,
 ) {
+  val systemUiController = rememberSystemUiController()
+
+  LaunchedEffect(Unit) {
+    systemUiController.setSystemBarsColor(color = Color.White)
+  }
+
   Column {
     Spacer(modifier = Modifier.size(4.dp))
 
     var deletable by rememberSaveable { mutableStateOf(false) }
     Header(
       deletable,
+      onAddClick = onClickAdd,
       onDeleteClick = {
         deletable = true
       },
@@ -65,7 +75,7 @@ fun TimerInfoListScreen(
     TimerInfoList(
       timerInfoList,
       deletable,
-      onTimerInfoClick,
+      onClickTimerInfo,
       onTimerDeleteClick = { timerInfo -> timerListViewModel.deleteTimerInfo(timerInfo) }
     )
 
@@ -78,9 +88,9 @@ fun TimerInfoListScreen(
 @Composable
 private fun Header(
   isDeletable: Boolean = false,
-  onDeleteClick: () -> Unit = {},
-  onAddClick: () -> Unit = {},
-  onBackClick: () -> Unit = {},
+  onDeleteClick: () -> Unit,
+  onAddClick: () -> Unit,
+  onBackClick: () -> Unit,
 ) {
   Crossfade(isDeletable) { deletable ->
     when {
@@ -117,7 +127,6 @@ private fun IdleStateHeader(
       modifier = Modifier.weight(1f),
       style = MaterialTheme.typography.headlineLarge,
     )
-
     Icon(
       painter = painterResource(id = R.drawable.ic_minus_48),
       contentDescription = null,

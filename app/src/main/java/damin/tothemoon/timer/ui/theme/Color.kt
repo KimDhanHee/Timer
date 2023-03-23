@@ -20,7 +20,7 @@ val Blue = Color(0xFF225BCA)
 val Lavender = Color(0xFFD33FC4)
 
 val Black20 = Color(0xFF434343)
-val Black90 = Color(0xDD2E2E2E)
+val Black90 = Color(0xFF2E2E2E)
 
 val Gray = Color(0xFFA7A7A7)
 
