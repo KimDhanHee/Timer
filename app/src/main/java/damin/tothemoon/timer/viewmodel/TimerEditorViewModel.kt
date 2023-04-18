@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import damin.tothemoon.timer.model.TimerColor
 import damin.tothemoon.timer.model.TimerDatabase
 import damin.tothemoon.timer.model.TimerInfo
@@ -12,10 +11,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class TimerEditorViewModel(prevTimerInfo: TimerInfo) : ViewModel() {
+class TimerEditorViewModel : ViewModel() {
   private val _paletteVisibilityFlow = MutableStateFlow(false)
   val paletteVisibilityFlow: StateFlow<Boolean>
     get() = _paletteVisibilityFlow
+
+  fun initTimerInfo(timerInfo: TimerInfo) {
+    this.timerInfo = timerInfo
+  }
 
   fun openPalette() {
     _paletteVisibilityFlow.value = true
@@ -25,7 +28,7 @@ class TimerEditorViewModel(prevTimerInfo: TimerInfo) : ViewModel() {
     _paletteVisibilityFlow.value = false
   }
 
-  private val _timerInfoFlow = MutableStateFlow(prevTimerInfo)
+  private val _timerInfoFlow = MutableStateFlow(TimerInfo())
   val timerInfoFlow: StateFlow<TimerInfo>
     get() = _timerInfoFlow
 
@@ -73,17 +76,6 @@ class TimerEditorViewModel(prevTimerInfo: TimerInfo) : ViewModel() {
     TimerDatabase.timerDao.updateTimerInfo(_timerInfoFlow.value)
   }
 
-  var timerInfo by mutableStateOf(prevTimerInfo)
+  var timerInfo by mutableStateOf(TimerInfo())
     private set
-}
-
-class TimerEditorViewModelFactory(
-  private val timerInfo: TimerInfo,
-) : ViewModelProvider.Factory {
-  override fun <T : ViewModel> create(modelClass: Class<T>): T {
-    if (modelClass.isAssignableFrom(TimerEditorViewModel::class.java)) {
-      return TimerEditorViewModel(timerInfo) as T
-    }
-    throw IllegalArgumentException()
-  }
 }

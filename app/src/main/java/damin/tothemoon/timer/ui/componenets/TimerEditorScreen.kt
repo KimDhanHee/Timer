@@ -1,6 +1,5 @@
 package damin.tothemoon.timer.ui.componenets
 
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.widget.NumberPicker
 import androidx.compose.foundation.background
@@ -43,22 +42,18 @@ import damin.tothemoon.timer.model.TimerInfo
 import damin.tothemoon.timer.navigateToSingleTop
 import damin.tothemoon.timer.ui.theme.Black90
 import damin.tothemoon.timer.viewmodel.TimerEditorViewModel
-import damin.tothemoon.timer.viewmodel.TimerEditorViewModelFactory
 
 @Composable
 fun TimerEditorScreen(
   prevTimerInfo: TimerInfo,
   navController: NavHostController,
-  viewmodel: TimerEditorViewModel = viewModel(
-    factory = TimerEditorViewModelFactory(prevTimerInfo)
-  ),
+  viewmodel: TimerEditorViewModel = viewModel(),
 ) {
+  LaunchedEffect(prevTimerInfo) { viewmodel.initTimerInfo(prevTimerInfo) }
+
   val timerInfo = viewmodel.timerInfo
 
-  Log.e("TimerEditorScreen", "timerInfo: ${timerInfo.title}")
-
   val systemUiController = rememberSystemUiController()
-
   LaunchedEffect(timerInfo.color) {
     systemUiController.setSystemBarsColor(color = Color(timerInfo.color.src))
   }
