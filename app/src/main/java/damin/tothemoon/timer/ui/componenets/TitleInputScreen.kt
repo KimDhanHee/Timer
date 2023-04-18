@@ -50,9 +50,9 @@ fun TitleInputScreen(
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
     Header(onClickBack = { navController.navigateUp() })
-    Spacer(modifier = Modifier.size(92.dp))
+    Spacer(modifier = Modifier.size(48.dp))
     TitleTextField(title = title, onTitleChange = { title = it })
-    Spacer(modifier = Modifier.size(124.dp))
+    Spacer(modifier = Modifier.size(36.dp))
     CtaButton(
       text = stringResource(id = R.string.timer_editor_save_title),
       enabled = title.isNotBlank(),
@@ -61,7 +61,7 @@ fun TitleInputScreen(
           TimerDestination.TimerEditor.TitleInput.KEY_TITLE,
           title
         )
-        navController.navigateUp()
+        navController.popBackStack()
       }
     )
   }

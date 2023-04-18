@@ -1,13 +1,11 @@
 package damin.tothemoon.timer
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -37,20 +35,23 @@ class ComposeActivity : ComponentActivity() {
       val navController = rememberNavController()
 
       NavHost(navController, startDestination = TimerDestination.TimerInfoList.route) {
-        composable(route = TimerDestination.TimerInfoList.route) {
-          TimerInfoListScreen(
-            onClickAdd = {
-              val newTimerInfo = TimerInfo()
-              navController.navigateToSingleTop("${TimerDestination.TimerEditor.Home.route}/$newTimerInfo")
-            },
-            onClickTimerInfo = { timerInfo ->
-              navController.navigateToSingleTop("${TimerDestination.TimerEditor.Home.route}/$timerInfo")
-            }
-          )
-        }
-
+        homeGraph(navController)
         editorGraph(navController)
       }
+    }
+  }
+
+  private fun NavGraphBuilder.homeGraph(navController: NavHostController) {
+    composable(route = TimerDestination.TimerInfoList.route) {
+      TimerInfoListScreen(
+        onClickAdd = {
+          val newTimerInfo = TimerInfo()
+          navController.navigateToSingleTop("${TimerDestination.TimerEditor.Home.route}/$newTimerInfo")
+        },
+        onClickTimerInfo = { timerInfo ->
+          navController.navigateToSingleTop("${TimerDestination.TimerEditor.Home.route}/$timerInfo")
+        }
+      )
     }
   }
 
@@ -66,17 +67,12 @@ class ComposeActivity : ComponentActivity() {
         val timerInfoJson =
           navBackStackEntry.arguments?.getString(TimerDestination.TimerEditor.Home.timerInfoArg)
             ?: return@composable
+        var timerInfo: TimerInfo = Json.decodeFromString(timerInfoJson)
 
         val title by navBackStackEntry.savedStateHandle.getStateFlow(
           TimerDestination.TimerEditor.TitleInput.KEY_TITLE,
           ""
-        )
-          .collectAsState()
-
-        Log.e("ComposeActivity", "title: $title")
-
-        var timerInfo: TimerInfo = Json.decodeFromString(timerInfoJson)
-
+        ).collectAsState()
         if (title.isNotBlank()) {
           timerInfo = timerInfo.copy(title = title)
         }
